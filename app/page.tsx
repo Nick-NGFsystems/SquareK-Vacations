@@ -47,24 +47,24 @@ export default async function HomePage() {
       <section
         id="hero"
         data-ngf-section="Hero"
-        className="relative flex min-h-[90vh] items-end overflow-hidden bg-[var(--text)]"
+        className="relative flex min-h-[60vh] items-end overflow-hidden bg-[var(--text)] sm:min-h-[85vh]"
       >
-        {/* Background image */}
+        {/* Background image — object-[center_35%] keeps the house roof/facade visible on mobile */}
         <img
           src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=80"
           alt="Square K Vacation Rental — Michigan lake house"
-          className="absolute inset-0 h-full w-full object-cover opacity-60"
+          className="absolute inset-0 h-full w-full object-cover object-[center_35%] opacity-65"
         />
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+        {/* Gradient — stronger bottom fade on mobile so text stays readable */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
 
-        <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-20 pt-32 sm:px-6 lg:px-8">
+        <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-10 pt-16 sm:pb-20 sm:pt-32 sm:px-6 lg:px-8">
           <span
             data-ngf-field="hero.eyebrow"
             data-ngf-label="Eyebrow Tag"
             data-ngf-type="text"
             data-ngf-section="Hero"
-            className="mb-4 inline-block rounded-full border border-white/30 bg-white/10 px-4 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-white backdrop-blur-sm"
+            className="mb-3 inline-block rounded-full border border-white/30 bg-white/10 px-4 py-1.5 font-body text-xs font-semibold uppercase tracking-widest text-white backdrop-blur-sm"
           >
             {heroEyebrow}
           </span>
@@ -73,7 +73,7 @@ export default async function HomePage() {
             data-ngf-label="Headline"
             data-ngf-type="text"
             data-ngf-section="Hero"
-            className="font-heading text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl"
+            className="font-heading text-3xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl"
           >
             {heroHeadline}
           </h1>
@@ -82,25 +82,25 @@ export default async function HomePage() {
             data-ngf-label="Subheadline"
             data-ngf-type="textarea"
             data-ngf-section="Hero"
-            className="mt-5 max-w-xl font-body text-lg leading-relaxed text-white/80"
+            className="mt-3 max-w-xl font-body text-base leading-relaxed text-white/80 sm:mt-5 sm:text-lg"
           >
             {heroSubhead}
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-6 flex flex-wrap gap-3 sm:mt-8">
             <Link
               href="/properties"
               data-ngf-field="hero.cta"
               data-ngf-label="Button Text"
               data-ngf-type="text"
               data-ngf-section="Hero"
-              className="inline-flex min-h-12 items-center justify-center rounded-lg px-7 py-3 font-body text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
+              className="inline-flex min-h-11 items-center justify-center rounded-lg px-6 py-2.5 font-body text-sm font-semibold text-white shadow-sm transition hover:opacity-90 sm:min-h-12 sm:px-7 sm:py-3"
               style={{ backgroundColor: accent }}
             >
               {heroCta}
             </Link>
             <Link
               href="/contact"
-              className="inline-flex min-h-12 items-center justify-center rounded-lg border border-white/30 bg-white/10 px-7 py-3 font-body text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/20"
+              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-white/30 bg-white/10 px-6 py-2.5 font-body text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/20 sm:min-h-12 sm:px-7 sm:py-3"
             >
               Contact Tyler
             </Link>
@@ -334,15 +334,4 @@ export default async function HomePage() {
             <p
               data-ngf-field="footer.copyright"
               data-ngf-label="Copyright Text"
-              data-ngf-type="text"
-              data-ngf-section="Footer"
-              className="font-body text-xs text-[var(--muted)]"
-            >
-              {copyright}
-            </p>
-          </div>
-        </div>
-      </footer>
-    </div>
-  )
-}
+ 
