@@ -15,6 +15,7 @@ export default function SiteHeader({
   const [menuOpen, setMenuOpen] = useState(false)
 
   const links = [
+    { href: '/', label: 'Home' },
     { href: '/properties', label: 'Properties' },
     { href: '/#how-it-works', label: 'How It Works' },
     { href: '/contact', label: 'Contact' },
@@ -37,7 +38,12 @@ export default function SiteHeader({
           data-ngf-section="Brand"
           className="flex items-center gap-2 font-heading text-xl font-semibold text-[var(--text)] transition-opacity hover:opacity-80"
         >
-          <span className="text-2xl font-bold tracking-tight" style={{ color: primaryColor }}>Square K</span>
+          <span
+            className="rounded-md px-2 py-0.5 text-2xl font-bold tracking-tight text-white"
+            style={{ backgroundColor: primaryColor }}
+          >
+            Square K
+          </span>
           <span className="hidden text-sm font-medium text-[var(--muted)] sm:block">Vacations</span>
         </Link>
 
@@ -99,13 +105,4 @@ export default function SiteHeader({
               href="/contact"
               onClick={() => setMenuOpen(false)}
               className="min-h-11 rounded-lg px-4 py-3 text-center font-body text-sm font-semibold text-white transition hover:opacity-90"
-              style={{ backgroundColor: accentColor }}
-            >
-              Request a Stay
-            </Link>
-          </div>
-        </div>
-      )}
-    </header>
-  )
-}
+              style={{ backgroundColor: ac
