@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /*
+   * Brand colors — editable via the NGF portal (brand.primaryColor, brand.accentColor).
+   * The JS in layout.tsx reads those values and applies them inline, overriding these defaults.
+   */
+  --primary: #4a6741;      /* Sage green — inspired by the property exterior */
+  --accent: #9b8060;       /* Warm toffee / wood tone */
+  --bg: #fafaf7;           /* Warm off-white */
+  --text: #1c2318;         /* Near-black forest */
+  --muted: #6b7280;
+  --border: #dde0d8;
+  --surface: #f0f1ec;      /* Slightly warm gray surface */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
