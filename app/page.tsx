@@ -44,6 +44,11 @@ export default async function HomePage() {
         className="relative flex min-h-[60vh] items-end overflow-hidden bg-[var(--text)] sm:min-h-[85vh]"
       >
 
+        <img
+          src="/images/lakeshore/Front-Exterior-Noon.jpg"
+          alt="Square K Vacation Rental"
+          className="absolute inset-0 h-full w-full object-cover object-[center_35%] opacity-75"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
 
         <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-10 pt-16 sm:pb-20 sm:pt-32 sm:px-6 lg:px-8">
@@ -280,8 +285,10 @@ export default async function HomePage() {
         <div className="mx-auto max-w-6xl">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             <div>
-              <div className="font-heading text-xl font-bold" style={{ color: primary }}>Square K</div>
-              <div className="font-body text-sm text-[var(--muted)]">Vacations</div>
+              <div className="flex items-center gap-2">
+                <span className="rounded-md px-2 py-0.5 font-heading text-xl font-bold tracking-tight text-white" style={{ backgroundColor: primary }}>Square K</span>
+                <span className="font-body text-sm font-medium text-[var(--muted)]">Vacations</span>
+              </div>
               <p
                 data-ngf-field="brand.tagline"
                 data-ngf-label="Tagline"
@@ -323,13 +330,4 @@ export default async function HomePage() {
               data-ngf-label="Copyright Text"
               data-ngf-type="text"
               data-ngf-section="Footer"
-              className="font-body text-xs text-[var(--muted)]"
-            >
-              {copyright}
-            </p>
-          </div>
-        </div>
-      </footer>
-    </div>
-  )
-}
+              className="font-

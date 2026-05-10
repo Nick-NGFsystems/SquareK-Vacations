@@ -26,7 +26,7 @@ export default function SiteHeader({
         </Link>
         <div className="hidden items-center gap-8 lg:flex">
           {links.map(link => (
-            <Link key={link.href} href={link.href} className="font-body text-sm font-medium">{link.label}</Link>
+            <Link key={link.href} href={link.href} className="rounded-lg border border-white/20 bg-white/15 px-3 py-1.5 font-body text-sm font-medium backdrop-blur-sm transition hover:bg-white/25">{link.label}</Link>
           ))}
         </div>
         <div className="hidden lg:flex">
@@ -45,7 +45,7 @@ export default function SiteHeader({
         <div className="border-t px-4 pb-5 pt-4 lg:hidden">
           <div className="mx-auto flex max-w-6xl flex-col gap-2">
             {links.map(link => (
-              <Link key={link.href} href={link.href} onClick={() => setMenuOpen(false)} className="min-h-11 rounded-lg border px-4 py-3 font-body text-sm font-medium">{link.label}</Link>
+              <Link key={link.href} href={link.href} onClick={() => setMenuOpen(false)} className="min-h-11 rounded-lg border border-white/20 bg-white/15 px-4 py-3 font-body text-sm font-medium backdrop-blur-sm">{link.label}</Link>
             ))}
             <Link href="/contact" onClick={() => setMenuOpen(false)} className="min-h-11 rounded-lg px-4 py-3 text-center font-body text-sm font-semibold text-white" style={{ backgroundColor: accentColor }}>Request a Stay</Link>
           </div>
