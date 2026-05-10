@@ -87,13 +87,13 @@ export default function BookingRequestForm({ propertyName, propertySlug: _, acce
           <label className="mb-1.5 block font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Phone *</label>
           <input required name="phone" type="tel" placeholder="(616) 555-1234" className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg)] px-4 py-2.5 font-body text-sm text-[var(--text)] placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" />
         </div>
-        <div>
+        <div className="sm:col-span-1">
           <label className="mb-1.5 block font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Check-In *</label>
-          <input required name="checkIn" type="date" className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg)] px-4 py-2.5 font-body text-sm text-[var(--text)] focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" />
+          <input required name="checkIn" type="date" className="w-full min-w-0 max-w-full rounded-lg border border-[var(--border)] bg-[var(--bg)] px-3 py-2.5 font-body text-sm text-[var(--text)] focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" />
         </div>
-        <div>
+        <div className="sm:col-span-1">
           <label className="mb-1.5 block font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Check-Out *</label>
-          <input required name="checkOut" type="date" className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg)] px-4 py-2.5 font-body text-sm text-[var(--text)] focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" />
+          <input required name="checkOut" type="date" className="w-full min-w-0 max-w-full rounded-lg border border-[var(--border)] bg-[var(--bg)] px-3 py-2.5 font-body text-sm text-[var(--text)] focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" />
         </div>
         <div className="sm:col-span-2">
           <label className="mb-1.5 block font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Number of Guests *</label>

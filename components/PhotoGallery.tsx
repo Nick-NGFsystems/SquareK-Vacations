@@ -61,28 +61,67 @@ export default function PhotoGallery({ images, propertyName }: Props) {
     )
   }
 
-  const gridImages = images.slice(0, 5)
-  const remaining = images.length - 5
-
   return (
     <>
-      {/* Photo grid */}
-      <div className="overflow-hidden rounded-2xl">
-        {gridImages.length === 1 ? (
-          /* Single image */
+      {/* ── Mobile layout (hidden on sm+) ── */}
+      <div className="sm:hidden">
+        {/* Hero image */}
+        <button
+          onClick={() => open(0)}
+          className="group relative block w-full overflow-hidden rounded-xl aspect-[4/3]"
+          aria-label="View photos"
+        >
+          <img
+            src={images[0]}
+            alt={propertyName}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          {images.length > 1 && (
+            <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 backdrop-blur-sm">
+              <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+              </svg>
+              <span className="font-body text-xs font-semibold text-white">{images.length} photos</span>
+            </div>
+          )}
+        </button>
+
+        {/* Thumbnail strip */}
+        {images.length > 1 && (
+          <div className="mt-2 flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+            {images.slice(1).map((src, idx) => {
+              const globalIdx = idx + 1
+              return (
+                <button
+                  key={globalIdx}
+                  onClick={() => open(globalIdx)}
+                  className="relative flex-none w-20 aspect-square overflow-hidden rounded-lg"
+                  aria-label={`View photo ${globalIdx + 1}`}
+                >
+                  <img src={src} alt={`${propertyName} ${globalIdx + 1}`} className="h-full w-full object-cover" />
+                </button>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* ── Desktop layout (hidden on mobile) ── */}
+      <div className="hidden sm:block overflow-hidden rounded-2xl">
+        {images.length === 1 ? (
           <button onClick={() => open(0)} className="group relative block w-full aspect-[16/9] overflow-hidden" aria-label="View photo">
-            <img src={gridImages[0]} alt={propertyName} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+            <img src={images[0]} alt={propertyName} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
           </button>
-        ) : gridImages.length <= 3 ? (
+        ) : images.length <= 3 ? (
           /* 2–3 images: big left + column right */
           <div className="grid gap-1" style={{ gridTemplateColumns: '2fr 1fr' }}>
             <button onClick={() => open(0)} className="group relative overflow-hidden" style={{ gridRow: 'span 2' }} aria-label="View photo 1">
               <div className="relative h-full min-h-[320px] overflow-hidden">
-                <img src={gridImages[0]} alt={`${propertyName} 1`} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <img src={images[0]} alt={`${propertyName} 1`} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
               </div>
             </button>
-            {gridImages.slice(1).map((src, idx) => (
+            {images.slice(1, 3).map((src, idx) => (
               <button key={idx + 1} onClick={() => open(idx + 1)} className="group relative aspect-[4/3] overflow-hidden" aria-label={`View photo ${idx + 2}`}>
                 <img src={src} alt={`${propertyName} ${idx + 2}`} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
@@ -90,18 +129,18 @@ export default function PhotoGallery({ images, propertyName }: Props) {
             ))}
           </div>
         ) : (
-          /* 4–5 images: big left + 2x2 right */
+          /* 4+ images: big left + 2x2 right, +N overlay on last */
           <div className="grid gap-1" style={{ gridTemplateColumns: '2fr 1fr 1fr', gridTemplateRows: 'auto auto' }}>
             <button onClick={() => open(0)} className="group relative overflow-hidden" style={{ gridRow: 'span 2' }} aria-label="View photo 1">
               <div className="relative h-full min-h-[360px] overflow-hidden">
-                <img src={gridImages[0]} alt={`${propertyName} 1`} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <img src={images[0]} alt={`${propertyName} 1`} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
               </div>
             </button>
-            {gridImages.slice(1).map((src, idx) => {
+            {images.slice(1, 5).map((src, idx) => {
               const globalIdx = idx + 1
-              const isLast = globalIdx === gridImages.length - 1
-              const showOverlay = isLast && remaining > 0
+              const isLast = globalIdx === 4
+              const showOverlay = isLast && images.length > 5
               return (
                 <button key={globalIdx} onClick={() => open(globalIdx)} className="group relative aspect-[4/3] overflow-hidden" aria-label={`View photo ${globalIdx + 1}`}>
                   <img src={src} alt={`${propertyName} ${globalIdx + 1}`} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
@@ -109,7 +148,7 @@ export default function PhotoGallery({ images, propertyName }: Props) {
                   {showOverlay && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black/50 transition group-hover:bg-black/60">
                       <div className="text-center">
-                        <span className="font-heading text-2xl font-bold text-white">+{remaining + 1}</span>
+                        <span className="font-heading text-2xl font-bold text-white">+{images.length - 4}</span>
                         <p className="mt-0.5 font-body text-xs font-semibold uppercase tracking-wide text-white/80">more</p>
                       </div>
                     </div>
@@ -127,14 +166,13 @@ export default function PhotoGallery({ images, propertyName }: Props) {
         </button>
       )}
 
-      {/* Lightbox */}
+      {/* ── Lightbox (shared) ── */}
       {lightboxIndex !== null && (
         <div
           className="fixed inset-0 z-50 bg-black/95"
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
         >
-          {/* Top bar */}
           <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-4 py-4">
             <span className="rounded-full bg-black/40 px-3 py-1.5 font-body text-xs font-semibold text-white">
               {lightboxIndex + 1} / {images.length}
@@ -150,7 +188,6 @@ export default function PhotoGallery({ images, propertyName }: Props) {
             </button>
           </div>
 
-          {/* Prev — full-height tap zone */}
           <button
             className="absolute left-0 top-0 z-10 flex h-full w-16 items-center justify-start pl-3 sm:w-24 sm:pl-6"
             onClick={prev}
@@ -164,7 +201,6 @@ export default function PhotoGallery({ images, propertyName }: Props) {
             </span>
           </button>
 
-          {/* Image */}
           <div className="flex h-full items-center justify-center px-16 sm:px-24" onClick={close}>
             <img
               src={images[lightboxIndex]}
@@ -175,7 +211,6 @@ export default function PhotoGallery({ images, propertyName }: Props) {
             />
           </div>
 
-          {/* Next */}
           <button
             className="absolute right-0 top-0 z-10 flex h-full w-16 items-center justify-end pr-3 sm:w-24 sm:pr-6"
             onClick={next}
@@ -189,7 +224,6 @@ export default function PhotoGallery({ images, propertyName }: Props) {
             </span>
           </button>
 
-          {/* Dot indicators */}
           {images.length <= 12 && (
             <div className="absolute bottom-5 left-0 right-0 flex justify-center gap-1.5">
               {images.map((_, i) => (
