@@ -45,14 +45,14 @@ export default async function PropertiesPage() {
         <div className="mx-auto max-w-6xl flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-between sm:text-left">
           <div>
             <h3 className="font-heading text-xl font-semibold text-[var(--text)]">Not sure which property is right for you?</h3>
-            <p className="mt-1 font-body text-sm text-[var(--muted)]">Reach out directly and Tyler will help you find the perfect fit.</p>
+            <p className="mt-1 font-body text-sm text-[var(--muted)]">Reach out directly and our team will help you find the perfect fit.</p>
           </div>
           <Link
             href="/contact"
             className="inline-flex shrink-0 min-h-11 items-center justify-center rounded-lg px-6 py-2.5 font-body text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
             style={{ backgroundColor: accent }}
           >
-            Contact Tyler
+            Contact Us
           </Link>
         </div>
       </section>

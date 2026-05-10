@@ -21,12 +21,12 @@ export default async function HomePage() {
   const howSteps = [
     { num: '01', title: content['how.steps.0.title'] ?? 'Browse', desc: content['how.steps.0.desc'] ?? 'Explore our curated Michigan properties and find the retreat that fits your group.' },
     { num: '02', title: content['how.steps.1.title'] ?? 'Request', desc: content['how.steps.1.desc'] ?? 'Submit a stay request with your dates, group size, and any questions.' },
-    { num: '03', title: content['how.steps.2.title'] ?? 'Confirmed', desc: content['how.steps.2.desc'] ?? 'Tyler personally reviews every request and confirms availability within 24 hours.' },
+    { num: '03', title: content['how.steps.2.title'] ?? 'Confirmed', desc: content['how.steps.2.desc'] ?? 'Our team reviews every request and confirms availability promptly.' },
     { num: '04', title: content['how.steps.3.title'] ?? 'Enjoy', desc: content['how.steps.3.desc'] ?? 'Show up, unpack, and enjoy every moment of your Michigan getaway.' },
   ]
 
   const aboutTitle = content['about.title'] ?? 'The Square K Promise'
-  const aboutBody  = content['about.body']  ?? 'Every Square K property is personally managed by Tyler &mdash; not a faceless platform. That means genuine care, fast responses, and a stay that actually lives up to the photos.'
+  const aboutBody  = content['about.body']  ?? 'Every Square K property is owner-operated &mdash; not a faceless platform. That means genuine care, fast responses, and a stay that actually lives up to the photos.'
 
   const ctaTitle  = content['cta.title']  ?? 'Ready to plan your Michigan escape?'
   const ctaButton = content['cta.button'] ?? 'Browse Properties'
@@ -94,7 +94,7 @@ export default async function HomePage() {
               href="/contact"
               className="inline-flex min-h-11 items-center justify-center rounded-lg border border-white/30 bg-white/10 px-6 py-2.5 font-body text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/20 sm:min-h-12 sm:px-7 sm:py-3"
             >
-              Contact Tyler
+              Contact Us
             </Link>
           </div>
         </div>
@@ -222,7 +222,7 @@ export default async function HomePage() {
                   <div className="mt-0.5 font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Properties</div>
                 </div>
                 <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-4">
-                  <div className="font-heading text-2xl font-bold" style={{ color: primary }}>24hr</div>
+                  <div className="font-heading text-2xl font-bold" style={{ color: primary }}>Fast</div>
                   <div className="mt-0.5 font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Response Time</div>
                 </div>
                 <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-4">
@@ -260,7 +260,7 @@ export default async function HomePage() {
             {ctaTitle}
           </h2>
           <p className="mt-4 font-body text-base text-white/75">
-            Browse all three retreats and request your dates. Tyler takes it from there.
+            Browse all three retreats and request your dates. Our team takes it from there.
           </p>
           <Link
             href="/properties"
@@ -338,3 +338,4 @@ export default async function HomePage() {
     </div>
   )
 }
+                            
