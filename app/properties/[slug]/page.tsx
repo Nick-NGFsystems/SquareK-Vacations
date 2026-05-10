@@ -110,10 +110,10 @@ export default async function PropertyPage({ params }: Props) {
 
       {/* Main content */}
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[3fr_2fr]">
 
           {/* Left col */}
-          <div className="lg:col-span-2 space-y-12">
+          <div className="space-y-12">
 
             {/* Gallery */}
             <div>
@@ -184,7 +184,7 @@ export default async function PropertyPage({ params }: Props) {
           </div>
 
           {/* Right col - booking form */}
-          <div id="booking-request" className="lg:col-span-1">
+          <div id="booking-request">
             <div className="sticky top-24">
               <BookingRequestForm
                 propertyName={property.name}
