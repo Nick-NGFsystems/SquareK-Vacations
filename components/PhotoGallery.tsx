@@ -9,37 +9,104 @@ interface Props {
 
 export default function PhotoGallery({ images, propertyName }: Props) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
-  const touchStartX = useRef<number | null>(null)
-  const touchStartY = useRef<number | null>(null)
+  const [zoom, setZoom]                   = useState(false)
 
-  const open = (i: number) => { setLightboxIndex(i); document.body.style.overflow = 'hidden' }
-  const close = useCallback(() => { setLightboxIndex(null); document.body.style.overflow = '' }, [])
-  const prev = useCallback(() => setLightboxIndex(i => (i !== null && i > 0 ? i - 1 : i)), [])
-  const next = useCallback(() => setLightboxIndex(i => (i !== null && i < images.length - 1 ? i + 1 : i)), [images.length])
+  // touch / swipe refs
+  const touchStartX    = useRef<number | null>(null)
+  const touchStartY    = useRef<number | null>(null)
+  const pinchStartDist = useRef<number | null>(null)
+  const lastTapTime    = useRef<number>(0)
 
+  // skim-bar auto-scroll
+  const skimBarRef = useRef<HTMLDivElement>(null)
+
+  // ── navigation helpers ────────────────────────────────────────────────────
+  const open = (i: number) => {
+    setLightboxIndex(i)
+    setZoom(false)
+    document.body.style.overflow = 'hidden'
+  }
+  const close = useCallback(() => {
+    setLightboxIndex(null)
+    setZoom(false)
+    document.body.style.overflow = ''
+  }, [])
+  const prev = useCallback(() =>
+    setLightboxIndex(i => (i !== null && i > 0 ? i - 1 : i)), [])
+  const next = useCallback(() =>
+    setLightboxIndex(i => (i !== null && i < images.length - 1 ? i + 1 : i)), [images.length])
+
+  // reset zoom on slide change
+  useEffect(() => { setZoom(false) }, [lightboxIndex])
+
+  // auto-scroll skim bar so active thumb is centred
+  useEffect(() => {
+    if (lightboxIndex === null || !skimBarRef.current) return
+    const bar   = skimBarRef.current
+    const thumb = bar.children[lightboxIndex] as HTMLElement
+    if (!thumb) return
+    bar.scrollTo({
+      left: thumb.offsetLeft - bar.clientWidth / 2 + thumb.offsetWidth / 2,
+      behavior: 'smooth',
+    })
+  }, [lightboxIndex])
+
+  // keyboard
   useEffect(() => {
     if (lightboxIndex === null) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') prev()
+      if (e.key === 'ArrowLeft')  prev()
       else if (e.key === 'ArrowRight') next()
-      else if (e.key === 'Escape') close()
+      else if (e.key === 'Escape')     close()
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [lightboxIndex, prev, next, close])
 
-  function onTouchStart(e: React.TouchEvent) {
-    touchStartX.current = e.touches[0].clientX
-    touchStartY.current = e.touches[0].clientY
+  // ── touch handlers ────────────────────────────────────────────────────────
+  function onLbTouchStart(e: React.TouchEvent) {
+    if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX
+      const dy = e.touches[0].clientY - e.touches[1].clientY
+      pinchStartDist.current = Math.sqrt(dx * dx + dy * dy)
+    } else {
+      touchStartX.current = e.touches[0].clientX
+      touchStartY.current = e.touches[0].clientY
+    }
   }
-  function onTouchEnd(e: React.TouchEvent) {
+  function onLbTouchMove(e: React.TouchEvent) {
+    if (e.touches.length === 2 && pinchStartDist.current !== null) {
+      const dx   = e.touches[0].clientX - e.touches[1].clientX
+      const dy   = e.touches[0].clientY - e.touches[1].clientY
+      const dist = Math.sqrt(dx * dx + dy * dy)
+      if (dist / pinchStartDist.current > 1.25) setZoom(true)
+      if (dist / pinchStartDist.current < 0.75) setZoom(false)
+    }
+  }
+  function onLbTouchEnd(e: React.TouchEvent) {
+    if (pinchStartDist.current !== null) {
+      pinchStartDist.current = null
+      return
+    }
     if (touchStartX.current === null || touchStartY.current === null) return
     const dx = touchStartX.current - e.changedTouches[0].clientX
     const dy = touchStartY.current - e.changedTouches[0].clientY
-    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) dx > 0 ? next() : prev()
-    touchStartX.current = null; touchStartY.current = null
+    // only swipe-navigate when not zoomed
+    if (!zoom && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40)
+      dx > 0 ? next() : prev()
+    touchStartX.current = null
+    touchStartY.current = null
   }
 
+  // double-tap image toggles zoom
+  function onImgTap(e: React.MouseEvent) {
+    e.stopPropagation()
+    const now = Date.now()
+    if (now - lastTapTime.current < 300) setZoom(z => !z)
+    lastTapTime.current = now
+  }
+
+  // ── empty state ───────────────────────────────────────────────────────────
   if (images.length === 0) {
     return (
       <div className="flex aspect-video items-center justify-center rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface)]">
@@ -48,11 +115,16 @@ export default function PhotoGallery({ images, propertyName }: Props) {
     )
   }
 
+  // ── gallery grid ──────────────────────────────────────────────────────────
   return (
     <>
-      {/* ── Mobile layout (hidden sm+) ── */}
+      {/* Mobile layout */}
       <div className="sm:hidden">
-        <button onClick={() => open(0)} className="group relative block w-full overflow-hidden rounded-xl aspect-[4/3]" aria-label="View photos">
+        <button
+          onClick={() => open(0)}
+          className="group relative block w-full overflow-hidden rounded-xl aspect-[4/3]"
+          aria-label="View photos"
+        >
           <img src={images[0]} alt={propertyName} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
           {images.length > 1 && (
             <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 backdrop-blur-sm">
@@ -66,7 +138,12 @@ export default function PhotoGallery({ images, propertyName }: Props) {
         {images.length > 1 && (
           <div className="mt-2 flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
             {images.slice(1).map((src, idx) => (
-              <button key={idx + 1} onClick={() => open(idx + 1)} className="relative flex-none w-20 aspect-square overflow-hidden rounded-lg" aria-label={`View photo ${idx + 2}`}>
+              <button
+                key={idx + 1}
+                onClick={() => open(idx + 1)}
+                className="relative flex-none w-20 aspect-square overflow-hidden rounded-lg"
+                aria-label={`View photo ${idx + 2}`}
+              >
                 <img src={src} alt={`${propertyName} ${idx + 2}`} className="h-full w-full object-cover" />
               </button>
             ))}
@@ -74,7 +151,7 @@ export default function PhotoGallery({ images, propertyName }: Props) {
         )}
       </div>
 
-      {/* ── Desktop layout (hidden mobile) ── */}
+      {/* Desktop layout */}
       <div className="hidden sm:block overflow-hidden rounded-2xl">
         {images.length === 1 ? (
           <button onClick={() => open(0)} className="group relative block w-full aspect-[16/9] overflow-hidden" aria-label="View photo">
@@ -126,85 +203,124 @@ export default function PhotoGallery({ images, propertyName }: Props) {
       </div>
 
       {images.length > 1 && (
-        <button onClick={() => open(0)} className="mt-3 font-body text-xs font-semibold text-[var(--muted)] underline underline-offset-2 hover:text-[var(--text)] transition-colors">
+        <button
+          onClick={() => open(0)}
+          className="mt-3 font-body text-xs font-semibold text-[var(--muted)] underline underline-offset-2 hover:text-[var(--text)] transition-colors"
+        >
           View all {images.length} photos
         </button>
       )}
 
-      {/* ── Lightbox ── */}
+      {/* ── Lightbox ─────────────────────────────────────────────────────── */}
       {lightboxIndex !== null && (
-        /* Clicking the dark backdrop closes the lightbox */
         <div
           className="fixed inset-0 z-50 flex flex-col bg-black/95"
           onClick={close}
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
+          onTouchStart={onLbTouchStart}
+          onTouchMove={onLbTouchMove}
+          onTouchEnd={onLbTouchEnd}
         >
-          {/* Top bar — stop propagation so clicks here don't close */}
+          {/* Top bar */}
           <div
-            className="flex shrink-0 items-center justify-between px-5 py-4"
+            className="flex shrink-0 items-center justify-between px-4 py-3"
             onClick={e => e.stopPropagation()}
           >
             <span className="rounded-full bg-white/10 px-3 py-1.5 font-body text-xs font-semibold text-white tabular-nums">
               {lightboxIndex + 1} / {images.length}
             </span>
-            <button onClick={close} aria-label="Close" className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/25">
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+            <div className="flex items-center gap-2">
+              {/* Zoom toggle */}
+              <button
+                onClick={() => setZoom(z => !z)}
+                aria-label={zoom ? 'Zoom out' : 'Zoom in'}
+                title={zoom ? 'Zoom out (or double-tap image)' : 'Zoom in (or double-tap image)'}
+                className={`flex h-10 w-10 items-center justify-center rounded-full text-white transition ${zoom ? 'bg-white/30' : 'bg-white/10 hover:bg-white/25'}`}
+              >
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  {zoom
+                    ? <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM13.5 10.5h-6" />
+                    : <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6" />
+                  }
+                </svg>
+              </button>
+              {/* Close */}
+              <button
+                onClick={close}
+                aria-label="Close"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/25"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
 
-          {/* Image area */}
-          <div className="relative flex min-h-0 flex-1 items-center justify-center">
-
-            {/* Image — stop propagation so clicking the image itself doesn't close */}
+          {/* Image — fills all available space */}
+          <div
+            className="flex min-h-0 flex-1 items-center justify-center overflow-hidden"
+            onClick={close}
+          >
             <img
               src={images[lightboxIndex]}
               alt={`${propertyName} - photo ${lightboxIndex + 1}`}
-              className="max-h-[80vh] max-w-[calc(100%-8rem)] rounded-xl object-contain shadow-2xl sm:max-w-[calc(100%-10rem)]"
+              className={`max-h-full max-w-full object-contain shadow-2xl transition-transform duration-200 select-none ${zoom ? 'scale-[2] cursor-zoom-out' : 'rounded-lg cursor-zoom-in'}`}
               draggable={false}
-              onClick={e => e.stopPropagation()}
+              onClick={onImgTap}
             />
+          </div>
 
-            {/* Prev — overlaid left, vertically centred, close to the image */}
+          {/* Bottom nav: prev | skim bar | next */}
+          <div
+            className="flex shrink-0 items-center gap-2 px-3 pb-4 pt-3"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Prev */}
             <button
-              onClick={e => { e.stopPropagation(); prev() }}
+              onClick={prev}
               disabled={lightboxIndex === 0}
               aria-label="Previous photo"
-              className="absolute left-3 top-1/2 z-10 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-white shadow-lg backdrop-blur-sm transition hover:bg-white/30 disabled:opacity-20 disabled:cursor-default sm:left-5"
+              className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/25 disabled:opacity-20 disabled:cursor-default"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
               </svg>
             </button>
 
-            {/* Next — overlaid right */}
+            {/* Skim bar — scrollable thumbnail strip */}
+            <div
+              ref={skimBarRef}
+              className="flex flex-1 gap-1.5 overflow-x-auto py-1"
+              style={{ scrollbarWidth: 'none' }}
+            >
+              {images.map((src, i) => (
+                <button
+                  key={i}
+                  onClick={() => setLightboxIndex(i)}
+                  aria-label={`Go to photo ${i + 1}`}
+                  className={`relative flex-none h-12 w-[4.5rem] overflow-hidden rounded-md transition-all duration-150 ${
+                    i === lightboxIndex
+                      ? 'opacity-100 ring-2 ring-white ring-offset-1 ring-offset-black/50 scale-105'
+                      : 'opacity-40 hover:opacity-70'
+                  }`}
+                >
+                  <img src={src} alt="" className="h-full w-full object-cover" draggable={false} />
+                </button>
+              ))}
+            </div>
+
+            {/* Next */}
             <button
-              onClick={e => { e.stopPropagation(); next() }}
+              onClick={next}
               disabled={lightboxIndex === images.length - 1}
               aria-label="Next photo"
-              className="absolute right-3 top-1/2 z-10 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-white shadow-lg backdrop-blur-sm transition hover:bg-white/30 disabled:opacity-20 disabled:cursor-default sm:right-5"
+              className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/25 disabled:opacity-20 disabled:cursor-default"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
               </svg>
             </button>
           </div>
-
-          {/* Dot indicators — stop propagation */}
-          {images.length <= 12 && (
-            <div
-              className="flex shrink-0 justify-center gap-1.5 py-5"
-              onClick={e => e.stopPropagation()}
-            >
-              {images.map((_, i) => (
-                <button key={i} onClick={() => setLightboxIndex(i)} aria-label={`Photo ${i + 1}`}
-                  className={`h-1.5 rounded-full transition-all ${i === lightboxIndex ? 'w-6 bg-white' : 'w-1.5 bg-white/35 hover:bg-white/60'}`}
-                />
-              ))}
-            </div>
-          )}
         </div>
       )}
     </>
