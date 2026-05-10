@@ -330,4 +330,13 @@ export default async function HomePage() {
               data-ngf-label="Copyright Text"
               data-ngf-type="text"
               data-ngf-section="Footer"
-              className="font-
+              className="font-body text-xs text-[var(--muted)]"
+            >
+              {copyright}
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  )
+}
