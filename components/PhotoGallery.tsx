@@ -133,66 +133,71 @@ export default function PhotoGallery({ images, propertyName }: Props) {
 
       {/* ── Lightbox ── */}
       {lightboxIndex !== null && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-black/95" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-
-          {/* Top bar */}
-          <div className="flex shrink-0 items-center justify-between px-5 py-4">
+        /* Clicking the dark backdrop closes the lightbox */
+        <div
+          className="fixed inset-0 z-50 flex flex-col bg-black/95"
+          onClick={close}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+        >
+          {/* Top bar — stop propagation so clicks here don't close */}
+          <div
+            className="flex shrink-0 items-center justify-between px-5 py-4"
+            onClick={e => e.stopPropagation()}
+          >
             <span className="rounded-full bg-white/10 px-3 py-1.5 font-body text-xs font-semibold text-white tabular-nums">
               {lightboxIndex + 1} / {images.length}
             </span>
-            <button onClick={close} aria-label="Close" className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/25">
+            <button onClick={close} aria-label="Close" className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/25">
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
 
-          {/* Image row */}
-          <div className="relative flex min-h-0 flex-1 items-center">
+          {/* Image area */}
+          <div className="relative flex min-h-0 flex-1 items-center justify-center">
 
-            {/* Mobile: full-height tap zone. Desktop: inline side button */}
-            <div className="absolute left-0 top-0 z-10 flex h-full w-14 items-center justify-center sm:relative sm:h-auto sm:w-auto sm:shrink-0 sm:px-6">
-              <button
-                onClick={prev}
-                disabled={lightboxIndex === 0}
-                aria-label="Previous photo"
-                className={`flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/25 disabled:opacity-25 disabled:cursor-default`}
-              >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                </svg>
-              </button>
-            </div>
+            {/* Image — stop propagation so clicking the image itself doesn't close */}
+            <img
+              src={images[lightboxIndex]}
+              alt={`${propertyName} - photo ${lightboxIndex + 1}`}
+              className="max-h-[80vh] max-w-[calc(100%-8rem)] rounded-xl object-contain shadow-2xl sm:max-w-[calc(100%-10rem)]"
+              draggable={false}
+              onClick={e => e.stopPropagation()}
+            />
 
-            {/* Image — click dark area to close */}
-            <div className="flex flex-1 items-center justify-center overflow-hidden px-14 sm:px-0" onClick={close}>
-              <img
-                src={images[lightboxIndex]}
-                alt={`${propertyName} - photo ${lightboxIndex + 1}`}
-                className="max-h-[80vh] max-w-full rounded-xl object-contain shadow-2xl"
-                draggable={false}
-                onClick={e => e.stopPropagation()}
-              />
-            </div>
+            {/* Prev — overlaid left, vertically centred, close to the image */}
+            <button
+              onClick={e => { e.stopPropagation(); prev() }}
+              disabled={lightboxIndex === 0}
+              aria-label="Previous photo"
+              className="absolute left-3 top-1/2 z-10 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-white shadow-lg backdrop-blur-sm transition hover:bg-white/30 disabled:opacity-20 disabled:cursor-default sm:left-5"
+            >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+            </button>
 
-            {/* Next */}
-            <div className="absolute right-0 top-0 z-10 flex h-full w-14 items-center justify-center sm:relative sm:h-auto sm:w-auto sm:shrink-0 sm:px-6">
-              <button
-                onClick={next}
-                disabled={lightboxIndex === images.length - 1}
-                aria-label="Next photo"
-                className={`flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/25 disabled:opacity-25 disabled:cursor-default`}
-              >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                </svg>
-              </button>
-            </div>
+            {/* Next — overlaid right */}
+            <button
+              onClick={e => { e.stopPropagation(); next() }}
+              disabled={lightboxIndex === images.length - 1}
+              aria-label="Next photo"
+              className="absolute right-3 top-1/2 z-10 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-white shadow-lg backdrop-blur-sm transition hover:bg-white/30 disabled:opacity-20 disabled:cursor-default sm:right-5"
+            >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </button>
           </div>
 
-          {/* Dot indicators */}
+          {/* Dot indicators — stop propagation */}
           {images.length <= 12 && (
-            <div className="flex shrink-0 justify-center gap-1.5 py-5">
+            <div
+              className="flex shrink-0 justify-center gap-1.5 py-5"
+              onClick={e => e.stopPropagation()}
+            >
               {images.map((_, i) => (
                 <button key={i} onClick={() => setLightboxIndex(i)} aria-label={`Photo ${i + 1}`}
                   className={`h-1.5 rounded-full transition-all ${i === lightboxIndex ? 'w-6 bg-white' : 'w-1.5 bg-white/35 hover:bg-white/60'}`}
