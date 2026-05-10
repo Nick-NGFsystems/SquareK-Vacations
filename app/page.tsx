@@ -14,7 +14,7 @@ export default async function HomePage() {
 
   const heroEyebrow  = content['hero.eyebrow']  ?? 'Michigan Vacation Rentals'
   const heroHeadline = content['hero.headline'] ?? "Michigan's Premier Vacation Retreats"
-  const heroSubhead  = content['hero.subhead']  ?? 'Lakeshore luxury and up-north escapes &mdash; curated by Square K for an unforgettable stay.'
+  const heroSubhead  = content['hero.subhead']  ?? 'Lakeshore luxury and up-north escapes — curated by Square K for an unforgettable stay.'
   const heroCta      = content['hero.cta']      ?? 'Browse Properties'
 
   const howTitle = content['how.title'] ?? 'How It Works'
@@ -26,12 +26,12 @@ export default async function HomePage() {
   ]
 
   const aboutTitle = content['about.title'] ?? 'The Square K Promise'
-  const aboutBody  = content['about.body']  ?? 'Every Square K property is owner-operated &mdash; not a faceless platform. That means genuine care, fast responses, and a stay that actually lives up to the photos.'
+  const aboutBody  = content['about.body']  ?? 'Every Square K property is owner-operated — not a faceless platform. That means genuine care, fast responses, and a stay that actually lives up to the photos.'
 
   const ctaTitle  = content['cta.title']  ?? 'Ready to plan your Michigan escape?'
   const ctaButton = content['cta.button'] ?? 'Browse Properties'
 
-  const copyright = content['footer.copyright'] ?? `&copy; ${new Date().getFullYear()} Square K LLC. All rights reserved.`
+  const copyright = content['footer.copyright'] ?? `© ${new Date().getFullYear()} Square K LLC. All rights reserved.`
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
