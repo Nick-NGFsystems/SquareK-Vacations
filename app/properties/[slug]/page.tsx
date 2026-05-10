@@ -38,52 +38,68 @@ export default async function PropertyPage({ params }: Props) {
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <SiteHeader primaryColor={primary} accentColor={accent} />
 
+      {/* Breadcrumb nav — clear, always-visible back link */}
+      <div className="border-b border-[var(--border)] bg-white px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl flex items-center justify-between gap-4">
+          <Link
+            href="/properties"
+            className="inline-flex items-center gap-2 rounded-lg font-body text-sm font-semibold text-[var(--muted)] transition-colors hover:text-[var(--text)]"
+          >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            All Properties
+          </Link>
+          <a
+            href="#booking-request"
+            className="inline-flex min-h-9 items-center justify-center rounded-lg px-4 py-1.5 font-body text-sm font-semibold text-white shadow-sm transition hover:opacity-90 sm:hidden"
+            style={{ backgroundColor: accent }}
+          >
+            Request a Stay
+          </a>
+        </div>
+      </div>
+
       {/* Hero */}
-      <section className="relative h-[55vh] overflow-hidden bg-[var(--text)]">
+      <section className="relative h-[50vh] overflow-hidden bg-[var(--text)] sm:h-[60vh]">
         <img
           src={property.heroImage}
           alt={property.name}
-          className="h-full w-full object-cover opacity-70"
+          className="h-full w-full object-cover opacity-75"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/15 to-transparent" />
         <div className="absolute inset-0 flex items-end">
           <div className="mx-auto w-full max-w-6xl px-4 pb-10 sm:px-6 lg:px-8">
-            <Link
-              href="/properties"
-              className="mb-4 inline-flex items-center gap-1 font-body text-xs font-semibold uppercase tracking-wide text-white/70 hover:text-white transition-colors"
-            >
-              &larr; All Properties
-            </Link>
             <div className="font-body text-sm font-semibold text-white/70">{property.city}, {property.state}</div>
             <h1 className="mt-1 font-heading text-3xl font-bold text-white sm:text-4xl lg:text-5xl">{property.name}</h1>
-            <p className="mt-2 font-body text-lg text-white/80">{property.tagline}</p>
+            <p className="mt-2 font-body text-base text-white/80 sm:text-lg">{property.tagline}</p>
           </div>
         </div>
       </section>
 
       {/* Quick stats bar */}
       <div className="border-b border-[var(--border)] bg-white">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-6 px-4 py-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-5 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 font-body text-sm text-[var(--muted)]">
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
+            <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
             <span><strong className="text-[var(--text)]">{property.bedrooms}</strong> Bedrooms</span>
           </div>
           <div className="flex items-center gap-2 font-body text-sm text-[var(--muted)]">
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" /></svg>
+            <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" /></svg>
             <span><strong className="text-[var(--text)]">{property.bathrooms}</strong> Bathrooms</span>
           </div>
           <div className="flex items-center gap-2 font-body text-sm text-[var(--muted)]">
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
+            <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg>
             <span>Sleeps <strong className="text-[var(--text)]">{property.maxGuests}</strong></span>
           </div>
-          <div className="hidden items-center gap-2 font-body text-sm text-[var(--muted)] sm:flex">
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
+          <div className="hidden items-center gap-2 font-body text-sm text-[var(--muted)] md:flex">
+            <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
             <span>{property.address}, {property.city}, {property.state} {property.zipCode}</span>
           </div>
-          <div className="ml-auto w-full sm:w-auto">
+          <div className="ml-auto hidden sm:block">
             <a
               href="#booking-request"
-              className="inline-flex w-full min-h-10 items-center justify-center rounded-lg px-5 py-2 font-body text-sm font-semibold text-white shadow-sm transition hover:opacity-90 sm:w-auto"
+              className="inline-flex min-h-10 items-center justify-center rounded-lg px-5 py-2 font-body text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
               style={{ backgroundColor: accent }}
             >
               Request a Stay
@@ -93,7 +109,7 @@ export default async function PropertyPage({ params }: Props) {
       </div>
 
       {/* Main content */}
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
 
           {/* Left col */}
@@ -101,7 +117,7 @@ export default async function PropertyPage({ params }: Props) {
 
             {/* Gallery */}
             <div>
-              <h2 className="mb-5 font-heading text-2xl font-semibold text-[var(--text)]">Gallery</h2>
+              <h2 className="mb-4 font-heading text-2xl font-semibold text-[var(--text)]">Gallery</h2>
               <PhotoGallery images={property.images} propertyName={property.name} />
               {property.builderCredit && (
                 <p className="mt-3 font-body text-xs text-[var(--muted)]">
@@ -112,7 +128,7 @@ export default async function PropertyPage({ params }: Props) {
 
             {/* About */}
             <div>
-              <h2 className="mb-3 font-heading text-2xl font-semibold text-[var(--text)]">About This Property</h2>
+              <h2 className="mb-4 font-heading text-2xl font-semibold text-[var(--text)]">About This Property</h2>
               <div className="space-y-4 font-body text-base leading-relaxed text-[var(--muted)]">
                 {property.longDescription.split('\n\n').map((para, i) => (
                   <p key={i}>{para}</p>
@@ -129,7 +145,7 @@ export default async function PropertyPage({ params }: Props) {
                     key={h.label}
                     className="flex items-center gap-3 rounded-xl border border-[var(--border)] bg-white p-4"
                   >
-                    <span className="text-2xl">{h.icon}</span>
+                    <span className="text-xl leading-none">{h.icon}</span>
                     <span className="font-body text-sm font-semibold text-[var(--text)]">{h.label}</span>
                   </div>
                 ))}
@@ -155,7 +171,7 @@ export default async function PropertyPage({ params }: Props) {
 
             {/* Availability */}
             <div>
-              <h2 className="mb-2 font-heading text-2xl font-semibold text-[var(--text)]">Availability</h2>
+              <h2 className="mb-3 font-heading text-2xl font-semibold text-[var(--text)]">Availability</h2>
               <div className="rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm">
                 <AvailabilityCalendar
                   propertySlug={property.slug}
@@ -183,6 +199,13 @@ export default async function PropertyPage({ params }: Props) {
                 <a href="mailto:Squarek.llc.mi@gmail.com" className="block font-body text-xs text-[var(--muted)] hover:underline">
                   Squarek.llc.mi@gmail.com
                 </a>
+              </div>
+
+              {/* Back link for desktop sidebar */}
+              <div className="mt-4 text-center">
+                <Link href="/properties" className="font-body text-xs text-[var(--muted)] hover:text-[var(--text)] transition-colors hover:underline">
+                  &larr; View all properties
+                </Link>
               </div>
             </div>
           </div>

@@ -5,12 +5,6 @@ import { Property } from '@/types'
  *
  * FUTURE: This static file will be replaced by a database fetch (Neon/Prisma)
  * once the backend is wired up through the NGF client portal.
- *
- * AVAILABILITY: Each property has an `icalUrl` field. Once Tyler provides the
- * iCal export URLs from Airbnb/VRBO, set them here and the AvailabilityCalendar
- * component will parse real availability data.
- * Airbnb iCal export: Listing &rarr; Pricing & Availability &rarr; Export Calendar
- * VRBO iCal export: Listing &rarr; Calendar &rarr; Export
  */
 export const properties: Property[] = [
   {
@@ -32,12 +26,12 @@ Inside, you'll find an open-concept great room with a chef's kitchen, a dining a
 
 Outside, the property extends to a private dock where guests can swim, fish, or simply sit with a coffee as the sun rises over the water. Evenings are best spent around the fire pit as the lake reflects the last light of day.`,
     highlights: [
-      { icon: '?', label: 'Lake Access' },
-      { icon: '?', label: 'Private Dock' },
-      { icon: '?', label: 'Fire Pit' },
-      { icon: '?', label: "Chef's Kitchen" },
-      { icon: '?', label: '5 Bedrooms' },
-      { icon: '?', label: 'Sleeps 12' },
+      { icon: '\u{1F30A}', label: 'Lake Access' },
+      { icon: '\u26F5', label: 'Private Dock' },
+      { icon: '\u{1F525}', label: 'Fire Pit' },
+      { icon: '\u{1F373}', label: "Chef's Kitchen" },
+      { icon: '\u{1F6CF}', label: '5 Bedrooms' },
+      { icon: '\u{1F465}', label: 'Sleeps 12' },
     ],
     amenities: [
       'Lake Access & Private Dock',
@@ -53,19 +47,19 @@ Outside, the property extends to a private dock where guests can swim, fish, or 
       'Pet Friendly (inquire)',
       'No Smoking Property',
     ],
-    // TODO: Replace placeholder images with actual Lakeshore Grand Retreat photos
+    // TODO: Replace with actual Lakeshore Grand Retreat photos
     // Photos available at: https://listings.nextdoorphotos.com/public/photos/203583441
     images: [
       'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&q=80',
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80',
-      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80',
-      'https://images.unsplash.com/photo-1555396273-122fb8ede0b3?w=1200&q=80',
-      'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80',
-      'https://images.unsplash.com/photo-1560185127-6a4f4e3b7463?w=1200&q=80',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=80',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80',
+      'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&q=80',
+      'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=1200&q=80',
+      'https://images.unsplash.com/photo-1566041510639-8d95a2490bfb?w=1200&q=80',
     ],
     heroImage: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=80',
     status: 'available',
-    icalUrl: null, // TODO: Set to Airbnb/VRBO iCal export URL when Tyler provides it
+    icalUrl: null,
     featured: true,
   },
   {
@@ -89,12 +83,12 @@ Inside, the open floor plan is bathed in natural light through oversized windows
 
 Blueberry Grand is the ideal venue for family reunions, milestone celebrations, and corporate retreats alike.`,
     highlights: [
-      { icon: '?', label: 'Private Pool' },
-      { icon: '?', label: 'Barrel Sauna' },
-      { icon: '?', label: 'Pool House' },
-      { icon: '?', label: 'Fire Pit' },
-      { icon: '?', label: '6 Bedrooms' },
-      { icon: '?', label: 'Sleeps 14' },
+      { icon: '\u{1F3CA}', label: 'Private Pool' },
+      { icon: '\u{1F9D6}', label: 'Barrel Sauna' },
+      { icon: '\u{1F3E1}', label: 'Pool House' },
+      { icon: '\u{1F525}', label: 'Fire Pit' },
+      { icon: '\u{1F6CF}', label: '6 Bedrooms' },
+      { icon: '\u{1F465}', label: 'Sleeps 14' },
     ],
     amenities: [
       'Private Heated Pool',
@@ -110,19 +104,18 @@ Blueberry Grand is the ideal venue for family reunions, milestone celebrations, 
       'Washer & Dryer',
       'Ample Parking',
     ],
-    // TODO: Replace placeholder images with final photography of Blueberry Grand Retreat
-    // Renderings provided by Tyler - final photos to be taken upon completion
+    // TODO: Replace with final photography of Blueberry Grand Retreat
     images: [
       'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1200&q=80',
-      'https://images.unsplash.com/photo-1629079447777-1e605162dc8d?w=1200&q=80',
-      'https://images.unsplash.com/photo-1560185008-b033106af5c3?w=1200&q=80',
-      'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80',
+      'https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?w=1200&q=80',
       'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80',
-      'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&q=80',
+      'https://images.unsplash.com/photo-1629079447777-1e605162dc8d?w=1200&q=80',
+      'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1200&q=80',
+      'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=1200&q=80',
     ],
     heroImage: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1920&q=80',
     status: 'available',
-    icalUrl: null, // TODO: Set to Airbnb/VRBO iCal export URL when Tyler provides it
+    icalUrl: null,
     featured: true,
     builderCredit: 'Northcove Builders',
   },
@@ -145,12 +138,12 @@ The property offers direct lake access with a private pier, perfect for swimming
 
 Mornings start with mist rising off the lake and end with the kind of sunset that makes you forget to check your phone. Bellaire's downtown - with Shorts Brewing Company, local shops, and restaurants - is just minutes away.`,
     highlights: [
-      { icon: '?', label: 'Clam Lake Access' },
-      { icon: '?', label: 'Private Pier' },
-      { icon: '?', label: 'Fire Pit' },
-      { icon: '?', label: 'Bellaire, MI' },
-      { icon: '?', label: '4 Bedrooms' },
-      { icon: '?', label: 'Sleeps 10' },
+      { icon: '\u{1F3DE}', label: 'Clam Lake Access' },
+      { icon: '\u{1F6A4}', label: 'Private Pier' },
+      { icon: '\u{1F525}', label: 'Fire Pit' },
+      { icon: '\u{1F6F6}', label: 'Kayaks Included' },
+      { icon: '\u{1F6CF}', label: '4 Bedrooms' },
+      { icon: '\u{1F465}', label: 'Sleeps 10' },
     ],
     amenities: [
       'Clam Lake Access & Private Pier',
@@ -165,16 +158,17 @@ Mornings start with mist rising off the lake and end with the kind of sunset tha
       'Washer & Dryer',
       'Ample Parking',
     ],
-    // TODO: Photos coming soon - use stock images until Tyler provides property photos
+    // TODO: Replace with actual Clam Lake Grand Retreat photos
     images: [
       'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&q=80',
+      'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1200&q=80',
       'https://images.unsplash.com/photo-1475275083424-b4ff81625b60?w=1200&q=80',
       'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80',
-      'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80',
+      'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&q=80',
     ],
     heroImage: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1920&q=80',
     status: 'available',
-    icalUrl: null, // TODO: Set to Airbnb/VRBO iCal export URL when Tyler provides it
+    icalUrl: null,
   },
 ]
 
