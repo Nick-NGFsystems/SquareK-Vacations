@@ -66,7 +66,7 @@ Outside, the property extends to a private dock where guests can swim, fish, or 
     maxGuests: 14,
     description:
       'A custom-built architectural masterpiece set on rolling Michigan hills. Blueberry Grand features a private pool, barrel sauna, pool house, and fire pit — everything you need for the perfect group escape.',
-    longDescription: `Blueberry Grand Retreat is a brand-new, custom-built luxury home in Fennville, Michigan — crafted by Northcove Builders to an exceptionally high standard. From the striking three-story board-and-batten exterior to the designer interior finishes, every detail has been carefully considered.
+    longDescription: `Blueberry Grand Retreat is a brand-new, custom-built luxury home in Fennville, Michigan — designed to an exceptionally high standard. From the striking three-story board-and-batten exterior to the designer interior finishes, every detail has been carefully considered.
 
 The centerpiece of the outdoor space is a sparkling private pool, flanked by a full-sized pool house with a covered patio and outdoor seating. A Norwegian barrel sauna sits just steps away for post-swim relaxation. As the evening sets in, gather around the elevated fire pit area with Adirondack seating and take in the quiet Michigan countryside.
 
@@ -100,7 +100,6 @@ Blueberry Grand is the ideal venue for family reunions, milestone celebrations, 
     status: 'available',
     icalUrl: null,
     featured: true,
-    builderCredit: 'Northcove Builders',
   },
   {
     slug: 'clam-lake-grand-retreat',

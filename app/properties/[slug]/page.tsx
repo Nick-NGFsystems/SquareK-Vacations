@@ -121,11 +121,7 @@ export default async function PropertyPage({ params }: Props) {
             <div>
               <h2 className="mb-4 font-heading text-2xl font-semibold text-[var(--text)]">Gallery</h2>
               <PhotoGallery images={property.images} propertyName={property.name} />
-              {property.builderCredit && (
-                <p className="mt-3 font-body text-xs text-[var(--muted)]">
-                  Renderings provided by <span className="font-semibold">{property.builderCredit}</span>. Final photography coming soon.
-                </p>
-              )}
+
             </div>
 
             {/* About */}

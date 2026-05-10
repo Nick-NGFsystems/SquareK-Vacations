@@ -19,7 +19,6 @@ export interface Property {
   /** iCal feed URL from Airbnb/VRBO. Set when Tyler provides it - used to power the availability calendar. */
   icalUrl: string | null
   featured?: boolean
-  builderCredit?: string
 }
 
 export interface BookingRequest {
