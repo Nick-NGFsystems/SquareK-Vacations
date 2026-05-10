@@ -38,7 +38,7 @@ export default async function PropertyPage({ params }: Props) {
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <SiteHeader primaryColor={primary} accentColor={accent} />
 
-      {/* Breadcrumb nav — clear, always-visible back link */}
+      {/* Breadcrumb nav */}
       <div className="border-b border-[var(--border)] bg-white px-4 py-3 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl flex items-center justify-between gap-4">
           <Link
@@ -61,12 +61,14 @@ export default async function PropertyPage({ params }: Props) {
       </div>
 
       {/* Hero */}
-      <section className="relative h-[50vh] overflow-hidden bg-[var(--text)] sm:h-[60vh]">
-        <img
-          src={property.heroImage}
-          alt={property.name}
-          className="h-full w-full object-cover opacity-75"
-        />
+      <section className="relative h-[50vh] overflow-hidden sm:h-[60vh]" style={{ backgroundColor: primary }}>
+        {property.heroImage && (
+          <img
+            src={property.heroImage}
+            alt={property.name}
+            className="h-full w-full object-cover opacity-75"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/15 to-transparent" />
         <div className="absolute inset-0 flex items-end">
           <div className="mx-auto w-full max-w-6xl px-4 pb-10 sm:px-6 lg:px-8">
@@ -201,7 +203,6 @@ export default async function PropertyPage({ params }: Props) {
                 </a>
               </div>
 
-              {/* Back link for desktop sidebar */}
               <div className="mt-4 text-center">
                 <Link href="/properties" className="font-body text-xs text-[var(--muted)] hover:text-[var(--text)] transition-colors hover:underline">
                   &larr; View all properties

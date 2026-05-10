@@ -43,11 +43,7 @@ export default async function HomePage() {
         data-ngf-section="Hero"
         className="relative flex min-h-[60vh] items-end overflow-hidden bg-[var(--text)] sm:min-h-[85vh]"
       >
-        <img
-          src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=80"
-          alt="Square K Vacation Rental - Michigan lake house"
-          className="absolute inset-0 h-full w-full object-cover object-[center_35%] opacity-65"
-        />
+
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
 
         <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-10 pt-16 sm:pb-20 sm:pt-32 sm:px-6 lg:px-8">
@@ -231,12 +227,11 @@ export default async function HomePage() {
                 </div>
               </div>
             </div>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
-              <img
-                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80"
-                alt="Michigan lakefront"
-                className="h-full w-full object-cover"
-              />
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--surface)] to-[var(--border)] flex flex-col items-center justify-center gap-3">
+              <svg className="h-12 w-12 text-[var(--border)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 21l6.75-6.75 1.5 1.5M21 21V8.25A2.25 2.25 0 0018.75 6h-13.5A2.25 2.25 0 003 8.25V21m18 0H3" />
+              </svg>
+              <span className="font-body text-xs font-semibold uppercase tracking-widest text-[var(--muted)]">Photos Coming Soon</span>
             </div>
           </div>
         </div>
