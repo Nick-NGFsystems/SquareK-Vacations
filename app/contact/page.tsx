@@ -13,18 +13,43 @@ export default async function ContactPage() {
   const primary = content['brand.primaryColor'] ?? '#4a6741'
   const accent  = content['brand.accentColor']  ?? '#9b8060'
 
+  const pageEyebrow  = content['contact.eyebrow']  ?? 'Get In Touch'
+  const pageTitle    = content['contact.title']    ?? 'Contact Us'
+  const pageDesc     = content['contact.desc']     ?? "Have questions about a property? Ready to plan your stay? We're happy to help."
+  const directTitle  = content['contact.direct.title']   ?? 'Reach Us Directly'
+  const directBody   = content['contact.direct.body']    ?? "Square K is owner-operated. When you contact us, you're talking directly with our team - not a call center or automated system."
+  const formTitle    = content['contact.form.title']    ?? 'Send a Message'
+  const formSubtext  = content['contact.form.subtext']  ?? 'General questions, group inquiries, or anything else - use this form and our team will get back to you.'
+
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <SiteHeader primaryColor={primary} accentColor={accent} />
 
       {/* Page header */}
-      <section className="border-b border-[var(--border)] bg-[var(--surface)] px-4 py-16 sm:px-6 lg:px-8">
+      <section className="border-b border-[var(--border)] bg-[var(--surface)] px-4 py-16 sm:px-6 lg:px-8" data-ngf-section="Contact Page">
         <div className="mx-auto max-w-6xl">
-          <p className="font-body text-xs font-semibold uppercase tracking-widest" style={{ color: accent }}>Get In Touch</p>
-          <h1 className="mt-1 font-heading text-4xl font-bold text-[var(--text)] sm:text-5xl">Contact Us</h1>
-          <p className="mt-4 max-w-xl font-body text-base leading-relaxed text-[var(--muted)]">
-            Have questions about a property? Ready to plan your stay? We&apos;re happy to help.
-          </p>
+          <p
+            className="font-body text-xs font-semibold uppercase tracking-widest"
+            style={{ color: accent }}
+            data-ngf-field="contact.eyebrow"
+            data-ngf-label="Eyebrow Tag"
+            data-ngf-type="text"
+            data-ngf-section="Contact Page"
+          >{pageEyebrow}</p>
+          <h1
+            className="mt-1 font-heading text-4xl font-bold text-[var(--text)] sm:text-5xl"
+            data-ngf-field="contact.title"
+            data-ngf-label="Page Title"
+            data-ngf-type="text"
+            data-ngf-section="Contact Page"
+          >{pageTitle}</h1>
+          <p
+            className="mt-4 max-w-xl font-body text-base leading-relaxed text-[var(--muted)]"
+            data-ngf-field="contact.desc"
+            data-ngf-label="Page Description"
+            data-ngf-type="textarea"
+            data-ngf-section="Contact Page"
+          >{pageDesc}</p>
         </div>
       </section>
 
@@ -33,11 +58,21 @@ export default async function ContactPage() {
         <div className="mx-auto max-w-6xl grid grid-cols-1 gap-12 lg:grid-cols-2">
 
           {/* Contact info */}
-          <div>
-            <h2 className="font-heading text-2xl font-semibold text-[var(--text)]">Reach Us Directly</h2>
-            <p className="mt-3 font-body text-base leading-relaxed text-[var(--muted)]">
-              Square K is owner-operated. When you contact us, you&apos;re talking directly with our team - not a call center or automated system.
-            </p>
+          <div data-ngf-section="Contact Info">
+            <h2
+              className="font-heading text-2xl font-semibold text-[var(--text)]"
+              data-ngf-field="contact.direct.title"
+              data-ngf-label="Section Title"
+              data-ngf-type="text"
+              data-ngf-section="Contact Info"
+            >{directTitle}</h2>
+            <p
+              className="mt-3 font-body text-base leading-relaxed text-[var(--muted)]"
+              data-ngf-field="contact.direct.body"
+              data-ngf-label="Intro Paragraph"
+              data-ngf-type="textarea"
+              data-ngf-section="Contact Info"
+            >{directBody}</p>
 
             <div className="mt-8 space-y-5">
               <div className="flex items-start gap-4">
@@ -111,9 +146,21 @@ export default async function ContactPage() {
           </div>
 
           {/* General inquiry form */}
-          <div>
-            <h2 className="font-heading text-2xl font-semibold text-[var(--text)]">Send a Message</h2>
-            <p className="mt-2 font-body text-sm text-[var(--muted)]">General questions, group inquiries, or anything else - use this form and our team will get back to you.</p>
+          <div data-ngf-section="Contact Form">
+            <h2
+              className="font-heading text-2xl font-semibold text-[var(--text)]"
+              data-ngf-field="contact.form.title"
+              data-ngf-label="Form Title"
+              data-ngf-type="text"
+              data-ngf-section="Contact Form"
+            >{formTitle}</h2>
+            <p
+              className="mt-2 font-body text-sm text-[var(--muted)]"
+              data-ngf-field="contact.form.subtext"
+              data-ngf-label="Form Subtext"
+              data-ngf-type="textarea"
+              data-ngf-section="Contact Form"
+            >{formSubtext}</p>
             <GeneralInquiryForm accentColor={accent} primaryColor={primary} />
           </div>
 
@@ -129,4 +176,3 @@ export default async function ContactPage() {
     </div>
   )
 }
-
