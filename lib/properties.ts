@@ -1,11 +1,5 @@
 import { Property } from '@/types'
 
-/**
- * Property data for Square K Vacations.
- *
- * FUTURE: This static file will be replaced by a database fetch (Neon/Prisma)
- * once the backend is wired up through the NGF client portal.
- */
 export const properties: Property[] = [
   {
     slug: 'lakeshore-grand-retreat',
@@ -22,21 +16,21 @@ export const properties: Property[] = [
       'Wake up to breathtaking lakeshore views from this stunning Michigan retreat. Designed for groups and families who refuse to compromise on comfort, Lakeshore Grand blends upscale finishes with an effortless indoor-outdoor lifestyle.',
     longDescription: `Lakeshore Grand Retreat is the ultimate Michigan getaway — a thoughtfully designed luxury home set directly on the lakeshore in scenic Fennville. Floor-to-ceiling windows frame panoramic water views from nearly every room, and the expansive outdoor spaces invite you to unwind from morning to midnight.
 
-Inside, you’ll find an open-concept great room with a chef’s kitchen, a dining area that seats the whole group, and cozy gathering spaces throughout all three levels. The bedrooms are generously sized with quality linens and ample storage, making it easy to settle in for a week-long stay.
+Inside, you'll find an open-concept great room with a chef's kitchen, a dining area that seats the whole group, and cozy gathering spaces throughout all three levels. The bedrooms are generously sized with quality linens and ample storage, making it easy to settle in for a week-long stay.
 
 Outside, the property extends to a private dock where guests can swim, fish, or simply sit with a coffee as the sun rises over the water. Evenings are best spent around the fire pit as the lake reflects the last light of day.`,
     highlights: [
       { icon: '\u{1F30A}', label: 'Lake Access' },
       { icon: '⛵', label: 'Private Dock' },
       { icon: '\u{1F525}', label: 'Fire Pit' },
-      { icon: '\u{1F373}', label: "Chef’s Kitchen" },
+      { icon: '\u{1F373}', label: "Chef's Kitchen" },
       { icon: '\u{1F6CF}', label: '5 Bedrooms' },
       { icon: '\u{1F465}', label: 'Sleeps 12' },
     ],
     amenities: [
       'Lake Access & Private Dock',
       'Fire Pit',
-      "Chef’s Kitchen",
+      "Chef's Kitchen",
       'Free High-Speed WiFi',
       'Air Conditioning',
       'Smart TVs in Every Room',
@@ -47,8 +41,34 @@ Outside, the property extends to a private dock where guests can swim, fish, or 
       'Pet Friendly (inquire)',
       'No Smoking Property',
     ],
-    images: [],
-    heroImage: '',
+    images: [
+      '/images/lakeshore/Front-Exterior-Dusk.jpg',
+      '/images/lakeshore/Front-Exterior-Noon.jpg',
+      '/images/lakeshore/LivingRoom1(1).jpg',
+      '/images/lakeshore/LivingRoom1(2).jpg',
+      '/images/lakeshore/Kitchen1(1).jpg',
+      '/images/lakeshore/Kitchen1(2).jpg',
+      '/images/lakeshore/DiningRoom1(1).jpg',
+      '/images/lakeshore/DiningRoom1(2).jpg',
+      '/images/lakeshore/OutdoorPatio.jpg',
+      '/images/lakeshore/FrontEntrance1.jpg',
+      '/images/lakeshore/Bedroom1.jpg',
+      '/images/lakeshore/Bedroom1Bathroom1.jpg',
+      '/images/lakeshore/Bedroom1Bathroom2.jpg',
+      '/images/lakeshore/Bedroom2.jpg',
+      '/images/lakeshore/Bedroom2Bathroom1(1).jpg',
+      '/images/lakeshore/Bedroom2Bathroom1(2).jpg',
+      '/images/lakeshore/Bedroom3.jpg',
+      '/images/lakeshore/Bedroom3Bathroom1.jpg',
+      '/images/lakeshore/Bedroom4.jpg',
+      '/images/lakeshore/Bedroom4Bathroom1.jpg',
+      '/images/lakeshore/KitchenPantry.jpg',
+      '/images/lakeshore/Bathroom1.jpg',
+      '/images/lakeshore/2ndFloorStairs.jpg',
+      '/images/lakeshore/Mudroom.jpg',
+      '/images/lakeshore/LaundryRoom.jpg',
+    ],
+    heroImage: '/images/lakeshore/Front-Exterior-Dusk.jpg',
     status: 'available',
     icalUrl: null,
     featured: true,
@@ -88,15 +108,18 @@ Blueberry Grand is the ideal venue for family reunions, milestone celebrations, 
       'Fire Pit with Adirondack Seating',
       'Outdoor Kitchen & Grill',
       'Detached 2-Car Garage',
-      "Chef’s Kitchen",
+      "Chef's Kitchen",
       'Free High-Speed WiFi',
       'Air Conditioning',
       'Smart TVs Throughout',
       'Washer & Dryer',
       'Ample Parking',
     ],
-    images: [],
-    heroImage: '',
+    images: [
+      '/images/blueberry/IMG_5151.jpeg',
+      '/images/blueberry/IMG_5150.jpeg',
+    ],
+    heroImage: '/images/blueberry/IMG_5151.jpeg',
     status: 'available',
     icalUrl: null,
     featured: true,
@@ -114,11 +137,11 @@ Blueberry Grand is the ideal venue for family reunions, milestone celebrations, 
     maxGuests: 10,
     description:
       'Nestled on the shores of picturesque Clam Lake in Bellaire, this retreat offers a quintessential up-north Michigan experience — peaceful mornings, stunning water views, and starry nights around the fire.',
-    longDescription: `Clam Lake Grand Retreat brings you deep into the heart of northern Michigan’s lake country. Bellaire is a charming small town beloved for its craft brewery scene, wine trails, and access to some of the state’s most beautiful inland lakes — and Clam Lake is among the finest.
+    longDescription: `Clam Lake Grand Retreat brings you deep into the heart of northern Michigan's lake country. Bellaire is a charming small town beloved for its craft brewery scene, wine trails, and access to some of the state's most beautiful inland lakes — and Clam Lake is among the finest.
 
 The property offers direct lake access with a private pier, perfect for swimming, fishing, or launching a kayak. The four-bedroom home is comfortably appointed for a group of up to ten guests, with an open living and dining area that flows out to a deck overlooking the water.
 
-Mornings start with mist rising off the lake and end with the kind of sunset that makes you forget to check your phone. Bellaire’s downtown — with Shorts Brewing Company, local shops, and restaurants — is just minutes away.`,
+Mornings start with mist rising off the lake and end with the kind of sunset that makes you forget to check your phone. Bellaire's downtown — with Shorts Brewing Company, local shops, and restaurants — is just minutes away.`,
     highlights: [
       { icon: '\u{1F3DE}', label: 'Clam Lake Access' },
       { icon: '\u{1F6A4}', label: 'Private Pier' },
