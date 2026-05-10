@@ -32,7 +32,7 @@ export default function SiteHeader({
         <div className="hidden lg:flex">
           <Link href="/contact" className="inline-flex min-h-10 items-center justify-center rounded-lg px-5 py-2.5 font-body text-sm font-semibold text-white" style={{ backgroundColor: accentColor }}>Request a Stay</Link>
         </div>
-        <button type="button" aria-expanded={menuOpen} onClick={() => setMenuOpen(prev => !prev)} className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border lg:hidden">
+        <button type="button" aria-expanded={menuOpen} onClick={() => setMenuOpen(prev => !prev)} className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-white/30 bg-white/15 shadow-sm backdrop-blur-sm lg:hidden">
           <span className="sr-only">Toggle navigation</span>
           <div className="flex flex-col gap-1.5">
             <span className={`h-0.5 w-5 bg-current transition-transform ${menuOpen ? 'translate-y-2 rotate-45' : ''}`} />
