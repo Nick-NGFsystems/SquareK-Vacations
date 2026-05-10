@@ -14,11 +14,7 @@ export const properties: Property[] = [
     maxGuests: 12,
     description:
       'Wake up to breathtaking lakeshore views from this stunning Michigan retreat. Designed for groups and families who refuse to compromise on comfort, Lakeshore Grand blends upscale finishes with an effortless indoor-outdoor lifestyle.',
-    longDescription: `Lakeshore Grand Retreat is the ultimate Michigan getaway — a thoughtfully designed luxury home set directly on the lakeshore in scenic Fennville. Floor-to-ceiling windows frame panoramic water views from nearly every room, and the expansive outdoor spaces invite you to unwind from morning to midnight.
-
-Inside, you'll find an open-concept great room with a chef's kitchen, a dining area that seats the whole group, and cozy gathering spaces throughout all three levels. The bedrooms are generously sized with quality linens and ample storage, making it easy to settle in for a week-long stay.
-
-Outside, the property extends to a private dock where guests can swim, fish, or simply sit with a coffee as the sun rises over the water. Evenings are best spent around the fire pit as the lake reflects the last light of day.`,
+    longDescription: `A luxury lakeshore retreat in Fennville, Michigan — designed for groups who want space, comfort, and direct water access. Full details and professional photography coming soon.`,
     highlights: [
       { icon: '\u{1F30A}', label: 'Lake Access' },
       { icon: '⛵', label: 'Private Dock' },
@@ -29,17 +25,10 @@ Outside, the property extends to a private dock where guests can swim, fish, or 
     ],
     amenities: [
       'Lake Access & Private Dock',
-      'Fire Pit',
       "Chef's Kitchen",
-      'Free High-Speed WiFi',
-      'Air Conditioning',
-      'Smart TVs in Every Room',
       'Kayaks & Paddle Boards',
-      'Outdoor Dining & Grill',
-      'Washer & Dryer',
-      'Ample Parking',
-      'Pet Friendly (inquire)',
-      'No Smoking Property',
+      'Fire Pit',
+      'Free High-Speed WiFi',
     ],
     images: [
       '/images/lakeshore/Front-Exterior-Dusk.jpg',
@@ -86,13 +75,7 @@ Outside, the property extends to a private dock where guests can swim, fish, or 
     maxGuests: 14,
     description:
       'A custom-built architectural masterpiece set on rolling Michigan hills. Blueberry Grand features a private pool, barrel sauna, pool house, and fire pit — everything you need for the perfect group escape.',
-    longDescription: `Blueberry Grand Retreat is a brand-new, custom-built luxury home in Fennville, Michigan — designed to an exceptionally high standard. From the striking three-story board-and-batten exterior to the designer interior finishes, every detail has been carefully considered.
-
-The centerpiece of the outdoor space is a sparkling private pool, flanked by a full-sized pool house with a covered patio and outdoor seating. A Norwegian barrel sauna sits just steps away for post-swim relaxation. As the evening sets in, gather around the elevated fire pit area with Adirondack seating and take in the quiet Michigan countryside.
-
-Inside, the open floor plan is bathed in natural light through oversized windows. The gourmet kitchen is appointed with professional-grade appliances and a large island — perfect for group meals. Six beautifully appointed bedrooms and five bathrooms ensure everyone has the space and privacy they need.
-
-Blueberry Grand is the ideal venue for family reunions, milestone celebrations, and corporate retreats alike.`,
+    longDescription: `A brand-new custom-built luxury home in Fennville, Michigan featuring a private pool, barrel sauna, pool house, and fire pit. Full details and professional photography coming soon.`,
     highlights: [
       { icon: '\u{1F3CA}', label: 'Private Pool' },
       { icon: '\u{1F9D6}', label: 'Barrel Sauna' },
@@ -105,15 +88,8 @@ Blueberry Grand is the ideal venue for family reunions, milestone celebrations, 
       'Private Heated Pool',
       'Barrel Sauna',
       'Pool House & Covered Patio',
-      'Fire Pit with Adirondack Seating',
-      'Outdoor Kitchen & Grill',
-      'Detached 2-Car Garage',
-      "Chef's Kitchen",
+      'Fire Pit',
       'Free High-Speed WiFi',
-      'Air Conditioning',
-      'Smart TVs Throughout',
-      'Washer & Dryer',
-      'Ample Parking',
     ],
     images: [
       '/images/blueberry/IMG_5151.jpeg',
@@ -137,11 +113,7 @@ Blueberry Grand is the ideal venue for family reunions, milestone celebrations, 
     maxGuests: 10,
     description:
       'Nestled on the shores of picturesque Clam Lake in Bellaire, this retreat offers a quintessential up-north Michigan experience — peaceful mornings, stunning water views, and starry nights around the fire.',
-    longDescription: `Clam Lake Grand Retreat brings you deep into the heart of northern Michigan's lake country. Bellaire is a charming small town beloved for its craft brewery scene, wine trails, and access to some of the state's most beautiful inland lakes — and Clam Lake is among the finest.
-
-The property offers direct lake access with a private pier, perfect for swimming, fishing, or launching a kayak. The four-bedroom home is comfortably appointed for a group of up to ten guests, with an open living and dining area that flows out to a deck overlooking the water.
-
-Mornings start with mist rising off the lake and end with the kind of sunset that makes you forget to check your phone. Bellaire's downtown — with Shorts Brewing Company, local shops, and restaurants — is just minutes away.`,
+    longDescription: `A lakeside retreat on beautiful Clam Lake in Bellaire, Michigan — four bedrooms, private pier, and easy access to Bellaire's shops and restaurants. Full details and photography coming soon.`,
     highlights: [
       { icon: '\u{1F3DE}', label: 'Clam Lake Access' },
       { icon: '\u{1F6A4}', label: 'Private Pier' },
@@ -152,16 +124,10 @@ Mornings start with mist rising off the lake and end with the kind of sunset tha
     ],
     amenities: [
       'Clam Lake Access & Private Pier',
-      'Fire Pit',
       'Kayaks Included',
       'Deck with Lake Views',
-      'Fully Equipped Kitchen',
+      'Fire Pit',
       'Free High-Speed WiFi',
-      'Air Conditioning',
-      'Smart TVs',
-      'Outdoor Grill',
-      'Washer & Dryer',
-      'Ample Parking',
     ],
     images: [],
     heroImage: '',
