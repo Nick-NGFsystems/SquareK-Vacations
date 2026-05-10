@@ -13,13 +13,11 @@ export default async function ContactPage() {
   const primary = content['brand.primaryColor'] ?? '#4a6741'
   const accent  = content['brand.accentColor']  ?? '#9b8060'
 
-  const pageEyebrow  = content['contact.eyebrow']  ?? 'Get In Touch'
-  const pageTitle    = content['contact.title']    ?? 'Contact Us'
-  const pageDesc     = content['contact.desc']     ?? "Have questions about a property? Ready to plan your stay? We're happy to help."
-  const directTitle  = content['contact.direct.title']   ?? 'Reach Us Directly'
-  const directBody   = content['contact.direct.body']    ?? "Square K is owner-operated. When you contact us, you're talking directly with our team - not a call center or automated system."
-  const formTitle    = content['contact.form.title']    ?? 'Send a Message'
-  const formSubtext  = content['contact.form.subtext']  ?? 'General questions, group inquiries, or anything else - use this form and our team will get back to you.'
+  const pageEyebrow = content['contact.eyebrow']     ?? 'Get In Touch'
+  const pageTitle   = content['contact.title']       ?? 'Contact Us'
+  const pageDesc    = content['contact.desc']        ?? "Owner-operated and always reachable. Call, email, or send a message below and our team will get back to you."
+  const formTitle   = content['contact.form.title']  ?? 'Send a Message'
+  const formSubtext = content['contact.form.subtext'] ?? 'General questions, group inquiries, or anything else - use this form and our team will get back to you.'
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
@@ -57,24 +55,9 @@ export default async function ContactPage() {
       <section className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl grid grid-cols-1 gap-12 lg:grid-cols-2">
 
-          {/* Contact info */}
+          {/* Contact info — no heading, jumps straight to details */}
           <div data-ngf-section="Contact Info">
-            <h2
-              className="font-heading text-2xl font-semibold text-[var(--text)]"
-              data-ngf-field="contact.direct.title"
-              data-ngf-label="Section Title"
-              data-ngf-type="text"
-              data-ngf-section="Contact Info"
-            >{directTitle}</h2>
-            <p
-              className="mt-3 font-body text-base leading-relaxed text-[var(--muted)]"
-              data-ngf-field="contact.direct.body"
-              data-ngf-label="Intro Paragraph"
-              data-ngf-type="textarea"
-              data-ngf-section="Contact Info"
-            >{directBody}</p>
-
-            <div className="mt-8 space-y-5">
+            <div className="space-y-5">
               <div className="flex items-start gap-4">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl" style={{ backgroundColor: `${primary}15` }}>
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} style={{ color: primary }}>
@@ -83,11 +66,7 @@ export default async function ContactPage() {
                 </div>
                 <div>
                   <div className="font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Phone</div>
-                  <a
-                    href="tel:16163339601"
-                    className="mt-1 block font-body text-base font-semibold text-[var(--text)] hover:underline"
-                    style={{ color: accent }}
-                  >
+                  <a href="tel:16163339601" className="mt-1 block font-body text-base font-semibold hover:underline" style={{ color: accent }}>
                     (616) 333-9601
                   </a>
                 </div>
@@ -101,11 +80,7 @@ export default async function ContactPage() {
                 </div>
                 <div>
                   <div className="font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Email</div>
-                  <a
-                    href="mailto:Squarek.llc.mi@gmail.com"
-                    className="mt-1 block font-body text-base font-semibold hover:underline"
-                    style={{ color: accent }}
-                  >
+                  <a href="mailto:Squarek.llc.mi@gmail.com" className="mt-1 block font-body text-base font-semibold hover:underline" style={{ color: accent }}>
                     Squarek.llc.mi@gmail.com
                   </a>
                 </div>
@@ -120,14 +95,12 @@ export default async function ContactPage() {
                 </div>
                 <div>
                   <div className="font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Locations</div>
-                  <div className="mt-1 font-body text-base text-[var(--text)]">
-                    Fennville, MI &middot; Bellaire, MI
-                  </div>
+                  <div className="mt-1 font-body text-base text-[var(--text)]">Fennville, MI &middot; Bellaire, MI</div>
                 </div>
               </div>
             </div>
 
-            {/* Properties quick links */}
+            {/* Property quick links */}
             <div className="mt-10">
               <h3 className="font-heading text-lg font-semibold text-[var(--text)]">Ready to book a specific property?</h3>
               <p className="mt-1 font-body text-sm text-[var(--muted)]">Use the request form on each property page to submit your dates.</p>
@@ -145,7 +118,7 @@ export default async function ContactPage() {
             </div>
           </div>
 
-          {/* General inquiry form */}
+          {/* Form */}
           <div data-ngf-section="Contact Form">
             <h2
               className="font-heading text-2xl font-semibold text-[var(--text)]"

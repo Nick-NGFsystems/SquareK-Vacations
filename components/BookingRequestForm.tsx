@@ -4,13 +4,9 @@
  * BookingRequestForm - visual UI only for now.
  *
  * FUTURE INTEGRATION:
- * 1. Create /api/booking-request/route.ts that:
- *    - Validates the form data
- *    - Sends Tyler an email via Resend (or similar)
- *    - Logs the request to the NGF portal (Neon/Prisma)
+ * 1. Create /api/booking-request/route.ts that validates form data and emails the team.
  * 2. Replace the mock handleSubmit below with a real fetch POST.
- * 3. When the NGF admin portal is connected, Tyler will receive and manage
- *    requests directly from his client dashboard.
+ * 3. When the NGF admin portal is connected, requests will appear in the client dashboard.
  */
 
 import { useState } from 'react'
@@ -21,6 +17,9 @@ interface Props {
   accentColor?: string
 }
 
+const inputCls = 'w-full min-w-0 rounded-lg border border-[var(--border)] bg-[var(--bg)] px-3 py-2.5 font-body text-sm text-[var(--text)] placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]'
+const labelCls = 'mb-1.5 block font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]'
+
 export default function BookingRequestForm({ propertyName, propertySlug: _, accentColor = '#9b8060' }: Props) {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -28,12 +27,6 @@ export default function BookingRequestForm({ propertyName, propertySlug: _, acce
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
-
-    // TODO: Replace with real API call:
-    // const formData = new FormData(e.currentTarget)
-    // await fetch('/api/booking-request', { method: 'POST', body: JSON.stringify(Object.fromEntries(formData)) })
-
-    // Simulate network delay
     await new Promise(r => setTimeout(r, 800))
     setLoading(false)
     setSubmitted(true)
@@ -62,7 +55,7 @@ export default function BookingRequestForm({ propertyName, propertySlug: _, acce
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm sm:p-8">
+    <form onSubmit={handleSubmit} className="overflow-hidden rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm sm:p-8">
       <h3 className="font-heading text-xl font-semibold text-[var(--text)]">Request a Stay</h3>
       <p className="mt-1 font-body text-sm text-[var(--muted)]">
         Submit your details and our team will confirm availability.
@@ -70,43 +63,66 @@ export default function BookingRequestForm({ propertyName, propertySlug: _, acce
 
       <input type="hidden" name="propertyName" value={propertyName} />
 
-      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="mt-6 grid grid-cols-2 gap-3">
+        {/* Name row */}
         <div>
-          <label className="mb-1.5 block font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">First Name *</label>
-          <input required name="firstName" type="text" placeholder="Jane" className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg)] px-4 py-2.5 font-body text-sm text-[var(--text)] placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" />
-        </div>
-        <div>
-          <label className="mb-1.5 block font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Last Name *</label>
-          <input required name="lastName" type="text" placeholder="Smith" className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg)] px-4 py-2.5 font-body text-sm text-[var(--text)] placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" />
+          <label className={labelCls}>First Name *</label>
+          <input required name="firstName" type="text" placeholder="Jane" className={inputCls} />
         </div>
         <div>
-          <label className="mb-1.5 block font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Email *</label>
-          <input required name="email" type="email" placeholder="jane@example.com" className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg)] px-4 py-2.5 font-body text-sm text-[var(--text)] placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" />
+          <label className={labelCls}>Last Name *</label>
+          <input required name="lastName" type="text" placeholder="Smith" className={inputCls} />
         </div>
-        <div>
-          <label className="mb-1.5 block font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Phone *</label>
-          <input required name="phone" type="tel" placeholder="(616) 555-1234" className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg)] px-4 py-2.5 font-body text-sm text-[var(--text)] placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" />
+
+        {/* Contact row */}
+        <div className="col-span-2">
+          <label className={labelCls}>Email *</label>
+          <input required name="email" type="email" placeholder="jane@example.com" className={inputCls} />
         </div>
-        <div className="sm:col-span-1">
-          <label className="mb-1.5 block font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Check-In *</label>
-          <input required name="checkIn" type="date" className="w-full min-w-0 max-w-full rounded-lg border border-[var(--border)] bg-[var(--bg)] px-3 py-2.5 font-body text-sm text-[var(--text)] focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" />
+        <div className="col-span-2">
+          <label className={labelCls}>Phone *</label>
+          <input required name="phone" type="tel" placeholder="(616) 555-1234" className={inputCls} />
         </div>
-        <div className="sm:col-span-1">
-          <label className="mb-1.5 block font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Check-Out *</label>
-          <input required name="checkOut" type="date" className="w-full min-w-0 max-w-full rounded-lg border border-[var(--border)] bg-[var(--bg)] px-3 py-2.5 font-body text-sm text-[var(--text)] focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" />
+
+        {/* Dates — side by side with overflow-hidden parent to contain native date UI */}
+        <div className="col-span-2 grid grid-cols-2 gap-3 overflow-hidden">
+          <div className="min-w-0">
+            <label className={labelCls}>Check-In *</label>
+            <input
+              required
+              name="checkIn"
+              type="date"
+              className={inputCls}
+              style={{ boxSizing: 'border-box' }}
+            />
+          </div>
+          <div className="min-w-0">
+            <label className={labelCls}>Check-Out *</label>
+            <input
+              required
+              name="checkOut"
+              type="date"
+              className={inputCls}
+              style={{ boxSizing: 'border-box' }}
+            />
+          </div>
         </div>
-        <div className="sm:col-span-2">
-          <label className="mb-1.5 block font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Number of Guests *</label>
-          <select required name="guests" className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg)] px-4 py-2.5 font-body text-sm text-[var(--text)] focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]">
+
+        {/* Guests */}
+        <div className="col-span-2">
+          <label className={labelCls}>Number of Guests *</label>
+          <select required name="guests" className={inputCls}>
             <option value="">Select...</option>
             {Array.from({ length: 14 }, (_, i) => i + 1).map(n => (
               <option key={n} value={n}>{n} {n === 1 ? 'guest' : 'guests'}</option>
             ))}
           </select>
         </div>
-        <div className="sm:col-span-2">
-          <label className="mb-1.5 block font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Message / Special Requests</label>
-          <textarea name="message" rows={3} placeholder="Tell us about your group, any special occasions, or questions you have..." className="w-full resize-none rounded-lg border border-[var(--border)] bg-[var(--bg)] px-4 py-2.5 font-body text-sm text-[var(--text)] placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" />
+
+        {/* Message */}
+        <div className="col-span-2">
+          <label className={labelCls}>Message / Special Requests</label>
+          <textarea name="message" rows={3} placeholder="Tell us about your group, any special occasions, or questions you have..." className={`${inputCls} resize-none`} />
         </div>
       </div>
 
