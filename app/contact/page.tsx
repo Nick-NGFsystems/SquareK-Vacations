@@ -4,7 +4,7 @@ import Link from 'next/link'
 import GeneralInquiryForm from './GeneralInquiryForm'
 
 export const metadata = {
-  title: 'Contact — Square K Vacations',
+  title: 'Contact - Square K Vacations',
   description: 'Get in touch with Tyler at Square K Vacations. Questions about our Michigan rental properties or ready to plan your stay?',
 }
 
@@ -36,7 +36,7 @@ export default async function ContactPage() {
           <div>
             <h2 className="font-heading text-2xl font-semibold text-[var(--text)]">Reach Tyler Directly</h2>
             <p className="mt-3 font-body text-base leading-relaxed text-[var(--muted)]">
-              Square K is owner-operated. When you contact us, you&apos;re talking directly to Tyler — not a call center or automated system.
+              Square K is owner-operated. When you contact us, you&apos;re talking directly to Tyler - not a call center or automated system.
             </p>
 
             <div className="mt-8 space-y-5">
@@ -86,7 +86,7 @@ export default async function ContactPage() {
                 <div>
                   <div className="font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Locations</div>
                   <div className="mt-1 font-body text-base text-[var(--text)]">
-                    Fennville, MI · Bellaire, MI
+                    Fennville, MI &middot; Bellaire, MI
                   </div>
                 </div>
               </div>
@@ -98,13 +98,13 @@ export default async function ContactPage() {
               <p className="mt-1 font-body text-sm text-[var(--muted)]">Use the request form on each property page to submit your dates.</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <Link href="/properties/lakeshore-grand-retreat" className="inline-flex items-center rounded-lg border border-[var(--border)] bg-white px-4 py-2 font-body text-sm font-medium text-[var(--text)] hover:bg-[var(--surface)] transition-colors">
-                  Lakeshore Grand →
+                  Lakeshore Grand &rarr;
                 </Link>
                 <Link href="/properties/blueberry-grand-retreat" className="inline-flex items-center rounded-lg border border-[var(--border)] bg-white px-4 py-2 font-body text-sm font-medium text-[var(--text)] hover:bg-[var(--surface)] transition-colors">
-                  Blueberry Grand →
+                  Blueberry Grand &rarr;
                 </Link>
                 <Link href="/properties/clam-lake-grand-retreat" className="inline-flex items-center rounded-lg border border-[var(--border)] bg-white px-4 py-2 font-body text-sm font-medium text-[var(--text)] hover:bg-[var(--surface)] transition-colors">
-                  Clam Lake Grand →
+                  Clam Lake Grand &rarr;
                 </Link>
               </div>
             </div>
@@ -113,7 +113,7 @@ export default async function ContactPage() {
           {/* General inquiry form */}
           <div>
             <h2 className="font-heading text-2xl font-semibold text-[var(--text)]">Send a Message</h2>
-            <p className="mt-2 font-body text-sm text-[var(--muted)]">General questions, group inquiries, or anything else — use this form and Tyler will get back to you within 24 hours.</p>
+            <p className="mt-2 font-body text-sm text-[var(--muted)]">General questions, group inquiries, or anything else - use this form and Tyler will get back to you within 24 hours.</p>
             <GeneralInquiryForm accentColor={accent} primaryColor={primary} />
           </div>
 
@@ -123,7 +123,7 @@ export default async function ContactPage() {
       {/* Footer */}
       <footer className="border-t border-[var(--border)] bg-[var(--bg)] px-4 py-8 text-center">
         <p className="font-body text-xs text-[var(--muted)]">
-          © {new Date().getFullYear()} Square K LLC. All rights reserved.
+          &copy; {new Date().getFullYear()} Square K LLC. All rights reserved.
         </p>
       </footer>
     </div>

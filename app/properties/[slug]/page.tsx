@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props) {
   const property = getPropertyBySlug(slug)
   if (!property) return {}
   return {
-    title: `${property.name} — Square K Vacations`,
+    title: `${property.name} - Square K Vacations`,
     description: property.description,
   }
 }
@@ -38,7 +38,7 @@ export default async function PropertyPage({ params }: Props) {
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <SiteHeader primaryColor={primary} accentColor={accent} />
 
-      {/* ── Hero ── */}
+      {/* Hero */}
       <section className="relative h-[55vh] overflow-hidden bg-[var(--text)]">
         <img
           src={property.heroImage}
@@ -52,16 +52,16 @@ export default async function PropertyPage({ params }: Props) {
               href="/properties"
               className="mb-4 inline-flex items-center gap-1 font-body text-xs font-semibold uppercase tracking-wide text-white/70 hover:text-white transition-colors"
             >
-              ← All Properties
+              &larr; All Properties
             </Link>
             <div className="font-body text-sm font-semibold text-white/70">{property.city}, {property.state}</div>
-            <h1 className="mt-1 font-heading text-4xl font-bold text-white sm:text-5xl">{property.name}</h1>
+            <h1 className="mt-1 font-heading text-3xl font-bold text-white sm:text-4xl lg:text-5xl">{property.name}</h1>
             <p className="mt-2 font-body text-lg text-white/80">{property.tagline}</p>
           </div>
         </div>
       </section>
 
-      {/* ── Quick stats bar ── */}
+      {/* Quick stats bar */}
       <div className="border-b border-[var(--border)] bg-white">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-6 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 font-body text-sm text-[var(--muted)]">
@@ -69,21 +69,21 @@ export default async function PropertyPage({ params }: Props) {
             <span><strong className="text-[var(--text)]">{property.bedrooms}</strong> Bedrooms</span>
           </div>
           <div className="flex items-center gap-2 font-body text-sm text-[var(--muted)]">
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
-            <span>Sleeps <strong className="text-[var(--text)]">{property.maxGuests}</strong></span>
-          </div>
-          <div className="flex items-center gap-2 font-body text-sm text-[var(--muted)]">
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" /></svg>
             <span><strong className="text-[var(--text)]">{property.bathrooms}</strong> Bathrooms</span>
           </div>
           <div className="flex items-center gap-2 font-body text-sm text-[var(--muted)]">
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
+            <span>Sleeps <strong className="text-[var(--text)]">{property.maxGuests}</strong></span>
+          </div>
+          <div className="hidden items-center gap-2 font-body text-sm text-[var(--muted)] sm:flex">
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
             <span>{property.address}, {property.city}, {property.state} {property.zipCode}</span>
           </div>
-          <div className="ml-auto">
+          <div className="ml-auto w-full sm:w-auto">
             <a
               href="#booking-request"
-              className="inline-flex min-h-10 items-center justify-center rounded-lg px-5 py-2 font-body text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
+              className="inline-flex w-full min-h-10 items-center justify-center rounded-lg px-5 py-2 font-body text-sm font-semibold text-white shadow-sm transition hover:opacity-90 sm:w-auto"
               style={{ backgroundColor: accent }}
             >
               Request a Stay
@@ -92,14 +92,14 @@ export default async function PropertyPage({ params }: Props) {
         </div>
       </div>
 
-      {/* ── Main content ── */}
+      {/* Main content */}
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
 
-          {/* Left col — main content */}
+          {/* Left col */}
           <div className="lg:col-span-2 space-y-12">
 
-            {/* Photo gallery */}
+            {/* Gallery */}
             <div>
               <h2 className="mb-5 font-heading text-2xl font-semibold text-[var(--text)]">Gallery</h2>
               <PhotoGallery images={property.images} propertyName={property.name} />
@@ -167,7 +167,7 @@ export default async function PropertyPage({ params }: Props) {
 
           </div>
 
-          {/* Right col — booking form (sticky) */}
+          {/* Right col - booking form */}
           <div id="booking-request" className="lg:col-span-1">
             <div className="sticky top-24">
               <BookingRequestForm
@@ -175,7 +175,6 @@ export default async function PropertyPage({ params }: Props) {
                 propertySlug={property.slug}
                 accentColor={accent}
               />
-              {/* Direct contact */}
               <div className="mt-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 text-center">
                 <p className="font-body text-xs text-[var(--muted)]">Prefer to call or email directly?</p>
                 <a href="tel:16163339601" className="mt-1 block font-body text-sm font-semibold hover:underline" style={{ color: accent }}>
@@ -194,9 +193,9 @@ export default async function PropertyPage({ params }: Props) {
       {/* Footer */}
       <footer className="border-t border-[var(--border)] bg-[var(--bg)] px-4 py-8 text-center">
         <p className="font-body text-xs text-[var(--muted)]">
-          © {new Date().getFullYear()} Square K LLC. All rights reserved. ·{' '}
+          &copy; {new Date().getFullYear()} Square K LLC. All rights reserved. &middot;{' '}
           <Link href="/properties" className="hover:underline">All Properties</Link>
-          {' · '}
+          {' &middot; '}
           <Link href="/contact" className="hover:underline">Contact</Link>
         </p>
       </footer>

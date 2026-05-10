@@ -1,7 +1,7 @@
 'use client'
 
 /**
- * AvailabilityCalendar — visual-only for now.
+ * AvailabilityCalendar - visual-only for now.
  *
  * FUTURE INTEGRATION:
  * 1. Set `property.icalUrl` in lib/properties.ts once Tyler provides the
@@ -21,7 +21,7 @@ interface Props {
   accentColor?: string
 }
 
-// Mock unavailable date ranges — replace with iCal data when ready
+// Mock unavailable date ranges - replace with iCal data when ready
 const mockUnavailableDates: [string, string][] = [
   ['2026-05-23', '2026-05-27'],
   ['2026-06-06', '2026-06-10'],

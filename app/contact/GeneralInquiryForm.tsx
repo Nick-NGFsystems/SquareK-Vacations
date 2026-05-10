@@ -1,10 +1,10 @@
 'use client'
 
 /**
- * GeneralInquiryForm — visual UI only for now.
+ * GeneralInquiryForm - visual UI only for now.
  *
  * FUTURE INTEGRATION:
- * Wire up to /api/contact/route.ts → Resend email → NGF portal notification
+ * Wire up to /api/contact/route.ts &rarr; Resend email &rarr; NGF portal notification
  */
 
 import { useState } from 'react'

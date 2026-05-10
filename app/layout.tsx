@@ -16,9 +16,9 @@ const bodyFont = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Square K Vacations — Michigan Premier Vacation Rentals',
+  title: 'Square K Vacations - Michigan Premier Vacation Rentals',
   description:
-    'Luxury vacation rentals in Michigan. Lakeshore, Fennville, and Bellaire properties — curated by Square K for an unforgettable stay.',
+    'Luxury vacation rentals in Michigan. Lakeshore, Fennville, and Bellaire properties - curated by Square K for an unforgettable stay.',
   other: {
     'ngf-public-api': 'https://app.ngfsystems.com/api/public/content',
     'ngf-template-id': 'squarek-vacations',

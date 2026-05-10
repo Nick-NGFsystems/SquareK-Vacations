@@ -83,7 +83,7 @@ export default function NgfEditBridge() {
       popup.appendChild(lbl)
       const goBtn = document.createElement('button')
       goBtn.className = 'ngf-nav-btn ngf-go-btn'
-      goBtn.textContent = '→  Go to page'
+      goBtn.textContent = '&rarr;  Go to page'
       goBtn.addEventListener('click', ev => { ev.stopPropagation(); dismissNavPopup(); window.location.href = href })
       popup.appendChild(goBtn)
       const stayBtn = document.createElement('button')

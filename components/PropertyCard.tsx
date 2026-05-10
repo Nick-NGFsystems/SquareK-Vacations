@@ -79,7 +79,7 @@ export default function PropertyCard({ property, accentColor = '#9b8060' }: Prop
             className="font-body text-sm font-semibold"
             style={{ color: accentColor }}
           >
-            View Property →
+            View Property &rarr;
           </span>
         </div>
       </div>

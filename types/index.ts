@@ -16,7 +16,7 @@ export interface Property {
   images: string[]
   heroImage: string
   status: 'available' | 'coming-soon'
-  /** iCal feed URL from Airbnb/VRBO. Set when Tyler provides it — used to power the availability calendar. */
+  /** iCal feed URL from Airbnb/VRBO. Set when Tyler provides it - used to power the availability calendar. */
   icalUrl: string | null
   featured?: boolean
   builderCredit?: string

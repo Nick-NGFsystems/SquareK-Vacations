@@ -5,8 +5,8 @@ import { getNgfContent } from '@/lib/ngf'
 import { properties } from '@/lib/properties'
 
 export const metadata = {
-  title: 'Our Properties — Square K Vacations',
-  description: 'Browse all three Square K Michigan vacation retreats — Lakeshore Grand, Blueberry Grand, and Clam Lake Grand.',
+  title: 'Our Properties - Square K Vacations',
+  description: 'Browse all three Square K Michigan vacation retreats - Lakeshore Grand, Blueberry Grand, and Clam Lake Grand.',
 }
 
 export default async function PropertiesPage() {
@@ -60,7 +60,7 @@ export default async function PropertiesPage() {
       {/* Footer */}
       <footer className="border-t border-[var(--border)] bg-[var(--bg)] px-4 py-8 text-center">
         <p className="font-body text-xs text-[var(--muted)]">
-          © {new Date().getFullYear()} Square K LLC. All rights reserved. · Fennville & Bellaire, Michigan
+          &copy; {new Date().getFullYear()} Square K LLC. All rights reserved. &middot; Fennville & Bellaire, Michigan
         </p>
       </footer>
     </div>

@@ -1,7 +1,7 @@
 'use client'
 
 /**
- * BookingRequestForm — visual UI only for now.
+ * BookingRequestForm - visual UI only for now.
  *
  * FUTURE INTEGRATION:
  * 1. Create /api/booking-request/route.ts that:
