@@ -171,4 +171,36 @@ export default function PhotoGallery({ images, propertyName, ngfGroup, ngfSectio
 
       {/* Photos 5+ in lightbox navigation (visitors) */}
       {images.slice(5).map((src, idx) => (
-        <Phot
+        <PhotoView key={idx + 5} src={src}>
+          <span className="sr-only" />
+        </PhotoView>
+      ))}
+
+      {/* ── Edit-mode grid (hidden for visitors, shown when NGF edit mode is active) ── */}
+      {ngfGroup && (
+        <div
+          data-ngf-group={ngfGroup}
+          data-ngf-item-label="Photo"
+          data-ngf-min-items="0"
+          data-ngf-max-items="50"
+          data-ngf-item-fields='[{"key":"image","label":"Photo","type":"image","aspect":"3:2"}]'
+          className="ngf-gallery-edit-grid"
+        >
+          {images.map((src, i) => (
+            <div key={i}>
+              <img
+                src={src}
+                alt={`${propertyName} ${i + 1}`}
+                data-ngf-field={`${ngfGroup}.${i}.image`}
+                data-ngf-label={`Gallery Photo ${i + 1}`}
+                data-ngf-type="image"
+                data-ngf-section={ngfSection ?? 'Gallery'}
+                data-ngf-aspect="3:2"
+              />
+            </div>
+          ))}
+        </div>
+      )}
+    </PhotoProvider>
+  )
+}
