@@ -5,16 +5,20 @@ import { PhotoProvider, PhotoView } from 'react-photo-view'
 interface Props {
   images: string[]
   propertyName: string
-  /** e.g. "property.lakeshore-grand-retreat.images" — adds data-ngf-* to every img */
-  ngfPrefix?: string
+  /**
+   * NGF group path for the gallery, e.g. "property.lakeshore-grand-retreat.images"
+   * Enables click-to-edit on every photo plus portal sidebar add/remove/reorder.
+   * Individual image fields are keyed as `{ngfGroup}.{i}.image`.
+   */
+  ngfGroup?: string
   ngfSection?: string
 }
 
-/** Spread NGF annotation attrs onto an img when a prefix is provided */
-function ngfAttrs(ngfPrefix: string | undefined, ngfSection: string | undefined, i: number) {
-  if (!ngfPrefix) return {}
+/** Spread NGF annotation attrs onto an img. Field path: {ngfGroup}.{i}.image */
+function ngfAttrs(ngfGroup: string | undefined, ngfSection: string | undefined, i: number) {
+  if (!ngfGroup) return {}
   return {
-    'data-ngf-field':   `${ngfPrefix}.${i}`,
+    'data-ngf-field':   `${ngfGroup}.${i}.image`,
     'data-ngf-label':   `Gallery Photo ${i + 1}`,
     'data-ngf-type':    'image',
     'data-ngf-section': ngfSection ?? 'Gallery',
@@ -22,7 +26,7 @@ function ngfAttrs(ngfPrefix: string | undefined, ngfSection: string | undefined,
   }
 }
 
-export default function PhotoGallery({ images, propertyName, ngfPrefix, ngfSection }: Props) {
+export default function PhotoGallery({ images, propertyName, ngfGroup, ngfSection }: Props) {
   if (images.length === 0) {
     return (
       <div className="flex aspect-video items-center justify-center rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface)]">
@@ -41,7 +45,7 @@ export default function PhotoGallery({ images, propertyName, ngfPrefix, ngfSecti
               src={images[0]}
               alt={propertyName}
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              {...ngfAttrs(ngfPrefix, ngfSection, 0)}
+              {...ngfAttrs(ngfGroup, ngfSection, 0)}
             />
             {images.length > 1 && (
               <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 backdrop-blur-sm">
@@ -62,7 +66,7 @@ export default function PhotoGallery({ images, propertyName, ngfPrefix, ngfSecti
                     src={src}
                     alt={`${propertyName} ${idx + 2}`}
                     className="h-full w-full object-cover"
-                    {...ngfAttrs(ngfPrefix, ngfSection, idx + 1)}
+                    {...ngfAttrs(ngfGroup, ngfSection, idx + 1)}
                   />
                 </div>
               </PhotoView>
@@ -80,7 +84,7 @@ export default function PhotoGallery({ images, propertyName, ngfPrefix, ngfSecti
                 src={images[0]}
                 alt={propertyName}
                 className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                {...ngfAttrs(ngfPrefix, ngfSection, 0)}
+                {...ngfAttrs(ngfGroup, ngfSection, 0)}
               />
             </div>
           </PhotoView>
@@ -93,7 +97,7 @@ export default function PhotoGallery({ images, propertyName, ngfPrefix, ngfSecti
                     src={images[0]}
                     alt={`${propertyName} 1`}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    {...ngfAttrs(ngfPrefix, ngfSection, 0)}
+                    {...ngfAttrs(ngfGroup, ngfSection, 0)}
                   />
                   <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
                 </div>
@@ -106,7 +110,7 @@ export default function PhotoGallery({ images, propertyName, ngfPrefix, ngfSecti
                     src={src}
                     alt={`${propertyName} ${idx + 2}`}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    {...ngfAttrs(ngfPrefix, ngfSection, idx + 1)}
+                    {...ngfAttrs(ngfGroup, ngfSection, idx + 1)}
                   />
                   <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
                 </div>
@@ -122,7 +126,7 @@ export default function PhotoGallery({ images, propertyName, ngfPrefix, ngfSecti
                     src={images[0]}
                     alt={`${propertyName} 1`}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    {...ngfAttrs(ngfPrefix, ngfSection, 0)}
+                    {...ngfAttrs(ngfGroup, ngfSection, 0)}
                   />
                   <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
                 </div>
@@ -138,7 +142,7 @@ export default function PhotoGallery({ images, propertyName, ngfPrefix, ngfSecti
                       src={src}
                       alt={`${propertyName} ${gi + 1}`}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      {...ngfAttrs(ngfPrefix, ngfSection, gi)}
+                      {...ngfAttrs(ngfGroup, ngfSection, gi)}
                     />
                     <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
                     {showOverlay && (
@@ -165,12 +169,6 @@ export default function PhotoGallery({ images, propertyName, ngfPrefix, ngfSecti
         </PhotoView>
       )}
 
-      {/* Photos 5+ included in the provider so they appear in lightbox navigation */}
+      {/* Photos 5+ in lightbox navigation (visitors) */}
       {images.slice(5).map((src, idx) => (
-        <PhotoView key={idx + 5} src={src}>
-          <span className="sr-only" />
-        </PhotoView>
-      ))}
-    </PhotoProvider>
-  )
-}
+        <Phot

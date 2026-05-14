@@ -54,10 +54,13 @@ export default async function PropertyPage({ params }: Props) {
   const propHeroImage = content[`property.${slug}.heroImage`] || property.heroImage
   const propHeroImageAlt = content[`property.${slug}.heroImage_alt`] || propName
 
-  // Gallery: load NGF-keyed images if present, otherwise fall back to static array
+  // Gallery: load NGF-keyed images if present, otherwise fall back to static array.
+  // Tries new keyed path (images.{i}.image) first, then old flat path (images.{i})
+  // for backward compat with any images uploaded before the group annotation was added.
   const ngfImages: string[] = []
   for (let i = 0; i < 50; i++) {
-    const v = content[`property.${slug}.images.${i}`]
+    const v = content[`property.${slug}.images.${i}.image`]
+           || content[`property.${slug}.images.${i}`]
     if (v) ngfImages.push(v)
     else if (i >= property.images.length) break
   }
@@ -207,7 +210,7 @@ export default async function PropertyPage({ params }: Props) {
               <PhotoGallery
                 images={propImages}
                 propertyName={propName}
-                ngfPrefix={`property.${slug}.images`}
+                ngfGroup={`property.${slug}.images`}
                 ngfSection="Property Images"
               />
             </div>
@@ -341,12 +344,4 @@ export default async function PropertyPage({ params }: Props) {
       {/* Footer */}
       <footer className="border-t border-[var(--border)] bg-[var(--bg)] px-4 py-8 text-center">
         <p className="font-body text-xs text-[var(--muted)]">
-          &copy; {new Date().getFullYear()} Square K LLC. All rights reserved. &middot;{' '}
-          <Link href="/properties" className="hover:underline">All Properties</Link>
-          {' · '}
-          <Link href="/contact" className="hover:underline">Contact</Link>
-        </p>
-      </footer>
-    </div>
-  )
-}
+          &copy; {new Date().getFullYear()} Square K LLC. All rights reserved. &middo
