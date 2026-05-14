@@ -19,11 +19,16 @@ export default function PropertyCard({ property, accentColor = '#9b8060' }: Prop
             src={property.heroImage}
             alt={property.name}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            data-ngf-field={`property.${property.slug}.heroImage`}
+            data-ngf-label="Cover Photo"
+            data-ngf-type="image"
+            data-ngf-section="Property Images"
+            data-ngf-aspect="4:3"
           />
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-gradient-to-br from-[var(--surface)] to-[var(--border)]">
             <svg className="h-10 w-10 text-[var(--border)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 21l6.75-6.75 1.5 1.5M21 21V8.25A2.25 2.25 0 0018.75 6h-13.5A2.25 2.25 0 003 8.25V21m18 0H3" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 21l6.75-6.75 1.5 1.5M21 21V8.25A2.25 2.25 0 0018.75 6h-13.5A2.25 2.25 0 003 3V21m18 0H3" />
             </svg>
             <span className="font-body text-xs font-semibold uppercase tracking-widest text-[var(--muted)]">Photos Coming Soon</span>
           </div>
