@@ -26,7 +26,7 @@ export default async function PropertiesPage() {
     ...p,
     name:      content[`property.${p.slug}.name`] || p.name,
     tagline:   content[`property.${p.slug}.tagline`] || p.tagline,
-    heroImage: content[`property.${p.slug}.heroImage`] || p.heroImage,
+    heroImage: content[`property.${p.slug}.images.0.image`] || content[`property.${p.slug}.heroImage`] || p.heroImage,
     bedrooms:  Number(content[`property.${p.slug}.bedrooms`] || p.bedrooms),
     bathrooms: Number(content[`property.${p.slug}.bathrooms`] || p.bathrooms),
     maxGuests: Number(content[`property.${p.slug}.maxGuests`] || p.maxGuests),

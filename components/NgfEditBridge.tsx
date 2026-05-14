@@ -400,6 +400,22 @@ export default function NgfEditBridge() {
       })
     }
 
+    // Sync the hero/cover image to the first gallery item for live preview
+    function syncHeroImage(groupEl: HTMLElement, group: string) {
+      // group is like "property.lakeshore-grand-retreat.images"
+      const match = group.match(/^property\.(.+)\.images$/)
+      if (!match) return
+      const slug     = match[1]
+      const firstImg = getGroupItems(groupEl)[0]?.querySelector<HTMLImageElement>('img[data-ngf-field]')
+      if (!firstImg) return
+      const firstUrl = firstImg.getAttribute('src') || ''
+      if (!firstUrl || firstUrl.startsWith('data:')) return // skip placeholder
+      const heroField = 'property.' + slug + '.heroImage'
+      document.querySelectorAll<HTMLElement>('[data-ngf-field="' + heroField + '"]').forEach(el => {
+        if (isImageField(el)) el.setAttribute('src', sanitizeImageUrl(firstUrl))
+      })
+    }
+
     function notifyGroupUpdate(groupEl: HTMLElement, group: string) {
       const items: Record<string, string>[] = []
       getGroupItems(groupEl).forEach(child => {
@@ -410,6 +426,16 @@ export default function NgfEditBridge() {
         { type: 'ngfGroupUpdate', group, items },
         trustedOrigin ?? 'https://app.ngfsystems.com',
       )
+      // Also tell the portal to update heroImage to match first gallery image
+      if (items.length > 0) {
+        const match = group.match(/^property\.(.+)\.images$/)
+        if (match) {
+          window.parent.postMessage(
+            { type: 'ngfFieldUpdate', field: 'property.' + match[1] + '.heroImage', value: items[0].image },
+            trustedOrigin ?? 'https://app.ngfsystems.com',
+          )
+        }
+      }
     }
 
     function moveGroupItemInDom(groupEl: HTMLElement, group: string, from: number, to: number) {
@@ -419,6 +445,7 @@ export default function NgfEditBridge() {
       if (!fromEl || !toEl) return
       groupEl.insertBefore(fromEl, from < to ? toEl.nextSibling : toEl)
       reindexGroup(groupEl, group)
+      syncHeroImage(groupEl, group)
       markPending(group)
       mountGroupControls(groupEl, group)
       requestAnimationFrame(() => mountReplaceButtons())
@@ -430,6 +457,7 @@ export default function NgfEditBridge() {
       if (!target) return
       target.remove()
       reindexGroup(groupEl, group)
+      syncHeroImage(groupEl, group)
       markPending(group)
       mountGroupControls(groupEl, group)
       requestAnimationFrame(() => mountReplaceButtons())
@@ -827,22 +855,15 @@ export default function NgfEditBridge() {
         }
         if (href && href !== '#') {
           const isExternal = /^https?:\/\//.test(anchor.href) && !anchor.href.startsWith(window.location.origin)
-          if (isExternal) { if (editTarget) postFieldClick(editTarget); return }
-          const label = anchor.textContent?.trim() || anchor.getAttribute('aria-label') || 'Link'
-          showNavPopup(anchor.href, label, e.clientX, e.clientY, editTarget)
+          if (isExternal) {
+            window.open(anchor.href, '_blank', 'noopener'); return
+          }
+          showNavPopup(href, anchor.textContent?.trim() ?? 'Link', e.clientX, e.clientY, editTarget)
           return
         }
       }
 
-      if (editTarget) {
-        if (editTarget.fieldType === 'image') {
-          showImageLoading(editTarget.section + '.' + editTarget.field)
-        }
-        postFieldClick(editTarget)
-        return
-      }
-
-      if (buttonEl) return
+      if (fieldEl && editTarget) postFieldClick(editTarget)
     }
 
     window.addEventListener('message', messageHandler)
@@ -851,14 +872,12 @@ export default function NgfEditBridge() {
     window.addEventListener('resize', repositionAllBtns, { passive: true })
 
     return () => {
-      window.removeEventListener('message', messageHandler)
+      style.remove()
+      toast.remove()
       document.removeEventListener('click', clickHandler, true)
+      window.removeEventListener('message', messageHandler)
       window.removeEventListener('scroll', repositionAllBtns)
       window.removeEventListener('resize', repositionAllBtns)
-      document.getElementById('ngf-edit-styles')?.remove()
-      document.getElementById('ngf-upload-toast')?.remove()
-      document.documentElement.removeAttribute('data-ngf-edit')
-      dismissNavPopup()
       dismountReplaceButtons()
       dismountAllGroupControls()
     }

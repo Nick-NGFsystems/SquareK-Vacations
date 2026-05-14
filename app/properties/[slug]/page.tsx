@@ -51,7 +51,7 @@ export default async function PropertyPage({ params }: Props) {
   const propName      = content[`property.${slug}.name`] || property.name
   const propTagline   = content[`property.${slug}.tagline`] || property.tagline
   const propLongDesc  = content[`property.${slug}.longDescription`] || property.longDescription
-  const propHeroImage = content[`property.${slug}.heroImage`] || property.heroImage
+  const propHeroImage = content[`property.${slug}.images.0.image`] || content[`property.${slug}.heroImage`] || property.heroImage
   const propHeroImageAlt = content[`property.${slug}.heroImage_alt`] || propName
 
   // Gallery: load NGF-keyed images if present, otherwise fall back to static array.
