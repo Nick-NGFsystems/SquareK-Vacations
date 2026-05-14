@@ -103,6 +103,7 @@ export default function NgfEditBridge() {
       #ngf-nav-popup .ngf-edit-btn:hover {
         background: #f3f4f6;
       }
+      /* Replace photo overlay button */
       .ngf-replace-btn {
         position: fixed;
         z-index: 2147483646;
@@ -126,13 +127,51 @@ export default function NgfEditBridge() {
       .ngf-replace-btn:hover {
         background: rgba(0, 0, 0, 0.85);
       }
-      .ngf-gallery-edit-grid {
-        display: none;
+      /* Image loading state while upload is in flight */
+      .ngf-replacing {
+        opacity: 0.45 !important;
+        filter: blur(1.5px) !important;
+        transition: opacity 0.2s, filter 0.2s;
       }
+      /* Upload progress toast */
+      #ngf-upload-toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2147483647;
+        background: rgba(15, 23, 42, 0.92);
+        color: #fff;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 9px 18px 9px 14px;
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.28);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      #ngf-upload-toast.ngf-toast-visible { opacity: 1; }
+      .ngf-toast-spinner {
+        width: 13px;
+        height: 13px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: ngf-spin 0.7s linear infinite;
+        flex-shrink: 0;
+      }
+      @keyframes ngf-spin { to { transform: rotate(360deg); } }
+      /* Gallery edit grid */
+      .ngf-gallery-edit-grid { display: none; }
       [data-ngf-edit="true"] .ngf-gallery-edit-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 6px;
+        grid-template-columns: repeat(auto-fill, minmax(90px, 110px));
+        gap: 5px;
         margin-top: 10px;
         padding: 10px;
         background: rgba(59,130,246,0.04);
@@ -144,14 +183,16 @@ export default function NgfEditBridge() {
         aspect-ratio: 3/2;
         overflow: hidden;
         border-radius: 4px;
+        cursor: pointer;
       }
       [data-ngf-edit="true"] .ngf-gallery-edit-grid img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        display: block;
       }
       [data-ngf-edit="true"] .ngf-gallery-edit-grid::before {
-        content: 'All photos — click any to replace';
+        content: 'All photos — click to replace, use arrows to reorder, × to remove';
         display: block;
         grid-column: 1 / -1;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -162,8 +203,74 @@ export default function NgfEditBridge() {
         letter-spacing: 0.06em;
         padding-bottom: 4px;
       }
+      /* Group item controls (reorder / delete) */
+      .ngf-grp-controls {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        padding: 3px 3px 4px;
+        background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%);
+        opacity: 0;
+        transition: opacity 0.15s;
+        pointer-events: none;
+      }
+      [data-ngf-edit="true"] .ngf-gallery-edit-grid > *:hover .ngf-grp-controls {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .ngf-grp-btn {
+        all: unset;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 4px;
+        background: rgba(255,255,255,0.88);
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+        cursor: pointer;
+        color: #0f172a;
+        transition: background 0.1s, color 0.1s;
+        pointer-events: auto !important;
+        flex-shrink: 0;
+      }
+      .ngf-grp-btn:hover { background: #fff; }
+      .ngf-grp-del { color: #dc2626; font-size: 14px; }
+      .ngf-grp-del:hover { color: #b91c1c; }
     `
     document.head.appendChild(style)
+
+    // Upload loading toast
+    const toast = document.createElement('div')
+    toast.id = 'ngf-upload-toast'
+    const spinner = document.createElement('div')
+    spinner.className = 'ngf-toast-spinner'
+    const toastText = document.createElement('span')
+    toastText.textContent = 'Uploading photo…'
+    toast.appendChild(spinner)
+    toast.appendChild(toastText)
+    document.body.appendChild(toast)
+
+    const loadingFields = new Set<string>()
+
+    function showUploadToast(field: string) {
+      loadingFields.add(field)
+      toast.classList.add('ngf-toast-visible')
+    }
+    function clearUploadToast(field: string) {
+      loadingFields.delete(field)
+      if (loadingFields.size === 0) toast.classList.remove('ngf-toast-visible')
+      // Un-dim the image
+      const el = document.querySelector<HTMLElement>(`[data-ngf-field="${field}"]`)
+      if (el) el.classList.remove('ngf-replacing')
+    }
 
     let navPopup: HTMLDivElement | null = null
 
@@ -283,12 +390,13 @@ export default function NgfEditBridge() {
       return ''
     }
 
-    // Replace Photo Overlay Buttons
+    // ── Replace Photo Overlay Buttons ────────────────────────────────────
     const replaceButtons = new Map<HTMLImageElement, HTMLButtonElement>()
 
     function positionBtn(img: HTMLImageElement, btn: HTMLButtonElement) {
       const r = img.getBoundingClientRect()
-      if (r.width < 40 || r.height < 40) {
+      // Hide if too small or scrolled out of viewport
+      if (r.width < 40 || r.height < 40 || r.bottom <= 0 || r.top >= window.innerHeight) {
         btn.style.display = 'none'
         return
       }
@@ -325,6 +433,9 @@ export default function NgfEditBridge() {
           const field = img.getAttribute('data-ngf-field') ?? ''
           const dot   = field.indexOf('.')
           if (dot > -1) {
+            // Show loading state on this image
+            img.classList.add('ngf-replacing')
+            showUploadToast(field)
             postFieldClick({
               section:   field.substring(0, dot),
               field:     field.substring(dot + 1),
@@ -338,6 +449,135 @@ export default function NgfEditBridge() {
         document.body.appendChild(btn)
         replaceButtons.set(img, btn)
       })
+    }
+
+    // ── Group item management (reorder / delete) ──────────────────────────
+
+    function getItemIndex(item: Element, group: string): number {
+      const prefix = group + '.'
+      const img = item.querySelector(`[data-ngf-field^="${prefix}"]`)
+      if (!img) return -1
+      const field = img.getAttribute('data-ngf-field') || ''
+      const rest = field.slice(prefix.length)
+      const idx = parseInt(rest.split('.')[0], 10)
+      return isNaN(idx) ? -1 : idx
+    }
+
+    function reindexGroup(groupEl: HTMLElement, group: string) {
+      const prefix = group + '.'
+      Array.from(groupEl.children).forEach((child, newIdx) => {
+        child.querySelectorAll<HTMLElement>('[data-ngf-field]').forEach(el => {
+          const path = el.getAttribute('data-ngf-field') || ''
+          if (path.startsWith(prefix)) {
+            const rest = path.slice(prefix.length)
+            const dot  = rest.indexOf('.')
+            if (dot > -1) {
+              el.setAttribute('data-ngf-field', `${prefix}${newIdx}.${rest.slice(dot + 1)}`)
+            }
+          }
+        })
+      })
+    }
+
+    function notifyGroupUpdate(groupEl: HTMLElement, group: string) {
+      const items: Record<string, string>[] = []
+      Array.from(groupEl.children).forEach(child => {
+        const img = child.querySelector<HTMLImageElement>('img[data-ngf-field]')
+        if (img) items.push({ image: img.getAttribute('src') || '' })
+      })
+      window.parent.postMessage(
+        { type: 'ngfGroupUpdate', group, items },
+        trustedOrigin ?? 'https://app.ngfsystems.com',
+      )
+    }
+
+    function moveGroupItemInDom(groupEl: HTMLElement, group: string, from: number, to: number) {
+      const children = Array.from(groupEl.children) as HTMLElement[]
+      const fromEl = children.find(c => getItemIndex(c, group) === from)
+      const toEl   = children.find(c => getItemIndex(c, group) === to)
+      if (!fromEl || !toEl) return
+
+      if (from < to) {
+        groupEl.insertBefore(fromEl, toEl.nextSibling)
+      } else {
+        groupEl.insertBefore(fromEl, toEl)
+      }
+
+      reindexGroup(groupEl, group)
+      notifyGroupUpdate(groupEl, group)
+      mountGroupControls()
+      requestAnimationFrame(() => mountReplaceButtons())
+    }
+
+    function deleteGroupItemInDom(groupEl: HTMLElement, group: string, idx: number) {
+      const children = Array.from(groupEl.children) as HTMLElement[]
+      const target = children.find(c => getItemIndex(c, group) === idx)
+      if (!target) return
+      target.remove()
+      reindexGroup(groupEl, group)
+      notifyGroupUpdate(groupEl, group)
+      mountGroupControls()
+      requestAnimationFrame(() => mountReplaceButtons())
+    }
+
+    function mountGroupControls() {
+      // Remove any existing controls first
+      document.querySelectorAll('.ngf-grp-controls').forEach(el => el.remove())
+
+      document.querySelectorAll<HTMLElement>('[data-ngf-group]').forEach(groupEl => {
+        const group = groupEl.getAttribute('data-ngf-group')!
+        const items = Array.from(groupEl.children) as HTMLElement[]
+        const total = items.length
+
+        items.forEach(item => {
+          // Skip if this child is somehow a controls element itself
+          if (item.classList.contains('ngf-grp-controls')) return
+
+          const controls = document.createElement('div')
+          controls.className = 'ngf-grp-controls'
+
+          const upBtn = document.createElement('button')
+          upBtn.className = 'ngf-grp-btn ngf-grp-up'
+          upBtn.title = 'Move left / up'
+          upBtn.textContent = '←'
+          upBtn.addEventListener('click', (ev) => {
+            ev.preventDefault(); ev.stopPropagation(); ev.stopImmediatePropagation()
+            const idx = getItemIndex(item, group)
+            if (idx > 0) moveGroupItemInDom(groupEl, group, idx, idx - 1)
+          })
+
+          const delBtn = document.createElement('button')
+          delBtn.className = 'ngf-grp-btn ngf-grp-del'
+          delBtn.title = 'Remove photo'
+          delBtn.textContent = '×'
+          delBtn.addEventListener('click', (ev) => {
+            ev.preventDefault(); ev.stopPropagation(); ev.stopImmediatePropagation()
+            const idx = getItemIndex(item, group)
+            if (idx >= 0) deleteGroupItemInDom(groupEl, group, idx)
+          })
+
+          const dnBtn = document.createElement('button')
+          dnBtn.className = 'ngf-grp-btn ngf-grp-dn'
+          dnBtn.title = 'Move right / down'
+          dnBtn.textContent = '→'
+          dnBtn.addEventListener('click', (ev) => {
+            ev.preventDefault(); ev.stopPropagation(); ev.stopImmediatePropagation()
+            const idx = getItemIndex(item, group)
+            const cur = getItemIndex(item, group)
+            const curTotal = groupEl.children.length
+            if (cur < curTotal - 1) moveGroupItemInDom(groupEl, group, idx, idx + 1)
+          })
+
+          controls.appendChild(upBtn)
+          controls.appendChild(delBtn)
+          controls.appendChild(dnBtn)
+          item.appendChild(controls)
+        })
+      })
+    }
+
+    function dismountGroupControls() {
+      document.querySelectorAll('.ngf-grp-controls').forEach(el => el.remove())
     }
 
     const messageHandler = (e: MessageEvent) => {
@@ -354,12 +594,17 @@ export default function NgfEditBridge() {
         document.documentElement.setAttribute('data-ngf-edit', editMode ? 'true' : 'false')
         captureDefaults()
         if (editMode) {
-          // Wait one frame for CSS (e.g. ngf-gallery-edit-grid display:none->grid)
-          // to apply before scanning images so they have valid bounding rects.
-          requestAnimationFrame(() => mountReplaceButtons())
+          requestAnimationFrame(() => {
+            mountReplaceButtons()
+            mountGroupControls()
+          })
         } else {
           dismissNavPopup()
           dismountReplaceButtons()
+          dismountGroupControls()
+          loadingFields.clear()
+          toast.classList.remove('ngf-toast-visible')
+          document.querySelectorAll('.ngf-replacing').forEach(el => el.classList.remove('ngf-replacing'))
         }
       }
 
@@ -367,15 +612,19 @@ export default function NgfEditBridge() {
         const walk = (obj: unknown, path: string) => {
           if (obj === null || obj === undefined) return
           if (typeof obj === 'string') {
-            const el = document.querySelector<HTMLElement>(`[data-ngf-field="${path}"]`)
-            if (el) {
+            // Clear loading state for this field if it was pending
+            if (loadingFields.has(path)) clearUploadToast(path)
+
+            const els = document.querySelectorAll<HTMLElement>(`[data-ngf-field="${path}"]`)
+            els.forEach(el => {
               const next = obj === '' ? (el.dataset.ngfDefault ?? '') : obj
               if (isImageField(el)) {
                 el.setAttribute('src', sanitizeImageUrl(next))
+                el.classList.remove('ngf-replacing')
               } else {
                 el.textContent = next
               }
-            }
+            })
             return
           }
           if (Array.isArray(obj)) {
@@ -437,8 +686,17 @@ export default function NgfEditBridge() {
             }
           }
         })
+        // Remove any existing controls from the clone before appending
+        clone.querySelectorAll('.ngf-grp-controls').forEach(el => el.remove())
         group.appendChild(clone)
         clone.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        // Add controls to new item
+        if (editMode) {
+          requestAnimationFrame(() => {
+            mountGroupControls()
+            mountReplaceButtons()
+          })
+        }
       }
 
       if (e.data?.type === 'moveGroupItem' && typeof e.data.group === 'string' && typeof e.data.from === 'number' && typeof e.data.to === 'number') {
@@ -471,6 +729,7 @@ export default function NgfEditBridge() {
             }
           })
         })
+        if (editMode) mountGroupControls()
       }
 
       if (e.data?.type === 'removeGroupItem' && typeof e.data.group === 'string' && typeof e.data.index === 'number') {
@@ -497,13 +756,13 @@ export default function NgfEditBridge() {
                 const idx    = parseInt(idxStr, 10)
                 if (!isNaN(idx) && idx > removeIdx) {
                   const subField = rest.slice(dot + 1)
-                  const newPath  = `${prefix}${idx - 1}.${subField}`
-                  child.setAttribute('data-ngf-field', newPath)
+                  child.setAttribute('data-ngf-field', `${prefix}${idx - 1}.${subField}`)
                 }
               }
             }
           })
         })
+        if (editMode) mountGroupControls()
       }
     }
 
@@ -511,6 +770,8 @@ export default function NgfEditBridge() {
       if (!editMode) return
       if (navPopup && navPopup.contains(e.target as Node)) return
       if ((e.target as HTMLElement)?.classList?.contains('ngf-replace-btn')) return
+      if ((e.target as HTMLElement)?.classList?.contains('ngf-grp-btn')) return
+      if ((e.target as HTMLElement)?.closest?.('.ngf-grp-controls')) return
       if (navPopup) dismissNavPopup()
 
       let cursor: HTMLElement | null = e.target as HTMLElement | null
@@ -593,9 +854,11 @@ export default function NgfEditBridge() {
       window.removeEventListener('scroll', repositionAllBtns)
       window.removeEventListener('resize', repositionAllBtns)
       document.getElementById('ngf-edit-styles')?.remove()
+      document.getElementById('ngf-upload-toast')?.remove()
       document.documentElement.removeAttribute('data-ngf-edit')
       dismissNavPopup()
       dismountReplaceButtons()
+      dismountGroupControls()
     }
   }, [])
 
