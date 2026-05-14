@@ -64,7 +64,7 @@ export default async function PropertyPage({ params }: Props) {
 
   // Highlights & amenities with per-item NGF override
   const propHighlights = property.highlights.map((h, i) => ({
-    icon: h.icon,
+    icon:  content[`property.${slug}.highlights.${i}.icon`]  ?? h.icon,
     label: content[`property.${slug}.highlights.${i}.label`] ?? h.label,
   }))
   const propAmenities = property.amenities.map((a, i) =>
@@ -241,7 +241,13 @@ export default async function PropertyPage({ params }: Props) {
                     key={h.label}
                     className="flex items-center gap-3 rounded-xl border border-[var(--border)] bg-white p-4"
                   >
-                    <span className="text-xl leading-none">{h.icon}</span>
+                    <span
+                      className="text-xl leading-none"
+                      data-ngf-field={`property.${slug}.highlights.${i}.icon`}
+                      data-ngf-label={`Highlight ${i + 1} Icon`}
+                      data-ngf-type="text"
+                      data-ngf-section="Highlights"
+                    >{h.icon}</span>
                     <span
                       className="font-body text-sm font-semibold text-[var(--text)]"
                       data-ngf-field={`property.${slug}.highlights.${i}.label`}

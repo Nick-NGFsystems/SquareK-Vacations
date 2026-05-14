@@ -7,7 +7,6 @@ interface PropertyCardProps {
 }
 
 export default function PropertyCard({ property, accentColor = '#9b8060' }: PropertyCardProps) {
-  const s = `property.${property.slug}`
   return (
     <Link
       href={`/properties/${property.slug}`}
@@ -41,22 +40,10 @@ export default function PropertyCard({ property, accentColor = '#9b8060' }: Prop
         <div className="mb-1 text-xs font-semibold uppercase tracking-widest text-[var(--muted)]">
           {property.city}, {property.state}
         </div>
-        <h3
-          className="font-heading text-xl font-semibold text-[var(--text)] group-hover:opacity-80 transition-opacity"
-          data-ngf-field={`${s}.name`}
-          data-ngf-label="Property Name"
-          data-ngf-type="text"
-          data-ngf-section={`Property: ${property.name}`}
-        >
+        <h3 className="font-heading text-xl font-semibold text-[var(--text)] group-hover:opacity-80 transition-opacity">
           {property.name}
         </h3>
-        <p
-          className="mt-2 font-body text-sm leading-relaxed text-[var(--muted)]"
-          data-ngf-field={`${s}.tagline`}
-          data-ngf-label="Tagline"
-          data-ngf-type="text"
-          data-ngf-section={`Property: ${property.name}`}
-        >
+        <p className="mt-2 font-body text-sm leading-relaxed text-[var(--muted)]">
           {property.tagline}
         </p>
 
@@ -85,28 +72,19 @@ export default function PropertyCard({ property, accentColor = '#9b8060' }: Prop
 
         {/* Highlights */}
         <div className="mt-3 flex flex-wrap gap-1.5">
-          {property.highlights.slice(0, 3).map((h, i) => (
+          {property.highlights.slice(0, 3).map(h => (
             <span
               key={h.label}
               className="inline-flex items-center gap-1 rounded-full bg-[var(--surface)] px-2.5 py-1 font-body text-xs font-medium text-[var(--text)]"
             >
-              {h.icon}{' '}
-              <span
-                data-ngf-field={`${s}.highlights.${i}.label`}
-                data-ngf-label={`Highlight ${i + 1}`}
-                data-ngf-type="text"
-                data-ngf-section={`Property: ${property.name}`}
-              >{h.label}</span>
+              {h.icon} {h.label}
             </span>
           ))}
         </div>
 
         {/* CTA row */}
         <div className="mt-4 flex items-center justify-between">
-          <span
-            className="font-body text-sm font-semibold"
-            style={{ color: accentColor }}
-          >
+          <span className="font-body text-sm font-semibold" style={{ color: accentColor }}>
             View Property &rarr;
           </span>
         </div>

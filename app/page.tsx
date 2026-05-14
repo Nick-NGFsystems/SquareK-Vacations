@@ -56,8 +56,12 @@ export default async function HomePage() {
     name:      content[`property.${p.slug}.name`]      ?? p.name,
     tagline:   content[`property.${p.slug}.tagline`]   ?? p.tagline,
     heroImage: content[`property.${p.slug}.heroImage`] ?? p.heroImage,
+    bedrooms:  Number(content[`property.${p.slug}.bedrooms`]  ?? p.bedrooms),
+    bathrooms: Number(content[`property.${p.slug}.bathrooms`] ?? p.bathrooms),
+    maxGuests: Number(content[`property.${p.slug}.maxGuests`] ?? p.maxGuests),
     highlights: p.highlights.map((h, i) => ({
       ...h,
+      icon:  content[`property.${p.slug}.highlights.${i}.icon`]  ?? h.icon,
       label: content[`property.${p.slug}.highlights.${i}.label`] ?? h.label,
     })),
   }))
