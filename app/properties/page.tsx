@@ -21,6 +21,18 @@ export default async function PropertiesPage() {
   const ctaSubtext  = content['properties.cta.subtext'] ?? 'Reach out directly and our team will help you find the perfect fit.'
   const ctaButton   = content['properties.cta.button']  ?? 'Contact Us'
 
+  // Merge NGF content into each property so cards reflect edits
+  const ngfProperties = properties.map(p => ({
+    ...p,
+    name:      content[`property.${p.slug}.name`]      ?? p.name,
+    tagline:   content[`property.${p.slug}.tagline`]   ?? p.tagline,
+    heroImage: content[`property.${p.slug}.heroImage`] ?? p.heroImage,
+    highlights: p.highlights.map((h, i) => ({
+      ...h,
+      label: content[`property.${p.slug}.highlights.${i}.label`] ?? h.label,
+    })),
+  }))
+
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <SiteHeader primaryColor={primary} accentColor={accent} />
@@ -57,7 +69,7 @@ export default async function PropertiesPage() {
       <section className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {properties.map(p => (
+            {ngfProperties.map(p => (
               <PropertyCard key={p.slug} property={p} accentColor={accent} />
             ))}
           </div>

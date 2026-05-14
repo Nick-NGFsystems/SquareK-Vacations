@@ -34,6 +34,10 @@ export default async function PropertyPage({ params }: Props) {
   const primary = content['brand.primaryColor'] ?? '#4a6741'
   const accent  = content['brand.accentColor']  ?? '#9b8060'
 
+  const contactPhone     = content['contact.phone']     ?? '(616) 333-9601'
+  const contactEmail     = content['contact.email']     ?? 'Squarek.llc.mi@gmail.com'
+  const contactDirectCta = content['contact.direct.cta'] ?? 'Prefer to call or email directly?'
+
   // ── Property-specific editable content (NGF overrides static data) ─────
   const propName      = content[`property.${slug}.name`]            ?? property.name
   const propTagline   = content[`property.${slug}.tagline`]         ?? property.tagline
@@ -258,13 +262,30 @@ export default async function PropertyPage({ params }: Props) {
                 accentColor={accent}
               />
               <div className="mt-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 text-center">
-                <p className="font-body text-xs text-[var(--muted)]">Prefer to call or email directly?</p>
-                <a href="tel:16163339601" className="mt-1 block font-body text-sm font-semibold hover:underline" style={{ color: accent }}>
-                  (616) 333-9601
-                </a>
-                <a href="mailto:Squarek.llc.mi@gmail.com" className="block font-body text-xs text-[var(--muted)] hover:underline">
-                  Squarek.llc.mi@gmail.com
-                </a>
+                <p
+                  className="font-body text-xs text-[var(--muted)]"
+                  data-ngf-field="contact.direct.cta"
+                  data-ngf-label="Sidebar Contact Label"
+                  data-ngf-type="text"
+                  data-ngf-section="Contact"
+                >{contactDirectCta}</p>
+                <a
+                  href={`tel:${contactPhone.replace(/[^0-9]/g, '')}`}
+                  className="mt-1 block font-body text-sm font-semibold hover:underline"
+                  style={{ color: accent }}
+                  data-ngf-field="contact.phone"
+                  data-ngf-label="Phone Number"
+                  data-ngf-type="text"
+                  data-ngf-section="Contact"
+                >{contactPhone}</a>
+                <a
+                  href={`mailto:${contactEmail}`}
+                  className="block font-body text-xs text-[var(--muted)] hover:underline"
+                  data-ngf-field="contact.email"
+                  data-ngf-label="Email Address"
+                  data-ngf-type="text"
+                  data-ngf-section="Contact"
+                >{contactEmail}</a>
               </div>
 
               <div className="mt-4 text-center">

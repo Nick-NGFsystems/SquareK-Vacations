@@ -36,6 +36,23 @@ export default async function HomePage() {
   const heroImage         = content['hero.image']                ?? '/images/lakeshore/Front-Exterior-Noon.jpg'
   const propertiesEyebrow = content['properties.section.eyebrow'] ?? 'Our Retreats'
   const propertiesTitle   = content['properties.section.title']   ?? 'Michigan Properties'
+  const howEyebrow        = content['how.eyebrow']                ?? 'Simple Process'
+  const aboutEyebrow      = content['about.eyebrow']              ?? 'Who We Are'
+  const contactPhone      = content['contact.phone']              ?? '(616) 333-9601'
+  const contactEmail      = content['contact.email']              ?? 'Squarek.llc.mi@gmail.com'
+  const contactLocations  = content['contact.locations']          ?? 'Fennville & Bellaire, Michigan'
+
+  // Merge NGF content into each property so cards reflect edits
+  const ngfProperties = properties.map(p => ({
+    ...p,
+    name:      content[`property.${p.slug}.name`]      ?? p.name,
+    tagline:   content[`property.${p.slug}.tagline`]   ?? p.tagline,
+    heroImage: content[`property.${p.slug}.heroImage`] ?? p.heroImage,
+    highlights: p.highlights.map((h, i) => ({
+      ...h,
+      label: content[`property.${p.slug}.highlights.${i}.label`] ?? h.label,
+    })),
+  }))
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
@@ -142,7 +159,7 @@ export default async function HomePage() {
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {properties.map(p => (
+            {ngfProperties.map(p => (
               <PropertyCard key={p.slug} property={p} accentColor={accent} />
             ))}
           </div>
@@ -167,7 +184,14 @@ export default async function HomePage() {
       >
         <div className="mx-auto max-w-6xl">
           <div className="text-center">
-            <p className="font-body text-xs font-semibold uppercase tracking-widest" style={{ color: accent }}>Simple Process</p>
+            <p
+              className="font-body text-xs font-semibold uppercase tracking-widest"
+              style={{ color: accent }}
+              data-ngf-field="how.eyebrow"
+              data-ngf-label="Eyebrow Tag"
+              data-ngf-type="text"
+              data-ngf-section="How It Works"
+            >{howEyebrow}</p>
             <h2
               data-ngf-field="how.title"
               data-ngf-label="Section Title"
@@ -221,7 +245,14 @@ export default async function HomePage() {
         <div className="mx-auto max-w-6xl">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
             <div>
-              <p className="font-body text-xs font-semibold uppercase tracking-widest" style={{ color: accent }}>Who We Are</p>
+              <p
+                className="font-body text-xs font-semibold uppercase tracking-widest"
+                style={{ color: accent }}
+                data-ngf-field="about.eyebrow"
+                data-ngf-label="Eyebrow Tag"
+                data-ngf-type="text"
+                data-ngf-section="About"
+              >{aboutEyebrow}</p>
               <h2
                 data-ngf-field="about.title"
                 data-ngf-label="Section Title"
@@ -325,7 +356,7 @@ export default async function HomePage() {
             <div>
               <h4 className="font-body text-xs font-semibold uppercase tracking-widest text-[var(--text)]">Properties</h4>
               <ul className="mt-3 space-y-2">
-                {properties.map(p => (
+                {ngfProperties.map(p => (
                   <li key={p.slug}>
                     <Link href={`/properties/${p.slug}`} className="font-body text-sm text-[var(--muted)] hover:text-[var(--text)] transition-colors">
                       {p.name}
@@ -338,12 +369,31 @@ export default async function HomePage() {
               <h4 className="font-body text-xs font-semibold uppercase tracking-widest text-[var(--text)]">Contact</h4>
               <ul className="mt-3 space-y-2 font-body text-sm text-[var(--muted)]">
                 <li>
-                  <a href="tel:16163339601" className="hover:text-[var(--text)] transition-colors">(616) 333-9601</a>
+                  <a
+                    href={`tel:${contactPhone.replace(/[^0-9]/g, '')}`}
+                    className="hover:text-[var(--text)] transition-colors"
+                    data-ngf-field="contact.phone"
+                    data-ngf-label="Phone Number"
+                    data-ngf-type="text"
+                    data-ngf-section="Footer"
+                  >{contactPhone}</a>
                 </li>
                 <li>
-                  <a href="mailto:Squarek.llc.mi@gmail.com" className="hover:text-[var(--text)] transition-colors">Squarek.llc.mi@gmail.com</a>
+                  <a
+                    href={`mailto:${contactEmail}`}
+                    className="hover:text-[var(--text)] transition-colors"
+                    data-ngf-field="contact.email"
+                    data-ngf-label="Email Address"
+                    data-ngf-type="text"
+                    data-ngf-section="Footer"
+                  >{contactEmail}</a>
                 </li>
-                <li>Fennville &amp; Bellaire, Michigan</li>
+                <li
+                    data-ngf-field="contact.locations"
+                    data-ngf-label="Locations"
+                    data-ngf-type="text"
+                    data-ngf-section="Footer"
+                  >{contactLocations}</li>
               </ul>
             </div>
           </div>
