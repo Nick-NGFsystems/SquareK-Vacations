@@ -7,34 +7,35 @@ import { properties } from '@/lib/properties'
 export default async function HomePage() {
   const content = await getNgfContent()
 
-  const businessName = content['brand.businessName'] ?? 'Square K Vacations'
+  const businessName = content['brand.businessName'] || 'Square K Vacations'
   const tagline      = content['brand.tagline']      ?? 'Rent with peace of mind.'
-  const primary      = content['brand.primaryColor'] ?? '#4a6741'
+  const primary      = content['brand.primaryColor'] || '#4a6741'
   const accent       = content['brand.accentColor']  ?? '#9b8060'
 
   const heroEyebrow  = content['hero.eyebrow']  ?? 'Michigan Vacation Rentals'
-  const heroHeadline = content['hero.headline'] ?? "Michigan's Premier Vacation Retreats"
+  const heroHeadline = content['hero.headline'] || "Michigan's Premier Vacation Retreats"
   const heroSubhead  = content['hero.subhead']  ?? 'Lakeshore luxury and up-north escapes — curated by Square K for an unforgettable stay.'
   const heroCta      = content['hero.cta']      ?? 'Browse Properties'
 
-  const howTitle = content['how.title'] ?? 'How It Works'
+  const howTitle = content['how.title'] || 'How It Works'
   const howSteps = [
-    { num: '01', title: content['how.steps.0.title'] ?? 'Browse', desc: content['how.steps.0.desc'] ?? 'Explore our curated Michigan properties and find the retreat that fits your group.' },
-    { num: '02', title: content['how.steps.1.title'] ?? 'Request', desc: content['how.steps.1.desc'] ?? 'Submit a stay request with your dates, group size, and any questions.' },
-    { num: '03', title: content['how.steps.2.title'] ?? 'Confirmed', desc: content['how.steps.2.desc'] ?? 'Our team reviews every request and confirms availability promptly.' },
-    { num: '04', title: content['how.steps.3.title'] ?? 'Enjoy', desc: content['how.steps.3.desc'] ?? 'Show up, unpack, and enjoy every moment of your Michigan getaway.' },
+    { num: '01', title: content['how.steps.0.title'] || 'Browse', desc: content['how.steps.0.desc'] || 'Explore our curated Michigan properties and find the retreat that fits your group.' },
+    { num: '02', title: content['how.steps.1.title'] || 'Request', desc: content['how.steps.1.desc'] || 'Submit a stay request with your dates, group size, and any questions.' },
+    { num: '03', title: content['how.steps.2.title'] || 'Confirmed', desc: content['how.steps.2.desc'] || 'Our team reviews every request and confirms availability promptly.' },
+    { num: '04', title: content['how.steps.3.title'] || 'Enjoy', desc: content['how.steps.3.desc'] || 'Show up, unpack, and enjoy every moment of your Michigan getaway.' },
   ]
 
-  const aboutTitle = content['about.title'] ?? 'The Square K Promise'
+  const aboutTitle = content['about.title'] || 'The Square K Promise'
   const aboutBody  = content['about.body']  ?? 'Every Square K property is owner-operated — not a faceless platform. That means genuine care, fast responses, and a stay that actually lives up to the photos.'
 
   const ctaTitle  = content['cta.title']  ?? 'Ready to plan your Michigan escape?'
-  const ctaButton = content['cta.button'] ?? 'Browse Properties'
+  const ctaButton = content['cta.button'] || 'Browse Properties'
 
-  const copyright = content['footer.copyright'] ?? `© ${new Date().getFullYear()} Square K LLC. All rights reserved.`
+  const copyright = content['footer.copyright'] || `© ${new Date().getFullYear()} Square K LLC. All rights reserved.`
 
   const heroImage         = content['hero.image']                ?? '/images/lakeshore/Front-Exterior-Noon.jpg'
-  const propertiesEyebrow = content['properties.section.eyebrow'] ?? 'Our Retreats'
+  const heroImageAlt = content['hero.image_alt'] || 'Square K Vacation Retreats'
+  const propertiesEyebrow = content['properties.section.eyebrow'] || 'Our Retreats'
   const propertiesTitle   = content['properties.section.title']   ?? 'Michigan Properties'
   const howEyebrow        = content['how.eyebrow']                ?? 'Simple Process'
   const aboutEyebrow      = content['about.eyebrow']              ?? 'Who We Are'
@@ -55,14 +56,14 @@ export default async function HomePage() {
     ...p,
     name:      content[`property.${p.slug}.name`]      ?? p.name,
     tagline:   content[`property.${p.slug}.tagline`]   ?? p.tagline,
-    heroImage: content[`property.${p.slug}.heroImage`] ?? p.heroImage,
+    heroImage: content[`property.${p.slug}.heroImage`] || p.heroImage,
     bedrooms:  Number(content[`property.${p.slug}.bedrooms`]  ?? p.bedrooms),
-    bathrooms: Number(content[`property.${p.slug}.bathrooms`] ?? p.bathrooms),
-    maxGuests: Number(content[`property.${p.slug}.maxGuests`] ?? p.maxGuests),
+    bathrooms: Number(content[`property.${p.slug}.bathrooms`] || p.bathrooms),
+    maxGuests: Number(content[`property.${p.slug}.maxGuests`] || p.maxGuests),
     highlights: p.highlights.map((h, i) => ({
       ...h,
       icon:  content[`property.${p.slug}.highlights.${i}.icon`]  ?? h.icon,
-      label: content[`property.${p.slug}.highlights.${i}.label`] ?? h.label,
+      label: content[`property.${p.slug}.highlights.${i}.label`] || h.label,
     })),
   }))
 
@@ -77,15 +78,14 @@ export default async function HomePage() {
         className="relative flex min-h-[60vh] items-end overflow-hidden bg-[var(--text)] sm:min-h-[85vh]"
       >
 
-        <span aria-hidden="true" className="sr-only"
+        <img
+          src={heroImage}
+          alt={heroImageAlt}
           data-ngf-field="hero.image"
           data-ngf-label="Hero Background Photo"
           data-ngf-type="image"
           data-ngf-section="Hero"
-        />
-        <img
-          src={heroImage}
-          alt="Square K Vacation Rental"
+          data-ngf-aspect="16:9"
           className="absolute inset-0 h-full w-full object-cover object-[center_35%] opacity-75"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />

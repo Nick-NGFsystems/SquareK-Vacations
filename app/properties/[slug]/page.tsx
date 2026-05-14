@@ -31,16 +31,16 @@ export default async function PropertyPage({ params }: Props) {
   if (!property) notFound()
 
   const content = await getNgfContent()
-  const primary = content['brand.primaryColor'] ?? '#4a6741'
+  const primary = content['brand.primaryColor'] || '#4a6741'
   const accent  = content['brand.accentColor']  ?? '#9b8060'
 
   const contactPhone     = content['contact.phone']     ?? '(616) 333-9601'
   const contactEmail     = content['contact.email']     ?? 'Squarek.llc.mi@gmail.com'
-  const contactDirectCta = content['contact.direct.cta'] ?? 'Prefer to call or email directly?'
+  const contactDirectCta = content['contact.direct.cta'] || 'Prefer to call or email directly?'
 
   // Property stats — NGF override falls back to static numbers
   const propBedrooms  = content[`property.${slug}.bedrooms`]  ?? String(property.bedrooms)
-  const propBathrooms = content[`property.${slug}.bathrooms`] ?? String(property.bathrooms)
+  const propBathrooms = content[`property.${slug}.bathrooms`] || String(property.bathrooms)
   const propMaxGuests = content[`property.${slug}.maxGuests`]  ?? String(property.maxGuests)
   const propAddress   = content[`property.${slug}.address`]   ?? property.address
   const propCity      = content[`property.${slug}.city`]      ?? property.city
@@ -50,8 +50,9 @@ export default async function PropertyPage({ params }: Props) {
   // ── Property-specific editable content (NGF overrides static data) ─────
   const propName      = content[`property.${slug}.name`]            ?? property.name
   const propTagline   = content[`property.${slug}.tagline`]         ?? property.tagline
-  const propLongDesc  = content[`property.${slug}.longDescription`] ?? property.longDescription
+  const propLongDesc  = content[`property.${slug}.longDescription`] || property.longDescription
   const propHeroImage = content[`property.${slug}.heroImage`]       ?? property.heroImage
+  const propHeroImageAlt = content[`property.${slug}.heroImage_alt`] || propName
 
   // Gallery: load NGF-keyed images if present, otherwise fall back to static array
   const ngfImages: string[] = []
@@ -65,29 +66,24 @@ export default async function PropertyPage({ params }: Props) {
   // Highlights & amenities with per-item NGF override
   const propHighlights = property.highlights.map((h, i) => ({
     icon:  content[`property.${slug}.highlights.${i}.icon`]  ?? h.icon,
-    label: content[`property.${slug}.highlights.${i}.label`] ?? h.label,
+    label: content[`property.${slug}.highlights.${i}.label`] || h.label,
   }))
   const propAmenities = property.amenities.map((a, i) =>
-    content[`property.${slug}.amenities.${i}`] ?? a
+    content[`property.${slug}.amenities.${i}`] || a
   )
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <SiteHeader primaryColor={primary} accentColor={accent} />
 
-      {/* ── Hidden NGF image-editor anchors ── */}
-      <span aria-hidden="true" className="sr-only"
-        data-ngf-field={`property.${slug}.heroImage`}
-        data-ngf-label="Hero Image"
-        data-ngf-type="image"
-        data-ngf-section="Property Images"
-      />
+      {/* ── Hidden NGF image-editor anchors (gallery only — hero annotation is on the img) ── */}
       {propImages.map((_, i) => (
         <span key={i} aria-hidden="true" className="sr-only"
           data-ngf-field={`property.${slug}.images.${i}`}
           data-ngf-label={`Gallery Photo ${i + 1}`}
           data-ngf-type="image"
           data-ngf-section="Property Images"
+          data-ngf-aspect="3:2"
         />
       ))}
 
@@ -118,7 +114,12 @@ export default async function PropertyPage({ params }: Props) {
         {propHeroImage && (
           <img
             src={propHeroImage}
-            alt={propName}
+            alt={propHeroImageAlt}
+            data-ngf-field={`property.${slug}.heroImage`}
+            data-ngf-label="Hero Image"
+            data-ngf-type="image"
+            data-ngf-section="Property Images"
+            data-ngf-aspect="16:9"
             className="h-full w-full object-cover opacity-75"
           />
         )}
