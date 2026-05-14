@@ -126,8 +126,6 @@ export default function NgfEditBridge() {
       .ngf-replace-btn:hover {
         background: rgba(0, 0, 0, 0.85);
       }
-
-      /* Gallery edit grid — hidden in normal view, revealed in edit mode */
       .ngf-gallery-edit-grid {
         display: none;
       }
@@ -356,8 +354,8 @@ export default function NgfEditBridge() {
         document.documentElement.setAttribute('data-ngf-edit', editMode ? 'true' : 'false')
         captureDefaults()
         if (editMode) {
-          // Wait one frame for CSS (e.g. ngf-gallery-edit-grid display:none→grid)
-          // to be applied before scanning for images to attach buttons to.
+          // Wait one frame for CSS (e.g. ngf-gallery-edit-grid display:none->grid)
+          // to apply before scanning images so they have valid bounding rects.
           requestAnimationFrame(() => mountReplaceButtons())
         } else {
           dismissNavPopup()
@@ -561,4 +559,45 @@ export default function NgfEditBridge() {
         const href = anchor.getAttribute('href') ?? ''
         if (href.startsWith('#')) {
           const id = href.slice(1)
-          d
+          document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+          return
+        }
+        if (href && href !== '#') {
+          const isExternal = /^https?:\/\//.test(anchor.href) && !anchor.href.startsWith(window.location.origin)
+          if (isExternal) {
+            if (editTarget) postFieldClick(editTarget)
+            return
+          }
+          const label = anchor.textContent?.trim() || anchor.getAttribute('aria-label') || 'Link'
+          showNavPopup(anchor.href, label, e.clientX, e.clientY, editTarget)
+          return
+        }
+      }
+
+      if (editTarget) {
+        postFieldClick(editTarget)
+        return
+      }
+
+      if (buttonEl) return
+    }
+
+    window.addEventListener('message', messageHandler)
+    document.addEventListener('click', clickHandler, true)
+    window.addEventListener('scroll', repositionAllBtns, { passive: true })
+    window.addEventListener('resize', repositionAllBtns, { passive: true })
+
+    return () => {
+      window.removeEventListener('message', messageHandler)
+      document.removeEventListener('click', clickHandler, true)
+      window.removeEventListener('scroll', repositionAllBtns)
+      window.removeEventListener('resize', repositionAllBtns)
+      document.getElementById('ngf-edit-styles')?.remove()
+      document.documentElement.removeAttribute('data-ngf-edit')
+      dismissNavPopup()
+      dismountReplaceButtons()
+    }
+  }, [])
+
+  return null
+}
