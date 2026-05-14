@@ -344,4 +344,12 @@ export default async function PropertyPage({ params }: Props) {
       {/* Footer */}
       <footer className="border-t border-[var(--border)] bg-[var(--bg)] px-4 py-8 text-center">
         <p className="font-body text-xs text-[var(--muted)]">
-          &copy; {new Date().getFullYear()} Square K LLC. All rights reserved. &middo
+          &copy; {new Date().getFullYear()} Square K LLC. All rights reserved. &middot;{' '}
+          <Link href="/properties" className="hover:underline">All Properties</Link>
+          {' · '}
+          <Link href="/contact" className="hover:underline">Contact</Link>
+        </p>
+      </footer>
+    </div>
+  )
+}
