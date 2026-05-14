@@ -244,6 +244,60 @@ export default function NgfEditBridge() {
       .ngf-grp-btn:hover { background: #fff; }
       .ngf-grp-del { color: #dc2626; font-size: 14px; }
       .ngf-grp-del:hover { color: #b91c1c; }
+      /* Pending-changes save bar */
+      #ngf-pending-bar {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(90px);
+        z-index: 2147483647;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.16), 0 1px 4px rgba(0,0,0,0.08);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 8px 8px 14px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        color: #0f172a;
+        pointer-events: auto;
+        white-space: nowrap;
+        transition: transform 0.28s cubic-bezier(0.34,1.4,0.64,1);
+      }
+      #ngf-pending-bar.ngf-pending-visible {
+        transform: translateX(-50%) translateY(0);
+      }
+      #ngf-pending-bar .ngf-bar-label {
+        flex: 1;
+        color: #475569;
+      }
+      #ngf-pending-bar .ngf-bar-save {
+        all: unset;
+        cursor: pointer;
+        background: #2563eb;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 6px 14px;
+        border-radius: 7px;
+        transition: background 0.12s;
+      }
+      #ngf-pending-bar .ngf-bar-save:hover { background: #1d4ed8; }
+      #ngf-pending-bar .ngf-bar-discard {
+        all: unset;
+        cursor: pointer;
+        background: #f1f5f9;
+        color: #475569;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 6px 12px;
+        border-radius: 7px;
+        transition: background 0.12s;
+      }
+      #ngf-pending-bar .ngf-bar-discard:hover { background: #e2e8f0; }
     `
     document.head.appendChild(style)
 
@@ -257,6 +311,82 @@ export default function NgfEditBridge() {
     toast.appendChild(spinner)
     toast.appendChild(toastText)
     document.body.appendChild(toast)
+
+    // Pending-changes save bar
+    const pendingBar = document.createElement('div')
+    pendingBar.id = 'ngf-pending-bar'
+    const pendingLabel = document.createElement('span')
+    pendingLabel.className = 'ngf-bar-label'
+    pendingLabel.textContent = 'Unsaved gallery changes'
+    const saveBtn = document.createElement('button')
+    saveBtn.className = 'ngf-bar-save'
+    saveBtn.textContent = 'Save'
+    const discardBtn = document.createElement('button')
+    discardBtn.className = 'ngf-bar-discard'
+    discardBtn.textContent = 'Discard'
+    pendingBar.appendChild(pendingLabel)
+    pendingBar.appendChild(discardBtn)
+    pendingBar.appendChild(saveBtn)
+    document.body.appendChild(pendingBar)
+
+    // Track which groups have unsaved changes and their original DOM order
+    const pendingGroups = new Set<string>()
+    const groupOriginalOrder = new Map<string, HTMLElement[]>()
+
+    function snapshotGroups() {
+      document.querySelectorAll<HTMLElement>('[data-ngf-group]').forEach(groupEl => {
+        const group = groupEl.getAttribute('data-ngf-group')!
+        const items = Array.from(groupEl.children).filter(
+          c => !c.classList.contains('ngf-grp-controls')
+        ) as HTMLElement[]
+        groupOriginalOrder.set(group, [...items])
+      })
+    }
+
+    function showPendingBar(group: string) {
+      pendingGroups.add(group)
+      pendingBar.classList.add('ngf-pending-visible')
+    }
+
+    function hidePendingBar() {
+      pendingGroups.clear()
+      pendingBar.classList.remove('ngf-pending-visible')
+    }
+
+    function discardAllGroups() {
+      groupOriginalOrder.forEach((originalItems, group) => {
+        if (!pendingGroups.has(group)) return
+        const groupEl = document.querySelector<HTMLElement>(`[data-ngf-group="${group}"]`)
+        if (!groupEl) return
+        // Remove all current children
+        while (groupEl.firstChild) groupEl.removeChild(groupEl.firstChild)
+        // Restore original children in original order, stripping any controls
+        originalItems.forEach(item => {
+          item.querySelectorAll('.ngf-grp-controls').forEach(el => el.remove())
+          groupEl.appendChild(item)
+        })
+        reindexGroup(groupEl, group)
+      })
+      hidePendingBar()
+      if (editMode) {
+        requestAnimationFrame(() => {
+          mountGroupControls()
+          mountReplaceButtons()
+        })
+      }
+    }
+
+    saveBtn.addEventListener('click', () => {
+      pendingGroups.forEach(group => {
+        const groupEl = document.querySelector<HTMLElement>(`[data-ngf-group="${group}"]`)
+        if (groupEl) notifyGroupUpdate(groupEl, group)
+      })
+      hidePendingBar()
+    })
+
+    discardBtn.addEventListener('click', () => {
+      discardAllGroups()
+    })
 
     const loadingFields = new Set<string>()
 
@@ -504,7 +634,7 @@ export default function NgfEditBridge() {
       }
 
       reindexGroup(groupEl, group)
-      notifyGroupUpdate(groupEl, group)
+      showPendingBar(group)
       mountGroupControls()
       requestAnimationFrame(() => mountReplaceButtons())
     }
@@ -515,7 +645,7 @@ export default function NgfEditBridge() {
       if (!target) return
       target.remove()
       reindexGroup(groupEl, group)
-      notifyGroupUpdate(groupEl, group)
+      showPendingBar(group)
       mountGroupControls()
       requestAnimationFrame(() => mountReplaceButtons())
     }
@@ -527,7 +657,6 @@ export default function NgfEditBridge() {
       document.querySelectorAll<HTMLElement>('[data-ngf-group]').forEach(groupEl => {
         const group = groupEl.getAttribute('data-ngf-group')!
         const items = Array.from(groupEl.children) as HTMLElement[]
-        const total = items.length
 
         items.forEach(item => {
           // Skip if this child is somehow a controls element itself
@@ -563,9 +692,8 @@ export default function NgfEditBridge() {
           dnBtn.addEventListener('click', (ev) => {
             ev.preventDefault(); ev.stopPropagation(); ev.stopImmediatePropagation()
             const idx = getItemIndex(item, group)
-            const cur = getItemIndex(item, group)
             const curTotal = groupEl.children.length
-            if (cur < curTotal - 1) moveGroupItemInDom(groupEl, group, idx, idx + 1)
+            if (idx < curTotal - 1) moveGroupItemInDom(groupEl, group, idx, idx + 1)
           })
 
           controls.appendChild(upBtn)
@@ -597,11 +725,13 @@ export default function NgfEditBridge() {
           requestAnimationFrame(() => {
             mountReplaceButtons()
             mountGroupControls()
+            snapshotGroups()
           })
         } else {
           dismissNavPopup()
           dismountReplaceButtons()
           dismountGroupControls()
+          hidePendingBar()
           loadingFields.clear()
           toast.classList.remove('ngf-toast-visible')
           document.querySelectorAll('.ngf-replacing').forEach(el => el.classList.remove('ngf-replacing'))
@@ -772,6 +902,7 @@ export default function NgfEditBridge() {
       if ((e.target as HTMLElement)?.classList?.contains('ngf-replace-btn')) return
       if ((e.target as HTMLElement)?.classList?.contains('ngf-grp-btn')) return
       if ((e.target as HTMLElement)?.closest?.('.ngf-grp-controls')) return
+      if ((e.target as HTMLElement)?.closest?.('#ngf-pending-bar')) return
       if (navPopup) dismissNavPopup()
 
       let cursor: HTMLElement | null = e.target as HTMLElement | null
@@ -855,6 +986,7 @@ export default function NgfEditBridge() {
       window.removeEventListener('resize', repositionAllBtns)
       document.getElementById('ngf-edit-styles')?.remove()
       document.getElementById('ngf-upload-toast')?.remove()
+      document.getElementById('ngf-pending-bar')?.remove()
       document.documentElement.removeAttribute('data-ngf-edit')
       dismissNavPopup()
       dismountReplaceButtons()
