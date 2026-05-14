@@ -8,14 +8,14 @@ export default async function HomePage() {
   const content = await getNgfContent()
 
   const businessName = content['brand.businessName'] || 'Square K Vacations'
-  const tagline      = content['brand.tagline']      ?? 'Rent with peace of mind.'
+  const tagline      = content['brand.tagline'] || 'Rent with peace of mind.'
   const primary      = content['brand.primaryColor'] || '#4a6741'
-  const accent       = content['brand.accentColor']  ?? '#9b8060'
+  const accent       = content['brand.accentColor'] || '#9b8060'
 
-  const heroEyebrow  = content['hero.eyebrow']  ?? 'Michigan Vacation Rentals'
+  const heroEyebrow  = content['hero.eyebrow'] || 'Michigan Vacation Rentals'
   const heroHeadline = content['hero.headline'] || "Michigan's Premier Vacation Retreats"
-  const heroSubhead  = content['hero.subhead']  ?? 'Lakeshore luxury and up-north escapes — curated by Square K for an unforgettable stay.'
-  const heroCta      = content['hero.cta']      ?? 'Browse Properties'
+  const heroSubhead  = content['hero.subhead'] || 'Lakeshore luxury and up-north escapes — curated by Square K for an unforgettable stay.'
+  const heroCta      = content['hero.cta'] || 'Browse Properties'
 
   const howTitle = content['how.title'] || 'How It Works'
   const howSteps = [
@@ -26,43 +26,43 @@ export default async function HomePage() {
   ]
 
   const aboutTitle = content['about.title'] || 'The Square K Promise'
-  const aboutBody  = content['about.body']  ?? 'Every Square K property is owner-operated — not a faceless platform. That means genuine care, fast responses, and a stay that actually lives up to the photos.'
+  const aboutBody  = content['about.body'] || 'Every Square K property is owner-operated — not a faceless platform. That means genuine care, fast responses, and a stay that actually lives up to the photos.'
 
-  const ctaTitle  = content['cta.title']  ?? 'Ready to plan your Michigan escape?'
+  const ctaTitle  = content['cta.title'] || 'Ready to plan your Michigan escape?'
   const ctaButton = content['cta.button'] || 'Browse Properties'
 
   const copyright = content['footer.copyright'] || `© ${new Date().getFullYear()} Square K LLC. All rights reserved.`
 
-  const heroImage         = content['hero.image']                ?? '/images/lakeshore/Front-Exterior-Noon.jpg'
+  const heroImage         = content['hero.image'] || '/images/lakeshore/Front-Exterior-Noon.jpg'
   const heroImageAlt = content['hero.image_alt'] || 'Square K Vacation Retreats'
   const propertiesEyebrow = content['properties.section.eyebrow'] || 'Our Retreats'
-  const propertiesTitle   = content['properties.section.title']   ?? 'Michigan Properties'
-  const howEyebrow        = content['how.eyebrow']                ?? 'Simple Process'
-  const aboutEyebrow      = content['about.eyebrow']              ?? 'Who We Are'
-  const contactPhone      = content['contact.phone']              ?? '(616) 333-9601'
-  const contactEmail      = content['contact.email']              ?? 'Squarek.llc.mi@gmail.com'
-  const contactLocations  = content['contact.locations']          ?? 'Fennville & Bellaire, Michigan'
+  const propertiesTitle   = content['properties.section.title'] || 'Michigan Properties'
+  const howEyebrow        = content['how.eyebrow'] || 'Simple Process'
+  const aboutEyebrow      = content['about.eyebrow'] || 'Who We Are'
+  const contactPhone      = content['contact.phone'] || '(616) 333-9601'
+  const contactEmail      = content['contact.email'] || 'Squarek.llc.mi@gmail.com'
+  const contactLocations  = content['contact.locations'] || 'Fennville & Bellaire, Michigan'
 
-  const aboutStat1Val   = content['about.stat1.value']  ?? '3'
-  const aboutStat1Label = content['about.stat1.label']  ?? 'Properties'
-  const aboutStat2Val   = content['about.stat2.value']  ?? 'Fast'
-  const aboutStat2Label = content['about.stat2.label']  ?? 'Response Time'
-  const aboutStat3Val   = content['about.stat3.value']  ?? 'MI'
-  const aboutStat3Label = content['about.stat3.label']  ?? 'Michigan Based'
-  const ctaSubtext      = content['cta.subtext']        ?? 'Browse all three retreats and request your dates. Our team takes it from there.'
+  const aboutStat1Val   = content['about.stat1.value'] || '3'
+  const aboutStat1Label = content['about.stat1.label'] || 'Properties'
+  const aboutStat2Val   = content['about.stat2.value'] || 'Fast'
+  const aboutStat2Label = content['about.stat2.label'] || 'Response Time'
+  const aboutStat3Val   = content['about.stat3.value'] || 'MI'
+  const aboutStat3Label = content['about.stat3.label'] || 'Michigan Based'
+  const ctaSubtext      = content['cta.subtext'] || 'Browse all three retreats and request your dates. Our team takes it from there.'
 
   // Merge NGF content into each property so cards reflect edits
   const ngfProperties = properties.map(p => ({
     ...p,
-    name:      content[`property.${p.slug}.name`]      ?? p.name,
-    tagline:   content[`property.${p.slug}.tagline`]   ?? p.tagline,
+    name:      content[`property.${p.slug}.name`] || p.name,
+    tagline:   content[`property.${p.slug}.tagline`] || p.tagline,
     heroImage: content[`property.${p.slug}.heroImage`] || p.heroImage,
-    bedrooms:  Number(content[`property.${p.slug}.bedrooms`]  ?? p.bedrooms),
+    bedrooms:  Number(content[`property.${p.slug}.bedrooms`] || p.bedrooms),
     bathrooms: Number(content[`property.${p.slug}.bathrooms`] || p.bathrooms),
     maxGuests: Number(content[`property.${p.slug}.maxGuests`] || p.maxGuests),
     highlights: p.highlights.map((h, i) => ({
       ...h,
-      icon:  content[`property.${p.slug}.highlights.${i}.icon`]  ?? h.icon,
+      icon:  content[`property.${p.slug}.highlights.${i}.icon`] || h.icon,
       label: content[`property.${p.slug}.highlights.${i}.label`] || h.label,
     })),
   }))

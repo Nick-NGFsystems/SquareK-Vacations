@@ -12,27 +12,27 @@ export const metadata = {
 export default async function PropertiesPage() {
   const content = await getNgfContent()
   const primary = content['brand.primaryColor'] || '#4a6741'
-  const accent  = content['brand.accentColor']  ?? '#9b8060'
+  const accent  = content['brand.accentColor'] || '#9b8060'
 
   const pageEyebrow = content['properties.eyebrow'] || 'Michigan Retreats'
-  const pageTitle   = content['properties.title']   ?? 'Our Properties'
-  const pageDesc    = content['properties.desc']    ?? 'Three distinct Michigan retreats, each offering something special. Browse, find your perfect fit, and request your dates.'
+  const pageTitle   = content['properties.title'] || 'Our Properties'
+  const pageDesc    = content['properties.desc'] || 'Three distinct Michigan retreats, each offering something special. Browse, find your perfect fit, and request your dates.'
   const ctaHeading  = content['properties.cta.heading'] || 'Not sure which property is right for you?'
   const ctaSubtext  = content['properties.cta.subtext'] || 'Reach out directly and our team will help you find the perfect fit.'
-  const ctaButton   = content['properties.cta.button']  ?? 'Contact Us'
+  const ctaButton   = content['properties.cta.button'] || 'Contact Us'
 
   // Merge NGF content into each property so cards reflect edits
   const ngfProperties = properties.map(p => ({
     ...p,
-    name:      content[`property.${p.slug}.name`]      ?? p.name,
-    tagline:   content[`property.${p.slug}.tagline`]   ?? p.tagline,
+    name:      content[`property.${p.slug}.name`] || p.name,
+    tagline:   content[`property.${p.slug}.tagline`] || p.tagline,
     heroImage: content[`property.${p.slug}.heroImage`] || p.heroImage,
-    bedrooms:  Number(content[`property.${p.slug}.bedrooms`]  ?? p.bedrooms),
+    bedrooms:  Number(content[`property.${p.slug}.bedrooms`] || p.bedrooms),
     bathrooms: Number(content[`property.${p.slug}.bathrooms`] || p.bathrooms),
     maxGuests: Number(content[`property.${p.slug}.maxGuests`] || p.maxGuests),
     highlights: p.highlights.map((h, i) => ({
       ...h,
-      icon:  content[`property.${p.slug}.highlights.${i}.icon`]  ?? h.icon,
+      icon:  content[`property.${p.slug}.highlights.${i}.icon`] || h.icon,
       label: content[`property.${p.slug}.highlights.${i}.label`] || h.label,
     })),
   }))

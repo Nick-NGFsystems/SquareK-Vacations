@@ -10,14 +10,14 @@ export const metadata = {
 
 export default async function ContactPage() {
   const content = await getNgfContent()
-  const primary = content['brand.primaryColor'] ?? '#4a6741'
-  const accent  = content['brand.accentColor']  ?? '#9b8060'
+  const primary = content['brand.primaryColor'] || '#4a6741'
+  const accent  = content['brand.accentColor'] || '#9b8060'
 
-  const pageEyebrow = content['contact.eyebrow']     ?? 'Get In Touch'
-  const pageTitle   = content['contact.title']       ?? 'Contact Us'
-  const pageDesc    = content['contact.desc']        ?? "Owner-operated and always reachable. Call, email, or send a message below and our team will get back to you."
-  const formTitle   = content['contact.form.title']  ?? 'Send a Message'
-  const formSubtext = content['contact.form.subtext'] ?? 'General questions, group inquiries, or anything else - use this form and our team will get back to you.'
+  const pageEyebrow = content['contact.eyebrow'] || 'Get In Touch'
+  const pageTitle   = content['contact.title'] || 'Contact Us'
+  const pageDesc    = content['contact.desc'] || "Owner-operated and always reachable. Call, email, or send a message below and our team will get back to you."
+  const formTitle   = content['contact.form.title'] || 'Send a Message'
+  const formSubtext = content['contact.form.subtext'] || 'General questions, group inquiries, or anything else - use this form and our team will get back to you.'
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">

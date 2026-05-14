@@ -32,26 +32,26 @@ export default async function PropertyPage({ params }: Props) {
 
   const content = await getNgfContent()
   const primary = content['brand.primaryColor'] || '#4a6741'
-  const accent  = content['brand.accentColor']  ?? '#9b8060'
+  const accent  = content['brand.accentColor'] || '#9b8060'
 
-  const contactPhone     = content['contact.phone']     ?? '(616) 333-9601'
-  const contactEmail     = content['contact.email']     ?? 'Squarek.llc.mi@gmail.com'
+  const contactPhone     = content['contact.phone'] || '(616) 333-9601'
+  const contactEmail     = content['contact.email'] || 'Squarek.llc.mi@gmail.com'
   const contactDirectCta = content['contact.direct.cta'] || 'Prefer to call or email directly?'
 
   // Property stats — NGF override falls back to static numbers
-  const propBedrooms  = content[`property.${slug}.bedrooms`]  ?? String(property.bedrooms)
+  const propBedrooms  = content[`property.${slug}.bedrooms`] || String(property.bedrooms)
   const propBathrooms = content[`property.${slug}.bathrooms`] || String(property.bathrooms)
-  const propMaxGuests = content[`property.${slug}.maxGuests`]  ?? String(property.maxGuests)
-  const propAddress   = content[`property.${slug}.address`]   ?? property.address
-  const propCity      = content[`property.${slug}.city`]      ?? property.city
-  const propState     = content[`property.${slug}.state`]     ?? property.state
-  const propZip       = content[`property.${slug}.zipCode`]   ?? property.zipCode
+  const propMaxGuests = content[`property.${slug}.maxGuests`] || String(property.maxGuests)
+  const propAddress   = content[`property.${slug}.address`] || property.address
+  const propCity      = content[`property.${slug}.city`] || property.city
+  const propState     = content[`property.${slug}.state`] || property.state
+  const propZip       = content[`property.${slug}.zipCode`] || property.zipCode
 
   // ── Property-specific editable content (NGF overrides static data) ─────
-  const propName      = content[`property.${slug}.name`]            ?? property.name
-  const propTagline   = content[`property.${slug}.tagline`]         ?? property.tagline
+  const propName      = content[`property.${slug}.name`] || property.name
+  const propTagline   = content[`property.${slug}.tagline`] || property.tagline
   const propLongDesc  = content[`property.${slug}.longDescription`] || property.longDescription
-  const propHeroImage = content[`property.${slug}.heroImage`]       ?? property.heroImage
+  const propHeroImage = content[`property.${slug}.heroImage`] || property.heroImage
   const propHeroImageAlt = content[`property.${slug}.heroImage_alt`] || propName
 
   // Gallery: load NGF-keyed images if present, otherwise fall back to static array
@@ -65,7 +65,7 @@ export default async function PropertyPage({ params }: Props) {
 
   // Highlights & amenities with per-item NGF override
   const propHighlights = property.highlights.map((h, i) => ({
-    icon:  content[`property.${slug}.highlights.${i}.icon`]  ?? h.icon,
+    icon:  content[`property.${slug}.highlights.${i}.icon`] || h.icon,
     label: content[`property.${slug}.highlights.${i}.label`] || h.label,
   }))
   const propAmenities = property.amenities.map((a, i) =>
