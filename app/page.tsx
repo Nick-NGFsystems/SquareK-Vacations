@@ -42,6 +42,14 @@ export default async function HomePage() {
   const contactEmail      = content['contact.email']              ?? 'Squarek.llc.mi@gmail.com'
   const contactLocations  = content['contact.locations']          ?? 'Fennville & Bellaire, Michigan'
 
+  const aboutStat1Val   = content['about.stat1.value']  ?? '3'
+  const aboutStat1Label = content['about.stat1.label']  ?? 'Properties'
+  const aboutStat2Val   = content['about.stat2.value']  ?? 'Fast'
+  const aboutStat2Label = content['about.stat2.label']  ?? 'Response Time'
+  const aboutStat3Val   = content['about.stat3.value']  ?? 'MI'
+  const aboutStat3Label = content['about.stat3.label']  ?? 'Michigan Based'
+  const ctaSubtext      = content['cta.subtext']        ?? 'Browse all three retreats and request your dates. Our team takes it from there.'
+
   // Merge NGF content into each property so cards reflect edits
   const ngfProperties = properties.map(p => ({
     ...p,
@@ -273,16 +281,28 @@ export default async function HomePage() {
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-4">
-                  <div className="font-heading text-2xl font-bold" style={{ color: primary }}>3</div>
-                  <div className="mt-0.5 font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Properties</div>
+                  <div className="font-heading text-2xl font-bold" style={{ color: primary }}
+                    data-ngf-field="about.stat1.value" data-ngf-label="Stat 1 Value" data-ngf-type="text" data-ngf-section="About"
+                  >{aboutStat1Val}</div>
+                  <div className="mt-0.5 font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]"
+                    data-ngf-field="about.stat1.label" data-ngf-label="Stat 1 Label" data-ngf-type="text" data-ngf-section="About"
+                  >{aboutStat1Label}</div>
                 </div>
                 <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-4">
-                  <div className="font-heading text-2xl font-bold" style={{ color: primary }}>Fast</div>
-                  <div className="mt-0.5 font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Response Time</div>
+                  <div className="font-heading text-2xl font-bold" style={{ color: primary }}
+                    data-ngf-field="about.stat2.value" data-ngf-label="Stat 2 Value" data-ngf-type="text" data-ngf-section="About"
+                  >{aboutStat2Val}</div>
+                  <div className="mt-0.5 font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]"
+                    data-ngf-field="about.stat2.label" data-ngf-label="Stat 2 Label" data-ngf-type="text" data-ngf-section="About"
+                  >{aboutStat2Label}</div>
                 </div>
                 <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-4">
-                  <div className="font-heading text-2xl font-bold" style={{ color: primary }}>MI</div>
-                  <div className="mt-0.5 font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Michigan Based</div>
+                  <div className="font-heading text-2xl font-bold" style={{ color: primary }}
+                    data-ngf-field="about.stat3.value" data-ngf-label="Stat 3 Value" data-ngf-type="text" data-ngf-section="About"
+                  >{aboutStat3Val}</div>
+                  <div className="mt-0.5 font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]"
+                    data-ngf-field="about.stat3.label" data-ngf-label="Stat 3 Label" data-ngf-type="text" data-ngf-section="About"
+                  >{aboutStat3Label}</div>
                 </div>
               </div>
             </div>
@@ -313,9 +333,13 @@ export default async function HomePage() {
           >
             {ctaTitle}
           </h2>
-          <p className="mt-4 font-body text-base text-white/75">
-            Browse all three retreats and request your dates. Our team takes it from there.
-          </p>
+          <p
+            className="mt-4 font-body text-base text-white/75"
+            data-ngf-field="cta.subtext"
+            data-ngf-label="Subtext"
+            data-ngf-type="textarea"
+            data-ngf-section="Call to Action"
+          >{ctaSubtext}</p>
           <Link
             href="/properties"
             data-ngf-field="cta.button"
