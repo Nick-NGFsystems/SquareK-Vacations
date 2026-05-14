@@ -33,6 +33,10 @@ export default async function HomePage() {
 
   const copyright = content['footer.copyright'] ?? `© ${new Date().getFullYear()} Square K LLC. All rights reserved.`
 
+  const heroImage         = content['hero.image']                ?? '/images/lakeshore/Front-Exterior-Noon.jpg'
+  const propertiesEyebrow = content['properties.section.eyebrow'] ?? 'Our Retreats'
+  const propertiesTitle   = content['properties.section.title']   ?? 'Michigan Properties'
+
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <SiteHeader primaryColor={primary} accentColor={accent} />
@@ -44,8 +48,14 @@ export default async function HomePage() {
         className="relative flex min-h-[60vh] items-end overflow-hidden bg-[var(--text)] sm:min-h-[85vh]"
       >
 
+        <span aria-hidden="true" className="sr-only"
+          data-ngf-field="hero.image"
+          data-ngf-label="Hero Background Photo"
+          data-ngf-type="image"
+          data-ngf-section="Hero"
+        />
         <img
-          src="/images/lakeshore/Front-Exterior-Noon.jpg"
+          src={heroImage}
           alt="Square K Vacation Rental"
           className="absolute inset-0 h-full w-full object-cover object-[center_35%] opacity-75"
         />
@@ -106,8 +116,21 @@ export default async function HomePage() {
         <div className="mx-auto max-w-6xl">
           <div className="flex items-end justify-between">
             <div>
-              <p className="font-body text-xs font-semibold uppercase tracking-widest" style={{ color: accent }}>Our Retreats</p>
-              <h2 className="mt-1 font-heading text-3xl font-bold text-[var(--text)] sm:text-4xl">Michigan Properties</h2>
+              <p
+              className="font-body text-xs font-semibold uppercase tracking-widest"
+              style={{ color: accent }}
+              data-ngf-field="properties.section.eyebrow"
+              data-ngf-label="Section Eyebrow"
+              data-ngf-type="text"
+              data-ngf-section="Properties Section"
+            >{propertiesEyebrow}</p>
+              <h2
+              className="mt-1 font-heading text-3xl font-bold text-[var(--text)] sm:text-4xl"
+              data-ngf-field="properties.section.title"
+              data-ngf-label="Section Title"
+              data-ngf-type="text"
+              data-ngf-section="Properties Section"
+            >{propertiesTitle}</h2>
             </div>
             <Link
               href="/properties"

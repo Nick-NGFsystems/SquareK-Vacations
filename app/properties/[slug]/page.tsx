@@ -34,9 +34,49 @@ export default async function PropertyPage({ params }: Props) {
   const primary = content['brand.primaryColor'] ?? '#4a6741'
   const accent  = content['brand.accentColor']  ?? '#9b8060'
 
+  // ── Property-specific editable content (NGF overrides static data) ─────
+  const propName      = content[`property.${slug}.name`]            ?? property.name
+  const propTagline   = content[`property.${slug}.tagline`]         ?? property.tagline
+  const propLongDesc  = content[`property.${slug}.longDescription`] ?? property.longDescription
+  const propHeroImage = content[`property.${slug}.heroImage`]       ?? property.heroImage
+
+  // Gallery: load NGF-keyed images if present, otherwise fall back to static array
+  const ngfImages: string[] = []
+  for (let i = 0; i < 50; i++) {
+    const v = content[`property.${slug}.images.${i}`]
+    if (v) ngfImages.push(v)
+    else if (i >= property.images.length) break
+  }
+  const propImages = ngfImages.length > 0 ? ngfImages : property.images
+
+  // Highlights & amenities with per-item NGF override
+  const propHighlights = property.highlights.map((h, i) => ({
+    icon: h.icon,
+    label: content[`property.${slug}.highlights.${i}.label`] ?? h.label,
+  }))
+  const propAmenities = property.amenities.map((a, i) =>
+    content[`property.${slug}.amenities.${i}`] ?? a
+  )
+
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <SiteHeader primaryColor={primary} accentColor={accent} />
+
+      {/* ── Hidden NGF image-editor anchors ── */}
+      <span aria-hidden="true" className="sr-only"
+        data-ngf-field={`property.${slug}.heroImage`}
+        data-ngf-label="Hero Image"
+        data-ngf-type="image"
+        data-ngf-section="Property Images"
+      />
+      {propImages.map((_, i) => (
+        <span key={i} aria-hidden="true" className="sr-only"
+          data-ngf-field={`property.${slug}.images.${i}`}
+          data-ngf-label={`Gallery Photo ${i + 1}`}
+          data-ngf-type="image"
+          data-ngf-section="Property Images"
+        />
+      ))}
 
       {/* Breadcrumb nav */}
       <div className="border-b border-[var(--border)] bg-white px-4 py-3 sm:px-6 lg:px-8">
@@ -62,10 +102,10 @@ export default async function PropertyPage({ params }: Props) {
 
       {/* Hero */}
       <section className="relative h-[50vh] overflow-hidden sm:h-[60vh]" style={{ backgroundColor: primary }}>
-        {property.heroImage && (
+        {propHeroImage && (
           <img
-            src={property.heroImage}
-            alt={property.name}
+            src={propHeroImage}
+            alt={propName}
             className="h-full w-full object-cover opacity-75"
           />
         )}
@@ -73,8 +113,20 @@ export default async function PropertyPage({ params }: Props) {
         <div className="absolute inset-0 flex items-end">
           <div className="mx-auto w-full max-w-6xl px-4 pb-10 sm:px-6 lg:px-8">
             <div className="font-body text-sm font-semibold text-white/70">{property.city}, {property.state}</div>
-            <h1 className="mt-1 font-heading text-3xl font-bold text-white sm:text-4xl lg:text-5xl">{property.name}</h1>
-            <p className="mt-2 font-body text-base text-white/80 sm:text-lg">{property.tagline}</p>
+            <h1
+              className="mt-1 font-heading text-3xl font-bold text-white sm:text-4xl lg:text-5xl"
+              data-ngf-field={`property.${slug}.name`}
+              data-ngf-label="Property Name"
+              data-ngf-type="text"
+              data-ngf-section="Property"
+            >{propName}</h1>
+            <p
+              className="mt-2 font-body text-base text-white/80 sm:text-lg"
+              data-ngf-field={`property.${slug}.tagline`}
+              data-ngf-label="Tagline"
+              data-ngf-type="text"
+              data-ngf-section="Property"
+            >{propTagline}</p>
           </div>
         </div>
       </section>
@@ -120,15 +172,20 @@ export default async function PropertyPage({ params }: Props) {
             {/* Gallery */}
             <div>
               <h2 className="mb-4 font-heading text-2xl font-semibold text-[var(--text)]">Gallery</h2>
-              <PhotoGallery images={property.images} propertyName={property.name} />
-
+              <PhotoGallery images={propImages} propertyName={propName} />
             </div>
 
             {/* About */}
             <div>
               <h2 className="mb-4 font-heading text-2xl font-semibold text-[var(--text)]">About This Property</h2>
-              <div className="space-y-4 font-body text-base leading-relaxed text-[var(--muted)]">
-                {property.longDescription.split('\n\n').map((para, i) => (
+              <div
+                className="space-y-4 font-body text-base leading-relaxed text-[var(--muted)]"
+                data-ngf-field={`property.${slug}.longDescription`}
+                data-ngf-label="Property Description"
+                data-ngf-type="textarea"
+                data-ngf-section="Property"
+              >
+                {propLongDesc.split('\n\n').map((para, i) => (
                   <p key={i}>{para}</p>
                 ))}
               </div>
@@ -138,13 +195,19 @@ export default async function PropertyPage({ params }: Props) {
             <div>
               <h2 className="mb-4 font-heading text-2xl font-semibold text-[var(--text)]">Highlights</h2>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {property.highlights.map(h => (
+                {propHighlights.map((h, i) => (
                   <div
                     key={h.label}
                     className="flex items-center gap-3 rounded-xl border border-[var(--border)] bg-white p-4"
                   >
                     <span className="text-xl leading-none">{h.icon}</span>
-                    <span className="font-body text-sm font-semibold text-[var(--text)]">{h.label}</span>
+                    <span
+                      className="font-body text-sm font-semibold text-[var(--text)]"
+                      data-ngf-field={`property.${slug}.highlights.${i}.label`}
+                      data-ngf-label={`Highlight ${i + 1}`}
+                      data-ngf-type="text"
+                      data-ngf-section="Highlights"
+                    >{h.label}</span>
                   </div>
                 ))}
               </div>
@@ -154,14 +217,19 @@ export default async function PropertyPage({ params }: Props) {
             <div>
               <h2 className="mb-4 font-heading text-2xl font-semibold text-[var(--text)]">Amenities</h2>
               <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                {property.amenities.map(a => (
+                {propAmenities.map((a, i) => (
                   <li key={a} className="flex items-center gap-2.5 font-body text-sm text-[var(--muted)]">
                     <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full" style={{ backgroundColor: `${primary}20` }}>
                       <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} style={{ color: primary }}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                       </svg>
                     </span>
-                    {a}
+                    <span
+                      data-ngf-field={`property.${slug}.amenities.${i}`}
+                      data-ngf-label={`Amenity ${i + 1}`}
+                      data-ngf-type="text"
+                      data-ngf-section="Amenities"
+                    >{a}</span>
                   </li>
                 ))}
               </ul>
@@ -185,7 +253,7 @@ export default async function PropertyPage({ params }: Props) {
           <div id="booking-request">
             <div className="sticky top-24">
               <BookingRequestForm
-                propertyName={property.name}
+                propertyName={propName}
                 propertySlug={property.slug}
                 accentColor={accent}
               />
@@ -215,7 +283,7 @@ export default async function PropertyPage({ params }: Props) {
         <p className="font-body text-xs text-[var(--muted)]">
           &copy; {new Date().getFullYear()} Square K LLC. All rights reserved. &middot;{' '}
           <Link href="/properties" className="hover:underline">All Properties</Link>
-          {' &middot; '}
+          {' · '}
           <Link href="/contact" className="hover:underline">Contact</Link>
         </p>
       </footer>
