@@ -5,9 +5,24 @@ import { PhotoProvider, PhotoView } from 'react-photo-view'
 interface Props {
   images: string[]
   propertyName: string
+  /** e.g. "property.lakeshore-grand-retreat.images" — adds data-ngf-* to every img */
+  ngfPrefix?: string
+  ngfSection?: string
 }
 
-export default function PhotoGallery({ images, propertyName }: Props) {
+/** Spread NGF annotation attrs onto an img when a prefix is provided */
+function ngfAttrs(ngfPrefix: string | undefined, ngfSection: string | undefined, i: number) {
+  if (!ngfPrefix) return {}
+  return {
+    'data-ngf-field':   `${ngfPrefix}.${i}`,
+    'data-ngf-label':   `Gallery Photo ${i + 1}`,
+    'data-ngf-type':    'image',
+    'data-ngf-section': ngfSection ?? 'Gallery',
+    'data-ngf-aspect':  '3:2',
+  }
+}
+
+export default function PhotoGallery({ images, propertyName, ngfPrefix, ngfSection }: Props) {
   if (images.length === 0) {
     return (
       <div className="flex aspect-video items-center justify-center rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface)]">
@@ -26,6 +41,7 @@ export default function PhotoGallery({ images, propertyName }: Props) {
               src={images[0]}
               alt={propertyName}
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              {...ngfAttrs(ngfPrefix, ngfSection, 0)}
             />
             {images.length > 1 && (
               <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 backdrop-blur-sm">
@@ -42,7 +58,12 @@ export default function PhotoGallery({ images, propertyName }: Props) {
             {images.slice(1).map((src, idx) => (
               <PhotoView key={idx + 1} src={src}>
                 <div className="relative h-20 w-20 flex-none cursor-zoom-in overflow-hidden rounded-lg">
-                  <img src={src} alt={`${propertyName} ${idx + 2}`} className="h-full w-full object-cover" />
+                  <img
+                    src={src}
+                    alt={`${propertyName} ${idx + 2}`}
+                    className="h-full w-full object-cover"
+                    {...ngfAttrs(ngfPrefix, ngfSection, idx + 1)}
+                  />
                 </div>
               </PhotoView>
             ))}
@@ -55,7 +76,12 @@ export default function PhotoGallery({ images, propertyName }: Props) {
         {images.length === 1 ? (
           <PhotoView src={images[0]}>
             <div className="group relative aspect-[16/9] w-full cursor-zoom-in overflow-hidden">
-              <img src={images[0]} alt={propertyName} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <img
+                src={images[0]}
+                alt={propertyName}
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                {...ngfAttrs(ngfPrefix, ngfSection, 0)}
+              />
             </div>
           </PhotoView>
         ) : images.length <= 3 ? (
@@ -63,7 +89,12 @@ export default function PhotoGallery({ images, propertyName }: Props) {
             <PhotoView src={images[0]}>
               <div className="group relative cursor-zoom-in overflow-hidden" style={{ gridRow: 'span 2' }}>
                 <div className="relative h-full min-h-[320px] overflow-hidden">
-                  <img src={images[0]} alt={`${propertyName} 1`} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <img
+                    src={images[0]}
+                    alt={`${propertyName} 1`}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    {...ngfAttrs(ngfPrefix, ngfSection, 0)}
+                  />
                   <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
                 </div>
               </div>
@@ -71,7 +102,12 @@ export default function PhotoGallery({ images, propertyName }: Props) {
             {images.slice(1, 3).map((src, idx) => (
               <PhotoView key={idx + 1} src={src}>
                 <div className="group relative aspect-[4/3] cursor-zoom-in overflow-hidden">
-                  <img src={src} alt={`${propertyName} ${idx + 2}`} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <img
+                    src={src}
+                    alt={`${propertyName} ${idx + 2}`}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    {...ngfAttrs(ngfPrefix, ngfSection, idx + 1)}
+                  />
                   <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
                 </div>
               </PhotoView>
@@ -82,7 +118,12 @@ export default function PhotoGallery({ images, propertyName }: Props) {
             <PhotoView src={images[0]}>
               <div className="group relative cursor-zoom-in overflow-hidden" style={{ gridRow: 'span 2' }}>
                 <div className="relative h-full min-h-[360px] overflow-hidden">
-                  <img src={images[0]} alt={`${propertyName} 1`} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <img
+                    src={images[0]}
+                    alt={`${propertyName} 1`}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    {...ngfAttrs(ngfPrefix, ngfSection, 0)}
+                  />
                   <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
                 </div>
               </div>
@@ -93,7 +134,12 @@ export default function PhotoGallery({ images, propertyName }: Props) {
               return (
                 <PhotoView key={gi} src={src}>
                   <div className="group relative aspect-[4/3] cursor-zoom-in overflow-hidden">
-                    <img src={src} alt={`${propertyName} ${gi + 1}`} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    <img
+                      src={src}
+                      alt={`${propertyName} ${gi + 1}`}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      {...ngfAttrs(ngfPrefix, ngfSection, gi)}
+                    />
                     <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
                     {showOverlay && (
                       <div className="absolute inset-0 flex items-center justify-center bg-black/50 transition group-hover:bg-black/60">
@@ -119,7 +165,7 @@ export default function PhotoGallery({ images, propertyName }: Props) {
         </PhotoView>
       )}
 
-      {/* Include photos 5+ in the provider so they appear in lightbox navigation */}
+      {/* Photos 5+ included in the provider so they appear in lightbox navigation */}
       {images.slice(5).map((src, idx) => (
         <PhotoView key={idx + 5} src={src}>
           <span className="sr-only" />

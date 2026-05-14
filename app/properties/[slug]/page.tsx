@@ -76,16 +76,6 @@ export default async function PropertyPage({ params }: Props) {
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <SiteHeader primaryColor={primary} accentColor={accent} />
 
-      {/* ── Hidden NGF image-editor anchors (gallery only — hero annotation is on the img) ── */}
-      {propImages.map((_, i) => (
-        <span key={i} aria-hidden="true" className="sr-only"
-          data-ngf-field={`property.${slug}.images.${i}`}
-          data-ngf-label={`Gallery Photo ${i + 1}`}
-          data-ngf-type="image"
-          data-ngf-section="Property Images"
-          data-ngf-aspect="3:2"
-        />
-      ))}
 
       {/* Breadcrumb nav */}
       <div className="border-b border-[var(--border)] bg-white px-4 py-3 sm:px-6 lg:px-8">
@@ -214,7 +204,12 @@ export default async function PropertyPage({ params }: Props) {
             {/* Gallery */}
             <div>
               <h2 className="mb-4 font-heading text-2xl font-semibold text-[var(--text)]">Gallery</h2>
-              <PhotoGallery images={propImages} propertyName={propName} />
+              <PhotoGallery
+                images={propImages}
+                propertyName={propName}
+                ngfPrefix={`property.${slug}.images`}
+                ngfSection="Property Images"
+              />
             </div>
 
             {/* About */}
