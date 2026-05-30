@@ -289,6 +289,7 @@ export default async function PropertyPage({ params }: Props) {
                   propertySlug={property.slug}
                   primaryColor={primary}
                   accentColor={accent}
+                  availableRanges={property.availableRanges}
                 />
               </div>
             </div>

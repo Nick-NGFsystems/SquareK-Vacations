@@ -18,6 +18,12 @@ export interface Property {
   status: 'available' | 'coming-soon'
   /** iCal feed URL from Airbnb/VRBO. Set when Tyler provides it - used to power the availability calendar. */
   icalUrl: string | null
+  /**
+   * Manual open/available windows as [startDate, endDate] pairs (YYYY-MM-DD, inclusive).
+   * Dates outside all windows show as unavailable. null = all dates available.
+   * Replace with iCal integration when ready.
+   */
+  availableRanges: [string, string][] | null
   featured?: boolean
 }
 

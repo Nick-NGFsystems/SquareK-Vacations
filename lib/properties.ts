@@ -65,6 +65,10 @@ export const properties: Property[] = [
     heroImage: '/images/lakeshore/Front-Exterior-Dusk.jpg',
     status: 'available',
     icalUrl: null,
+    availableRanges: [
+      ['2026-06-01', '2026-06-06'],
+      ['2026-08-28', '2026-09-30'],
+    ],
     featured: true,
   },
   {
@@ -105,6 +109,13 @@ export const properties: Property[] = [
     heroImage: '/images/blueberry/IMG_5151.jpeg',
     status: 'available',
     icalUrl: null,
+    availableRanges: [
+      ['2026-06-18', '2026-06-27'],
+      ['2026-07-18', '2026-07-21'],
+      ['2026-08-09', '2026-08-12'],
+      ['2026-08-17', '2026-09-02'],
+      ['2026-09-07', '2026-09-30'],
+    ],
     featured: true,
   },
   {
@@ -143,6 +154,7 @@ export const properties: Property[] = [
     heroImage: '',
     status: 'available',
     icalUrl: null,
+    availableRanges: null,
   },
 ]
 

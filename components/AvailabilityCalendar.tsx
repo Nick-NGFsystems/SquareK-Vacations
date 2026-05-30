@@ -1,16 +1,18 @@
 'use client'
 
 /**
- * AvailabilityCalendar - visual-only for now.
+ * AvailabilityCalendar
+ *
+ * Currently powered by manually-entered open/available date windows
+ * (availableRanges on each Property). Dates outside all windows show
+ * as unavailable.
  *
  * FUTURE INTEGRATION:
  * 1. Set `property.icalUrl` in lib/properties.ts once Tyler provides the
  *    Airbnb/VRBO iCal export URL for each property.
  * 2. Create /api/availability/[slug]/route.ts that fetches and parses the
  *    iCal feed server-side (to avoid CORS), returning unavailable date ranges.
- * 3. Replace `mockUnavailableDates` below with a fetch to that endpoint.
- * 4. When the NGF admin portal is connected, Tyler will manage bookings there
- *    and the calendar will reflect confirmed dates automatically.
+ * 3. Replace `availableRanges` logic below with a fetch to that endpoint.
  */
 
 import { useState, useMemo } from 'react'
@@ -19,20 +21,14 @@ interface Props {
   propertySlug: string
   primaryColor?: string
   accentColor?: string
+  availableRanges: [string, string][] | null
 }
 
-// Mock unavailable date ranges - replace with iCal data when ready
-const mockUnavailableDates: [string, string][] = [
-  ['2026-05-23', '2026-05-27'],
-  ['2026-06-06', '2026-06-10'],
-  ['2026-06-20', '2026-06-28'],
-  ['2026-07-04', '2026-07-08'],
-  ['2026-07-18', '2026-07-25'],
-]
-
-function isUnavailable(date: Date): boolean {
+function isAvailable(date: Date, ranges: [string, string][] | null): boolean {
+  // null means all dates are open
+  if (ranges === null) return true
   const ds = date.toISOString().slice(0, 10)
-  return mockUnavailableDates.some(([start, end]) => ds >= start && ds <= end)
+  return ranges.some(([start, end]) => ds >= start && ds <= end)
 }
 
 function getMonthDays(year: number, month: number) {
@@ -44,7 +40,14 @@ function getMonthDays(year: number, month: number) {
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
 const DAYS = ['Su','Mo','Tu','We','Th','Fr','Sa']
 
-function CalendarMonth({ year, month, primaryColor }: { year: number; month: number; primaryColor: string }) {
+function CalendarMonth({
+  year, month, primaryColor, availableRanges,
+}: {
+  year: number
+  month: number
+  primaryColor: string
+  availableRanges: [string, string][] | null
+}) {
   const { firstDay, daysInMonth } = getMonthDays(year, month)
   const today = new Date()
   today.setHours(0, 0, 0, 0)
@@ -63,7 +66,8 @@ function CalendarMonth({ year, month, primaryColor }: { year: number; month: num
           const day = i + 1
           const date = new Date(year, month, day)
           const past = date < today
-          const unavail = !past && isUnavailable(date)
+          const avail = !past && isAvailable(date, availableRanges)
+          const unavail = !past && !avail
 
           let cls = 'relative flex h-8 w-full items-center justify-center rounded-lg font-body text-xs '
           if (past) cls += 'text-[var(--muted)] opacity-40'
@@ -81,7 +85,12 @@ function CalendarMonth({ year, month, primaryColor }: { year: number; month: num
   )
 }
 
-export default function AvailabilityCalendar({ propertySlug: _, primaryColor = '#4a6741', accentColor = '#9b8060' }: Props) {
+export default function AvailabilityCalendar({
+  propertySlug: _,
+  primaryColor = '#4a6741',
+  accentColor: __,
+  availableRanges,
+}: Props) {
   const now = new Date()
   const [baseMonth] = useState({ year: now.getFullYear(), month: now.getMonth() })
 
@@ -112,7 +121,13 @@ export default function AvailabilityCalendar({ propertySlug: _, primaryColor = '
 
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
         {months.map(({ year, month }) => (
-          <CalendarMonth key={`${year}-${month}`} year={year} month={month} primaryColor={primaryColor} />
+          <CalendarMonth
+            key={`${year}-${month}`}
+            year={year}
+            month={month}
+            primaryColor={primaryColor}
+            availableRanges={availableRanges}
+          />
         ))}
       </div>
 
