@@ -69,7 +69,7 @@ function CalendarMonth({
           const avail = !past && isAvailable(date, availableRanges)
           const unavail = !past && !avail
 
-          let cls = 'relative flex h-8 w-full items-center justify-center rounded-lg font-body text-xs '
+          let cls = 'relative flex h-7 sm:h-8 w-full items-center justify-center rounded-lg font-body text-xs '
           if (past) cls += 'text-[var(--muted)] opacity-40'
           else if (unavail) cls += 'bg-red-50 text-red-400 line-through cursor-not-allowed'
           else cls += 'text-[var(--text)] hover:bg-[var(--surface)] cursor-pointer'
@@ -112,7 +112,7 @@ export default function AvailabilityCalendar({
 
   return (
     <div>
-      <div className="mb-4 flex items-center gap-4 font-body text-xs text-[var(--muted)]">
+      <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2 font-body text-xs text-[var(--muted)]">
         <span className="flex items-center gap-1.5">
           <span className="inline-block h-3 w-3 rounded bg-white border border-[var(--border)]" /> Available
         </span>
@@ -124,7 +124,7 @@ export default function AvailabilityCalendar({
         </span>
       </div>
 
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {months.map(({ year, month }) => (
           <CalendarMonth
             key={`${year}-${month}`}
@@ -137,8 +137,4 @@ export default function AvailabilityCalendar({
       </div>
 
       <p className="mt-4 font-body text-xs text-[var(--muted)]">
-        * Availability shown is approximate and subject to confirmation. Submit a request below and our team will confirm your dates.
-      </p>
-    </div>
-  )
-}
+        * Availability shown is approximate and subject to confirmation. Submit a request below and our team will confirm your
