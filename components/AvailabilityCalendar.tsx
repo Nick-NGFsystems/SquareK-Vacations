@@ -94,13 +94,18 @@ export default function AvailabilityCalendar({
   const now = new Date()
   const [baseMonth] = useState({ year: now.getFullYear(), month: now.getMonth() })
 
+  // Show from current month through September of the current season
   const months = useMemo(() => {
     const result = []
-    for (let i = 0; i < 2; i++) {
-      let m = baseMonth.month + i
-      let y = baseMonth.year
-      if (m > 11) { m -= 12; y += 1 }
+    let m = baseMonth.month
+    let y = baseMonth.year
+    // Keep adding months until we've passed September of the current/next year
+    const endYear  = m <= 8 ? y : y + 1   // if past Sep, roll to next year
+    const endMonth = 8                      // September (0-indexed)
+    while (y < endYear || (y === endYear && m <= endMonth)) {
       result.push({ year: y, month: m })
+      m++
+      if (m > 11) { m = 0; y++ }
     }
     return result
   }, [baseMonth])
@@ -119,7 +124,7 @@ export default function AvailabilityCalendar({
         </span>
       </div>
 
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {months.map(({ year, month }) => (
           <CalendarMonth
             key={`${year}-${month}`}
