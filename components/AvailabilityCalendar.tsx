@@ -137,4 +137,8 @@ export default function AvailabilityCalendar({
       </div>
 
       <p className="mt-4 font-body text-xs text-[var(--muted)]">
-        * Availability shown is approximate and subject to confirmation. Submit a request below and our team will confirm your
+        * Availability shown is approximate and subject to confirmation. Submit a request below and our team will confirm your dates.
+      </p>
+    </div>
+  )
+}
