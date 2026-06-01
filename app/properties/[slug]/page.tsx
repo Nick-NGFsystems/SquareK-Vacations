@@ -304,6 +304,12 @@ export default async function PropertyPage({ params }: Props) {
                 propertySlug={property.slug}
                 accentColor={accent}
               />
+              <Link
+                href="/contact"
+                className="mt-3 inline-flex w-full min-h-11 items-center justify-center rounded-lg border border-[var(--border)] bg-white font-body text-sm font-semibold text-[var(--text)] shadow-sm transition hover:bg-[var(--surface)]"
+              >
+                Looking for a general inquiry?
+              </Link>
               <div className="mt-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 text-center">
                 <p
                   className="font-body text-xs text-[var(--muted)]"
