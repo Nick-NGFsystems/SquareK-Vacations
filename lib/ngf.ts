@@ -1,7 +1,16 @@
 export type NgfSiteContent = Record<string, string>
 
 function getDomain() {
-  return process.env.NEXT_PUBLIC_SITE_URL
+  // The domain used to LOOK UP NGF content. This is intentionally decoupled
+  // from NEXT_PUBLIC_SITE_URL (which drives canonical/SEO URLs) so that
+  // changing the site's public domain never breaks content that was saved
+  // under a different key in the portal.
+  //
+  // Set NGF_CONTENT_DOMAIN to whatever key the portal stored content under
+  // (e.g. "square-k-vacations.vercel.app"). Falls back to the old behavior
+  // for backward compatibility with other client sites.
+  return process.env.NGF_CONTENT_DOMAIN
+      || process.env.NEXT_PUBLIC_SITE_URL
       || process.env.VERCEL_PROJECT_PRODUCTION_URL
       || 'localhost:3000'
 }
