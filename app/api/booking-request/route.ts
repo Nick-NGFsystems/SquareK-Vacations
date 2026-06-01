@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
   const propertyName = (data.propertyName || '').trim()
 
   // Minimal validation
-  if (!firstName || !lastName || !email || !phone || !checkIn || !checkOut || !guests) {
+  if (!firstName || !lastName || !email || !phone || !guests) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
   }
 

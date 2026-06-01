@@ -96,9 +96,8 @@ export default function BookingRequestForm({ propertyName, propertySlug: _, acce
         {/* Dates — side by side with overflow-hidden parent to contain native date UI */}
         <div className="col-span-2 grid grid-cols-2 gap-3 overflow-hidden">
           <div className="min-w-0">
-            <label className={labelCls}>Check-In *</label>
+            <label className={labelCls}>Check-In</label>
             <input
-              required
               name="checkIn"
               type="date"
               className={inputCls}
@@ -106,9 +105,8 @@ export default function BookingRequestForm({ propertyName, propertySlug: _, acce
             />
           </div>
           <div className="min-w-0">
-            <label className={labelCls}>Check-Out *</label>
+            <label className={labelCls}>Check-Out</label>
             <input
-              required
               name="checkOut"
               type="date"
               className={inputCls}
