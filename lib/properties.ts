@@ -9,19 +9,25 @@ export const properties: Property[] = [
     city: 'Fennville',
     state: 'MI',
     zipCode: '49408',
-    bedrooms: 5,
-    bathrooms: 4,
-    maxGuests: 12,
+    bedrooms: 8,
+    bathrooms: 8.5,
+    maxGuests: 26,
     description:
       'Wake up to breathtaking lakeshore views from this stunning Michigan retreat. Designed for groups and families who refuse to compromise on comfort, Lakeshore Grand blends upscale finishes with an effortless indoor-outdoor lifestyle.',
-    longDescription: `A luxury lakeshore retreat in Fennville, Michigan — designed for groups who want space, comfort, and direct water access. Full details and professional photography coming soon.`,
+    longDescription: `A luxury lakeshore retreat in Fennville, Michigan — designed for groups who want space, comfort, and water access.
+
+Spacious 8 bed/8.5 bath luxury home just steps from Lake Michigan beach access and public parks.
+
+Featuring a private theater room, game room, heated pool, hot tub, sauna and multiple living spaces.
+
+Each bedroom has a private bath perfect for large groups, retreats, or family gatherings. Enjoy sunsets, beach days, and local wineries, all just minutes away from this well-appointed estate.`,
     highlights: [
       { icon: '\u{1F30A}', label: 'Lake Access' },
-      { icon: '\u{1F3CA}', label: 'Heated Pool' },
+      { icon: '\u{1F3AC}', label: 'Theatre Room' },
       { icon: '♨️', label: 'Hot Tub' },
       { icon: '\u{1F9D6}', label: 'Sauna' },
-      { icon: '\u{1F3AC}', label: 'Theatre Room' },
-      { icon: '\u{1F3AE}', label: 'Game Room' },
+      { icon: '\u{1F6CF}️', label: '8 Bedrooms' },
+      { icon: '\u{1F465}', label: 'Sleeps 26' },
     ],
     amenities: [
       'Lake Access',
@@ -79,19 +85,21 @@ export const properties: Property[] = [
     city: 'Fennville',
     state: 'MI',
     zipCode: '49408',
-    bedrooms: 6,
-    bathrooms: 5,
-    maxGuests: 14,
+    bedrooms: 8,
+    bathrooms: 8.5,
+    maxGuests: 34,
     description:
       'A custom-built architectural masterpiece set on rolling Michigan hills. Blueberry Grand features a private pool, barrel sauna, pool house, and fire pit — everything you need for the perfect group escape.',
-    longDescription: `A brand-new custom-built luxury home in Fennville, Michigan featuring a private pool, barrel sauna, pool house, and fire pit. Full details and professional photography coming soon.`,
+    longDescription: `A brand-new custom-built luxury home in Fennville, Michigan.
+
+Sleeps 34 with 7 king beds and 22 twins—each bedroom has its own private bathroom. Enjoy a year-round heated pool, hot tub, sauna, theatre room, and a large yard with a pool house gaming room. Less than 5 minutes from Lake Michigan, surrounded by blueberry fields, and close to top wineries and cider houses.`,
     highlights: [
       { icon: '\u{1F3CA}', label: 'Private Pool' },
       { icon: '♨️', label: 'Hot Tub' },
       { icon: '\u{1F9D6}', label: 'Barrel Sauna' },
       { icon: '\u{1F3AE}', label: 'Game Room' },
-      { icon: '\u{1F3E1}', label: 'Pool House' },
-      { icon: '\u{1F525}', label: 'Fire Pit' },
+      { icon: '\u{1F6CF}️', label: '8 Bedrooms' },
+      { icon: '\u{1F465}', label: 'Sleeps 34' },
     ],
     amenities: [
       'Private Heated Pool',
@@ -126,19 +134,25 @@ export const properties: Property[] = [
     city: 'Bellaire',
     state: 'MI',
     zipCode: '49615',
-    bedrooms: 4,
-    bathrooms: 3,
-    maxGuests: 10,
+    bedrooms: 8,
+    bathrooms: 8.5,
+    maxGuests: 34,
     description:
       'Nestled on the shores of picturesque Clam Lake in Bellaire, this retreat offers a quintessential up-north Michigan experience — peaceful mornings, stunning water views, and starry nights around the fire.',
-    longDescription: `A lakeside retreat on beautiful Clam Lake in Bellaire, Michigan — four bedrooms, private pier, and easy access to Bellaire's shops and restaurants. Full details and photography coming soon.`,
+    longDescription: `Nestled along beautiful Clam Lake, this luxury 8-bedroom, 8.5-bath retreat was designed for unforgettable group getaways, family vacations, and lakeside relaxation. With spacious gathering areas, resort-style amenities, and direct access to the water, this property offers the perfect blend of comfort, entertainment, and privacy.
+
+Spend your days enjoying the heated pool, soaking in the hot tub, unwinding in the sauna, or exploring the lake with the provided kayaks and paddle boards. The separate pool house features a full game room, creating the ultimate hangout space for kids and adults alike. In the evenings, gather around for movie nights in the private theater room or relax outdoors while taking in the peaceful lake atmosphere.
+
+Inside, the home features eight spacious bedrooms and eight and a half bathrooms, giving large groups plenty of room to spread out comfortably. Whether you're cooking together, enjoying time by the pool, or heading out for a day on the water, the property is designed to comfortably accommodate memorable experiences for every guest.
+
+Perfect for family reunions, retreats, weddings, and large group vacations, this one-of-a-kind Clam Lake escape combines upscale amenities with the beauty of Northern Michigan living.`,
     highlights: [
       { icon: '\u{1F3DE}', label: 'Clam Lake Access' },
-      { icon: '\u{1F6A4}', label: 'Private Pier' },
+      { icon: '\u{1F6A4}', label: 'Private Dock' },
       { icon: '\u{1F3CA}', label: 'Heated Pool' },
-      { icon: '♨️', label: 'Hot Tub' },
-      { icon: '\u{1F9D6}', label: 'Sauna' },
-      { icon: '\u{1F525}', label: 'Fire Pit' },
+      { icon: '\u{1F6F6}', label: 'Kayaks and paddleboards Included' },
+      { icon: '\u{1F6CF}️', label: '8 Bedrooms' },
+      { icon: '\u{1F465}', label: 'Sleeps 34' },
     ],
     amenities: [
       'Clam Lake Access & Private Pier',
