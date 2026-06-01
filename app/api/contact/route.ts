@@ -21,6 +21,7 @@ export async function POST(req: NextRequest) {
   const lastName = (data.lastName || '').trim()
   const email = (data.email || '').trim()
   const phone = (data.phone || '').trim()
+  const property = (data.property || '').trim()
   const message = (data.message || '').trim()
 
   if (!firstName || !lastName || !email || !message) {
@@ -28,7 +29,9 @@ export async function POST(req: NextRequest) {
   }
 
   const fullName = `${firstName} ${lastName}`
-  const subject = `New Inquiry — Square K Vacations (${fullName})`
+  const subject = property
+    ? `New Inquiry — ${property} (${fullName})`
+    : `New Inquiry — Square K Vacations (${fullName})`
 
   const html = renderEmailHtml({
     heading: 'New General Inquiry',
@@ -37,6 +40,7 @@ export async function POST(req: NextRequest) {
       { label: 'Name', value: fullName },
       { label: 'Email', value: email },
       { label: 'Phone', value: phone },
+      { label: 'Property', value: property },
       { label: 'Message', value: message },
     ],
   })

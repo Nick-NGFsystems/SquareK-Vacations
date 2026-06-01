@@ -122,8 +122,8 @@ export default function BookingRequestForm({ propertyName, propertySlug: _, acce
           <label className={labelCls}>Number of Guests *</label>
           <select required name="guests" className={inputCls}>
             <option value="">Select...</option>
-            {Array.from({ length: 14 }, (_, i) => i + 1).map(n => (
-              <option key={n} value={n}>{n} {n === 1 ? 'guest' : 'guests'}</option>
+            {['1-5', '5-10', '10-20', '20-30', '30+'].map(range => (
+              <option key={range} value={range}>{range} guests</option>
             ))}
           </select>
         </div>

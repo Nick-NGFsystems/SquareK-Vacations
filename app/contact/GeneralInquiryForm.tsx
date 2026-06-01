@@ -10,9 +10,10 @@ import { useState } from 'react'
 interface Props {
   accentColor?: string
   primaryColor?: string
+  propertyOptions?: string[]
 }
 
-export default function GeneralInquiryForm({ accentColor = '#9b8060' }: Props) {
+export default function GeneralInquiryForm({ accentColor = '#9b8060', propertyOptions = [] }: Props) {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -72,6 +73,17 @@ export default function GeneralInquiryForm({ accentColor = '#9b8060' }: Props) {
           <label className="mb-1.5 block font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Phone</label>
           <input name="phone" type="tel" placeholder="(616) 555-1234" className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg)] px-4 py-2.5 font-body text-sm text-[var(--text)] placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:outline-none" />
         </div>
+        {propertyOptions.length > 0 && (
+          <div className="sm:col-span-2">
+            <label className="mb-1.5 block font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Property of Interest</label>
+            <select name="property" defaultValue="" className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg)] px-4 py-2.5 font-body text-sm text-[var(--text)] focus:border-[var(--primary)] focus:outline-none">
+              <option value="">General inquiry / Not sure yet</option>
+              {propertyOptions.map(name => (
+                <option key={name} value={name}>{name}</option>
+              ))}
+            </select>
+          </div>
+        )}
         <div className="sm:col-span-2">
           <label className="mb-1.5 block font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Message *</label>
           <textarea required name="message" rows={4} placeholder="Tell us what you're looking for..." className="w-full resize-none rounded-lg border border-[var(--border)] bg-[var(--bg)] px-4 py-2.5 font-body text-sm text-[var(--text)] placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:outline-none" />

@@ -1,5 +1,6 @@
 import SiteHeader from '@/components/layout/SiteHeader'
 import { getNgfContent } from '@/lib/ngf'
+import { properties } from '@/lib/properties'
 import Link from 'next/link'
 import GeneralInquiryForm from './GeneralInquiryForm'
 
@@ -134,7 +135,7 @@ export default async function ContactPage() {
               data-ngf-type="textarea"
               data-ngf-section="Contact Form"
             >{formSubtext}</p>
-            <GeneralInquiryForm accentColor={accent} primaryColor={primary} />
+            <GeneralInquiryForm accentColor={accent} primaryColor={primary} propertyOptions={properties.map(p => p.name)} />
           </div>
 
         </div>
