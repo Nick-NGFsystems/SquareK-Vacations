@@ -6,13 +6,12 @@ function getDomain() {
   // changing the site's public domain never breaks content that was saved
   // under a different key in the portal.
   //
-  // Set NGF_CONTENT_DOMAIN to whatever key the portal stored content under
-  // (e.g. "square-k-vacations.vercel.app"). Falls back to the old behavior
-  // for backward compatibility with other client sites.
-  return process.env.NGF_CONTENT_DOMAIN
-      || process.env.NEXT_PUBLIC_SITE_URL
-      || process.env.VERCEL_PROJECT_PRODUCTION_URL
-      || 'localhost:3000'
+  // Tyler entered all of this site's content while the key was the Vercel
+  // URL, so that is the hardcoded default. To migrate to the real domain
+  // later, re-publish content under "squarekvacations.com" in the portal,
+  // then set NGF_CONTENT_DOMAIN=squarekvacations.com (no redeploy of code
+  // needed beyond setting the env var).
+  return process.env.NGF_CONTENT_DOMAIN || 'square-k-vacations.vercel.app'
 }
 
 export async function getNgfContent(): Promise<NgfSiteContent> {
