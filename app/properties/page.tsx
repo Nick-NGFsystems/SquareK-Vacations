@@ -5,8 +5,10 @@ import { getNgfContent } from '@/lib/ngf'
 import { properties } from '@/lib/properties'
 
 export const metadata = {
-  title: 'Our Properties - Square K Vacations',
-  description: 'Browse all three Square K Michigan vacation retreats - Lakeshore Grand, Blueberry Grand, and Clam Lake Grand.',
+  title: 'Vacation Rentals in West Michigan & Up North',
+  description:
+    'Browse Square K\'s West Michigan and Up North vacation home rentals — Lakeshore Grand and Blueberry Grand in Fennville, and Clam Lake Grand in Bellaire. Spacious lake houses for families and groups.',
+  alternates: { canonical: '/properties' },
 }
 
 export default async function PropertiesPage() {

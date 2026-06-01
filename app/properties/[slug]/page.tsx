@@ -19,9 +19,19 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params
   const property = getPropertyBySlug(slug)
   if (!property) return {}
+  const title = `${property.name} | Vacation Rental in ${property.city}, MI`
+  const image = property.images?.[0]
   return {
-    title: `${property.name} - Square K Vacations`,
+    title,
     description: property.description,
+    alternates: { canonical: `/properties/${slug}` },
+    openGraph: {
+      type: 'website',
+      title,
+      description: property.description,
+      url: `/properties/${slug}`,
+      images: image ? [{ url: image }] : undefined,
+    },
   }
 }
 

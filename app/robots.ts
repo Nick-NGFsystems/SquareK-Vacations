@@ -1,7 +1,8 @@
 import type { MetadataRoute } from 'next'
+import { getSiteUrl } from '@/lib/site'
 
 export default function robots(): MetadataRoute.Robots {
-  const base = `https://${process.env.NEXT_PUBLIC_SITE_URL ?? 'squarerk.com'}`
+  const base = getSiteUrl()
   return {
     rules: { userAgent: '*', allow: '/', disallow: ['/api/'] },
     sitemap: `${base}/sitemap.xml`,

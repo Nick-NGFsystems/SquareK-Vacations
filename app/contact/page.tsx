@@ -5,14 +5,20 @@ import Link from 'next/link'
 import GeneralInquiryForm from './GeneralInquiryForm'
 
 export const metadata = {
-  title: 'Contact - Square K Vacations',
-  description: 'Get in touch with Square K Vacations. Questions about our Michigan rental properties or ready to plan your stay?',
+  title: 'Contact Us',
+  description: 'Get in touch with Square K Vacations about our West Michigan and Up North vacation home rentals in Fennville and Bellaire. Questions, group bookings, or ready to plan your stay?',
+  alternates: { canonical: '/contact' },
 }
 
 export default async function ContactPage() {
   const content = await getNgfContent()
   const primary = content['brand.primaryColor'] || '#4a6741'
   const accent  = content['brand.accentColor'] || '#9b8060'
+
+  const contactPhone     = content['contact.phone'] || '(616) 333-9601'
+  const contactEmail     = content['contact.email'] || 'Squarek.llc.mi@gmail.com'
+  const contactLocations = content['contact.locations'] || 'Fennville, MI · Bellaire, MI'
+  const copyright        = content['footer.copyright'] || `© ${new Date().getFullYear()} Square K LLC. All rights reserved.`
 
   const pageEyebrow = content['contact.eyebrow'] || 'Get In Touch'
   const pageTitle   = content['contact.title'] || 'Contact Us'
@@ -67,9 +73,15 @@ export default async function ContactPage() {
                 </div>
                 <div>
                   <div className="font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Phone</div>
-                  <a href="tel:16163339601" className="mt-1 block font-body text-base font-semibold hover:underline" style={{ color: accent }}>
-                    (616) 333-9601
-                  </a>
+                  <a
+                    href={`tel:${contactPhone.replace(/[^0-9]/g, '')}`}
+                    className="mt-1 block font-body text-base font-semibold hover:underline"
+                    style={{ color: accent }}
+                    data-ngf-field="contact.phone"
+                    data-ngf-label="Phone Number"
+                    data-ngf-type="text"
+                    data-ngf-section="Contact Info"
+                  >{contactPhone}</a>
                 </div>
               </div>
 
@@ -81,9 +93,15 @@ export default async function ContactPage() {
                 </div>
                 <div>
                   <div className="font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Email</div>
-                  <a href="mailto:Squarek.llc.mi@gmail.com" className="mt-1 block font-body text-base font-semibold hover:underline" style={{ color: accent }}>
-                    Squarek.llc.mi@gmail.com
-                  </a>
+                  <a
+                    href={`mailto:${contactEmail}`}
+                    className="mt-1 block font-body text-base font-semibold hover:underline"
+                    style={{ color: accent }}
+                    data-ngf-field="contact.email"
+                    data-ngf-label="Email Address"
+                    data-ngf-type="text"
+                    data-ngf-section="Contact Info"
+                  >{contactEmail}</a>
                 </div>
               </div>
 
@@ -96,7 +114,13 @@ export default async function ContactPage() {
                 </div>
                 <div>
                   <div className="font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">Locations</div>
-                  <div className="mt-1 font-body text-base text-[var(--text)]">Fennville, MI &middot; Bellaire, MI</div>
+                  <div
+                    className="mt-1 font-body text-base text-[var(--text)]"
+                    data-ngf-field="contact.locations"
+                    data-ngf-label="Locations"
+                    data-ngf-type="text"
+                    data-ngf-section="Contact Info"
+                  >{contactLocations}</div>
                 </div>
               </div>
             </div>
@@ -142,10 +166,14 @@ export default async function ContactPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[var(--border)] bg-[var(--bg)] px-4 py-8 text-center">
-        <p className="font-body text-xs text-[var(--muted)]">
-          &copy; {new Date().getFullYear()} Square K LLC. All rights reserved.
-        </p>
+      <footer className="border-t border-[var(--border)] bg-[var(--bg)] px-4 py-8 text-center" data-ngf-section="Footer">
+        <p
+          className="font-body text-xs text-[var(--muted)]"
+          data-ngf-field="footer.copyright"
+          data-ngf-label="Copyright Text"
+          data-ngf-type="text"
+          data-ngf-section="Footer"
+        >{copyright}</p>
       </footer>
     </div>
   )

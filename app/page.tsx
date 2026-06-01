@@ -27,6 +27,8 @@ export default async function HomePage() {
 
   const aboutTitle = content['about.title'] || 'The Square K Promise'
   const aboutBody  = content['about.body'] || 'Every Square K property is owner-operated — not a faceless platform. That means genuine care, fast responses, and a stay that actually lives up to the photos.'
+  const aboutImage = content['about.image'] || '/images/lakeshore/OutdoorPatio.jpg'
+  const aboutImageAlt = content['about.image_alt'] || 'Square K vacation home in West Michigan'
 
   const ctaTitle  = content['cta.title'] || 'Ready to plan your Michigan escape?'
   const ctaButton = content['cta.button'] || 'Browse Properties'
@@ -310,11 +312,17 @@ export default async function HomePage() {
                 </div>
               </div>
             </div>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--surface)] to-[var(--border)] flex flex-col items-center justify-center gap-3">
-              <svg className="h-12 w-12 text-[var(--border)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 21l6.75-6.75 1.5 1.5M21 21V8.25A2.25 2.25 0 0018.75 6h-13.5A2.25 2.25 0 003 8.25V21m18 0H3" />
-              </svg>
-              <span className="font-body text-xs font-semibold uppercase tracking-widest text-[var(--muted)]">Photos Coming Soon</span>
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-[var(--surface)]">
+              <img
+                src={aboutImage}
+                alt={aboutImageAlt}
+                data-ngf-field="about.image"
+                data-ngf-label="About Photo"
+                data-ngf-type="image"
+                data-ngf-section="About"
+                data-ngf-aspect="4:3"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
             </div>
           </div>
         </div>

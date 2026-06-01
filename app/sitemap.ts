@@ -1,8 +1,9 @@
 import type { MetadataRoute } from 'next'
 import { getAllPropertySlugs } from '@/lib/properties'
+import { getSiteUrl } from '@/lib/site'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = `https://${process.env.NEXT_PUBLIC_SITE_URL ?? 'squarerk.com'}`
+  const base = getSiteUrl()
   const now  = new Date()
   const slugs = getAllPropertySlugs()
 
