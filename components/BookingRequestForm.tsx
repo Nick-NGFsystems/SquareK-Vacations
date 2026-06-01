@@ -1,12 +1,8 @@
 'use client'
 
 /**
- * BookingRequestForm - visual UI only for now.
- *
- * FUTURE INTEGRATION:
- * 1. Create /api/booking-request/route.ts that validates form data and emails the team.
- * 2. Replace the mock handleSubmit below with a real fetch POST.
- * 3. When the NGF admin portal is connected, requests will appear in the client dashboard.
+ * BookingRequestForm - submits to /api/booking-request, which emails the
+ * configured recipients via Resend (see lib/email.ts).
  */
 
 import { useState } from 'react'
@@ -23,13 +19,26 @@ const labelCls = 'mb-1.5 block font-body text-xs font-semibold uppercase trackin
 export default function BookingRequestForm({ propertyName, propertySlug: _, accentColor = '#9b8060' }: Props) {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
-    await new Promise(r => setTimeout(r, 800))
-    setLoading(false)
-    setSubmitted(true)
+    setError(null)
+    const payload = Object.fromEntries(new FormData(e.currentTarget).entries())
+    try {
+      const res = await fetch('/api/booking-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      if (!res.ok) throw new Error('Request failed')
+      setSubmitted(true)
+    } catch {
+      setError('Something went wrong. Please try again or call us directly.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (submitted) {
@@ -134,6 +143,9 @@ export default function BookingRequestForm({ propertyName, propertySlug: _, acce
       >
         {loading ? 'Sending Request...' : 'Submit Request'}
       </button>
+      {error && (
+        <p className="mt-3 text-center font-body text-xs text-red-600">{error}</p>
+      )}
       <p className="mt-3 text-center font-body text-xs text-[var(--muted)]">
         No payment required to request. Our team will confirm and discuss next steps.
       </p>

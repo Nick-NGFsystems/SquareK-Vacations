@@ -1,10 +1,8 @@
 'use client'
 
 /**
- * GeneralInquiryForm - visual UI only for now.
- *
- * FUTURE INTEGRATION:
- * Wire up to /api/contact/route.ts &rarr; Resend email &rarr; NGF portal notification
+ * GeneralInquiryForm - submits to /api/contact, which emails the configured
+ * recipients via Resend (see lib/email.ts).
  */
 
 import { useState } from 'react'
@@ -17,14 +15,26 @@ interface Props {
 export default function GeneralInquiryForm({ accentColor = '#9b8060' }: Props) {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
-    // TODO: POST to /api/contact when backend is ready
-    await new Promise(r => setTimeout(r, 800))
-    setLoading(false)
-    setSubmitted(true)
+    setError(null)
+    const payload = Object.fromEntries(new FormData(e.currentTarget).entries())
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      if (!res.ok) throw new Error('Request failed')
+      setSubmitted(true)
+    } catch {
+      setError('Something went wrong. Please try again or call us directly.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (submitted) {
@@ -75,6 +85,9 @@ export default function GeneralInquiryForm({ accentColor = '#9b8060' }: Props) {
       >
         {loading ? 'Sending...' : 'Send Message'}
       </button>
+      {error && (
+        <p className="mt-3 text-center font-body text-xs text-red-600">{error}</p>
+      )}
     </form>
   )
 }
