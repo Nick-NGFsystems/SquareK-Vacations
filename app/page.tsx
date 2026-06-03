@@ -375,9 +375,8 @@ export default async function HomePage() {
         <div className="mx-auto max-w-6xl">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             <div>
-              <div className="flex items-center gap-2">
-                <span className="rounded-md px-2 py-0.5 font-heading text-xl font-bold tracking-tight text-white" style={{ backgroundColor: primary }}>Square K</span>
-                <span className="font-body text-sm font-medium text-[var(--muted)]">Vacations</span>
+              <div className="flex items-center">
+                <img src="/images/squarek-logo.png" alt="Square K Vacations" className="h-12 w-auto" />
               </div>
               <p
                 data-ngf-field="brand.tagline"

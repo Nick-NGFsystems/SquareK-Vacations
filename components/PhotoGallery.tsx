@@ -1,6 +1,7 @@
 'use client'
 
-import { PhotoProvider, PhotoView } from 'react-photo-view'
+import { useState } from 'react'
+import { PhotoSlider } from 'react-photo-view'
 
 interface Props {
   images: string[]
@@ -27,6 +28,10 @@ function ngfAttrs(ngfGroup: string | undefined, ngfSection: string | undefined, 
 }
 
 export default function PhotoGallery({ images, propertyName, ngfGroup, ngfSection }: Props) {
+  const [visible, setVisible] = useState(false)
+  const [index, setIndex] = useState(0)
+  const open = (i: number) => { setIndex(i); setVisible(true) }
+
   if (images.length === 0) {
     return (
       <div className="flex aspect-video items-center justify-center rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface)]">
@@ -36,12 +41,14 @@ export default function PhotoGallery({ images, propertyName, ngfGroup, ngfSectio
   }
 
   return (
-    <PhotoProvider>
+    <>
       <div className="ngf-gallery-display">
-      {/* ── Mobile layout ────────────────────────────────────── */}
-      <div className="sm:hidden">
-        <PhotoView src={images[0]}>
-          <div className="group relative aspect-[4/3] w-full cursor-zoom-in overflow-hidden rounded-xl">
+        {/* ── Mobile layout ────────────────────────────────────── */}
+        <div className="sm:hidden">
+          <div
+            onClick={() => open(0)}
+            className="group relative aspect-[4/3] w-full cursor-zoom-in overflow-hidden rounded-xl"
+          >
             <img
               src={images[0]}
               alt={propertyName}
@@ -57,12 +64,14 @@ export default function PhotoGallery({ images, propertyName, ngfGroup, ngfSectio
               </div>
             )}
           </div>
-        </PhotoView>
-        {images.length > 1 && (
-          <div className="mt-2 flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
-            {images.slice(1).map((src, idx) => (
-              <PhotoView key={idx + 1} src={src}>
-                <div className="relative h-20 w-20 flex-none cursor-zoom-in overflow-hidden rounded-lg">
+          {images.length > 1 && (
+            <div className="mt-2 flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+              {images.slice(1).map((src, idx) => (
+                <div
+                  key={idx + 1}
+                  onClick={() => open(idx + 1)}
+                  className="relative h-20 w-20 flex-none cursor-zoom-in overflow-hidden rounded-lg"
+                >
                   <img
                     src={src}
                     alt={`${propertyName} ${idx + 2}`}
@@ -70,17 +79,18 @@ export default function PhotoGallery({ images, propertyName, ngfGroup, ngfSectio
                     {...ngfAttrs(ngfGroup, ngfSection, idx + 1)}
                   />
                 </div>
-              </PhotoView>
-            ))}
-          </div>
-        )}
-      </div>
+              ))}
+            </div>
+          )}
+        </div>
 
-      {/* ── Desktop layout ───────────────────────────────────── */}
-      <div className="hidden sm:block overflow-hidden rounded-2xl">
-        {images.length === 1 ? (
-          <PhotoView src={images[0]}>
-            <div className="group relative aspect-[16/9] w-full cursor-zoom-in overflow-hidden">
+        {/* ── Desktop layout ───────────────────────────────────── */}
+        <div className="hidden sm:block overflow-hidden rounded-2xl">
+          {images.length === 1 ? (
+            <div
+              onClick={() => open(0)}
+              className="group relative aspect-[16/9] w-full cursor-zoom-in overflow-hidden"
+            >
               <img
                 src={images[0]}
                 alt={propertyName}
@@ -88,11 +98,13 @@ export default function PhotoGallery({ images, propertyName, ngfGroup, ngfSectio
                 {...ngfAttrs(ngfGroup, ngfSection, 0)}
               />
             </div>
-          </PhotoView>
-        ) : images.length <= 3 ? (
-          <div className="grid gap-1" style={{ gridTemplateColumns: '2fr 1fr' }}>
-            <PhotoView src={images[0]}>
-              <div className="group relative cursor-zoom-in overflow-hidden" style={{ gridRow: 'span 2' }}>
+          ) : images.length <= 3 ? (
+            <div className="grid gap-1" style={{ gridTemplateColumns: '2fr 1fr' }}>
+              <div
+                onClick={() => open(0)}
+                className="group relative cursor-zoom-in overflow-hidden"
+                style={{ gridRow: 'span 2' }}
+              >
                 <div className="relative h-full min-h-[320px] overflow-hidden">
                   <img
                     src={images[0]}
@@ -103,10 +115,12 @@ export default function PhotoGallery({ images, propertyName, ngfGroup, ngfSectio
                   <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
                 </div>
               </div>
-            </PhotoView>
-            {images.slice(1, 3).map((src, idx) => (
-              <PhotoView key={idx + 1} src={src}>
-                <div className="group relative aspect-[4/3] cursor-zoom-in overflow-hidden">
+              {images.slice(1, 3).map((src, idx) => (
+                <div
+                  key={idx + 1}
+                  onClick={() => open(idx + 1)}
+                  className="group relative aspect-[4/3] cursor-zoom-in overflow-hidden"
+                >
                   <img
                     src={src}
                     alt={`${propertyName} ${idx + 2}`}
@@ -115,13 +129,15 @@ export default function PhotoGallery({ images, propertyName, ngfGroup, ngfSectio
                   />
                   <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
                 </div>
-              </PhotoView>
-            ))}
-          </div>
-        ) : (
-          <div className="grid gap-1" style={{ gridTemplateColumns: '2fr 1fr 1fr', gridTemplateRows: 'auto auto' }}>
-            <PhotoView src={images[0]}>
-              <div className="group relative cursor-zoom-in overflow-hidden" style={{ gridRow: 'span 2' }}>
+              ))}
+            </div>
+          ) : (
+            <div className="grid gap-1" style={{ gridTemplateColumns: '2fr 1fr 1fr', gridTemplateRows: 'auto auto' }}>
+              <div
+                onClick={() => open(0)}
+                className="group relative cursor-zoom-in overflow-hidden"
+                style={{ gridRow: 'span 2' }}
+              >
                 <div className="relative h-full min-h-[360px] overflow-hidden">
                   <img
                     src={images[0]}
@@ -132,13 +148,15 @@ export default function PhotoGallery({ images, propertyName, ngfGroup, ngfSectio
                   <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
                 </div>
               </div>
-            </PhotoView>
-            {images.slice(1, 5).map((src, idx) => {
-              const gi = idx + 1
-              const showOverlay = gi === 4 && images.length > 5
-              return (
-                <PhotoView key={gi} src={src}>
-                  <div className="group relative aspect-[4/3] cursor-zoom-in overflow-hidden">
+              {images.slice(1, 5).map((src, idx) => {
+                const gi = idx + 1
+                const showOverlay = gi === 4 && images.length > 5
+                return (
+                  <div
+                    key={gi}
+                    onClick={() => open(gi)}
+                    className="group relative aspect-[4/3] cursor-zoom-in overflow-hidden"
+                  >
                     <img
                       src={src}
                       alt={`${propertyName} ${gi + 1}`}
@@ -155,27 +173,20 @@ export default function PhotoGallery({ images, propertyName, ngfGroup, ngfSectio
                       </div>
                     )}
                   </div>
-                </PhotoView>
-              )
-            })}
-          </div>
-        )}
-      </div>
+                )
+              })}
+            </div>
+          )}
+        </div>
 
-      {images.length > 1 && (
-        <PhotoView src={images[0]}>
-          <button className="mt-3 cursor-zoom-in font-body text-xs font-semibold text-[var(--muted)] underline underline-offset-2 transition-colors hover:text-[var(--text)]">
+        {images.length > 1 && (
+          <button
+            onClick={() => open(0)}
+            className="mt-3 cursor-zoom-in font-body text-xs font-semibold text-[var(--muted)] underline underline-offset-2 transition-colors hover:text-[var(--text)]"
+          >
             View all {images.length} photos
           </button>
-        </PhotoView>
-      )}
-
-      {/* Photos 5+ in lightbox navigation (visitors) */}
-      {images.slice(5).map((src, idx) => (
-        <PhotoView key={idx + 5} src={src}>
-          <span className="sr-only" />
-        </PhotoView>
-      ))}
+        )}
       </div>
 
       {/* ── Edit-mode grid (hidden for visitors, shown when NGF edit mode is active) ── */}
@@ -203,6 +214,15 @@ export default function PhotoGallery({ images, propertyName, ngfGroup, ngfSectio
           ))}
         </div>
       )}
-    </PhotoProvider>
+
+      {/* Single controlled lightbox — exactly one entry per photo */}
+      <PhotoSlider
+        images={images.map((src, i) => ({ src, key: i }))}
+        visible={visible}
+        onClose={() => setVisible(false)}
+        index={index}
+        onIndexChange={setIndex}
+      />
+    </>
   )
 }

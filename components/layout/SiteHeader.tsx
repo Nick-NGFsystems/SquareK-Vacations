@@ -20,9 +20,8 @@ export default function SiteHeader({
       <span data-ngf-field="brand.primaryColor" data-ngf-label="Primary Color" data-ngf-type="color" data-ngf-section="Brand" aria-hidden="true" className="sr-only" />
       <span data-ngf-field="brand.accentColor" data-ngf-label="Accent Color" data-ngf-type="color" data-ngf-section="Brand" aria-hidden="true" className="sr-only" />
       <nav className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="rounded-md px-2 py-0.5 text-2xl font-bold tracking-tight text-white" style={{ backgroundColor: primaryColor }}>Square K</span>
-          <span className="hidden text-sm font-medium text-[var(--muted)] sm:block">Vacations</span>
+        <Link href="/" className="flex items-center" aria-label="Square K Vacations — Home">
+          <img src="/images/squarek-logo.png" alt="Square K Vacations" className="h-11 w-auto sm:h-12" />
         </Link>
         <div className="hidden items-center gap-8 lg:flex">
           {links.map(link => (
