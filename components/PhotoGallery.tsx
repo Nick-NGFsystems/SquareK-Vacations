@@ -37,6 +37,7 @@ export default function PhotoGallery({ images, propertyName, ngfGroup, ngfSectio
 
   return (
     <PhotoProvider>
+      <div className="ngf-gallery-display">
       {/* ── Mobile layout ────────────────────────────────────── */}
       <div className="sm:hidden">
         <PhotoView src={images[0]}>
@@ -175,6 +176,7 @@ export default function PhotoGallery({ images, propertyName, ngfGroup, ngfSectio
           <span className="sr-only" />
         </PhotoView>
       ))}
+      </div>
 
       {/* ── Edit-mode grid (hidden for visitors, shown when NGF edit mode is active) ── */}
       {ngfGroup && (

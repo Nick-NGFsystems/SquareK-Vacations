@@ -99,6 +99,9 @@ export default function NgfEditBridge() {
       }
       @keyframes ngf-spin { to { transform: rotate(360deg); } }
       .ngf-gallery-edit-grid { display: none; }
+      /* In edit mode, show ONLY the editable grid — hide the visitor display
+         gallery so photos don't appear duplicated in the portal editor. */
+      [data-ngf-edit="true"] .ngf-gallery-display { display: none; }
       [data-ngf-edit="true"] .ngf-gallery-edit-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(130px, 150px));
