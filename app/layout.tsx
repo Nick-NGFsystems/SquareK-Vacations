@@ -66,6 +66,11 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
   },
+  // Google Search Console ownership verification (URL-prefix property for
+  // https://squarekvacations.com). Must stay in place to remain verified.
+  verification: {
+    google: 'W2NrDe2ZrLPxwthdA3UmyFykENk60IevEMth2-0ALZ0',
+  },
   other: {
     'ngf-public-api': 'https://app.ngfsystems.com/api/public/content',
     'ngf-template-id': 'squarek-vacations',
