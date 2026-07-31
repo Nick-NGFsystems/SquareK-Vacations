@@ -3,6 +3,7 @@ import { Playfair_Display, Inter } from 'next/font/google'
 import NgfEditBridge from '@/components/NgfEditBridge'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
 import StructuredData from '@/components/StructuredData'
+import SafeBoundary from '@/components/SafeBoundary'
 import { getSiteUrl } from '@/lib/site'
 import 'react-photo-view/dist/react-photo-view.css'
 import './globals.css'
@@ -75,9 +76,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body suppressHydrationWarning className={`${headingFont.variable} ${bodyFont.variable} antialiased`}>
-        <GoogleAnalytics />
+        {/* Non-critical widgets are isolated: if one throws it renders nothing
+            instead of replacing the whole site with an error screen. */}
+        <SafeBoundary label="GoogleAnalytics">
+          <GoogleAnalytics />
+        </SafeBoundary>
         <StructuredData />
-        <NgfEditBridge />
+        <SafeBoundary label="NgfEditBridge">
+          <NgfEditBridge />
+        </SafeBoundary>
         {children}
       </body>
     </html>
