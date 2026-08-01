@@ -220,7 +220,7 @@ export default async function PropertyPage({ params }: Props) {
               <PhotoGallery
                 images={propImages}
                 propertyName={propName}
-                ngfGroup={`property.${slug}.images`}
+                ngfGroup={`property_${slug}.images`}
                 ngfSection="Property Images"
               />
             </div>
