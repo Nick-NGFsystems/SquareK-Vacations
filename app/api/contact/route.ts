@@ -4,6 +4,7 @@ import {
   renderEmailHtml,
   sendNotificationEmail,
 } from '@/lib/email'
+import { relayLeadToNgf } from '@/lib/ngf-lead'
 
 /**
  * POST /api/contact
@@ -44,6 +45,10 @@ export async function POST(req: NextRequest) {
       { label: 'Message', value: message },
     ],
   })
+
+  // Persist FIRST to the central NGF lead store (system of record) so the
+  // enquiry survives an email failure and appears in the client's portal.
+  await relayLeadToNgf('contact', data)
 
   const result = await sendNotificationEmail({
     to: getRecipients(process.env.CONTACT_NOTIFY_EMAILS),
