@@ -4,6 +4,7 @@ import {
   renderEmailHtml,
   sendNotificationEmail,
 } from '@/lib/email'
+import { relayLeadToNgf } from '@/lib/ngf-lead'
 
 /**
  * POST /api/booking-request
@@ -49,6 +50,9 @@ export async function POST(req: NextRequest) {
       { label: 'Message', value: message },
     ],
   })
+
+  // Persist FIRST to the central NGF lead store (system of record).
+  await relayLeadToNgf('booking-request', data)
 
   const result = await sendNotificationEmail({
     to: getRecipients(process.env.BOOKING_NOTIFY_EMAILS),
