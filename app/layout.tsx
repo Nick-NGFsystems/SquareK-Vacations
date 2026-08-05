@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { Playfair_Display, Inter } from 'next/font/google'
 import NgfEditBridge from '@/components/NgfEditBridge'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
+import CookieConsent from '@/components/CookieConsent'
+import CookieSettingsLink from '@/components/CookieSettingsLink'
 import StructuredData from '@/components/StructuredData'
 import SafeBoundary from '@/components/SafeBoundary'
 import { getSiteUrl } from '@/lib/site'
@@ -91,6 +93,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <NgfEditBridge />
         </SafeBoundary>
         {children}
+        {/* Consent gate for GA4 above. CookieSettingsLink lets a visitor change
+            their mind — this site has no shared Footer, so it lives here. */}
+        <CookieSettingsLink />
+        <SafeBoundary label="CookieConsent">
+          <CookieConsent />
+        </SafeBoundary>
       </body>
     </html>
   )
