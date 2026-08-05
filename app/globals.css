@@ -18,6 +18,12 @@
 
 html {
   scroll-behavior: smooth;
+  /*
+   * Always reserve space for the vertical scrollbar. Without this, a short page
+   * (no scrollbar) is ~15px wider than a long one, so every centered container
+   * — including the navbar — shifts sideways when moving between pages.
+   */
+  scrollbar-gutter: stable;
 }
 
 body {

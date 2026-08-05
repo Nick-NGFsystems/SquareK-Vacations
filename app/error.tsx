@@ -27,6 +27,8 @@ export default function Error({
         <img
           src="/images/squarek-logo.png"
           alt="Square K Vacations"
+          width={688}
+          height={840}
           className="mx-auto h-16 w-auto"
         />
 

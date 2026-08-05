@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import SiteHeader from '@/components/layout/SiteHeader'
 import PropertyCard from '@/components/PropertyCard'
-import { getNgfContent } from '@/lib/ngf'
+import { getNgfContent, getItems } from '@/lib/ngf'
 import { properties } from '@/lib/properties'
 
 export default async function HomePage() {
@@ -29,6 +29,16 @@ export default async function HomePage() {
   const aboutBody  = content['about.body'] || 'Every Square K property is owner-operated — not a faceless platform. That means genuine care, fast responses, and a stay that actually lives up to the photos.'
   const aboutImage = content['about.image'] || '/images/lakeshore/OutdoorPatio.jpg'
   const aboutImageAlt = content['about.image_alt'] || 'Square K vacation home in West Michigan'
+
+  const reviewsEyebrow = content['reviews.eyebrow'] || 'Guest Reviews'
+  const reviewsTitle   = content['reviews.title'] || 'What Guests Are Saying'
+  const reviewsDefaults = [
+    { quote: 'Add your favorite guest review here — Tyler can edit these in the portal.', author: 'Guest Name', location: 'Airbnb', rating: '5' },
+    { quote: 'Replace this placeholder with a real review from your Airbnb listing.', author: 'Guest Name', location: 'Airbnb', rating: '5' },
+    { quote: 'Each card is editable: review text, guest name, source, and star rating.', author: 'Guest Name', location: 'Airbnb', rating: '5' },
+  ]
+  const reviewItems = getItems(content, 'reviews.items')
+  const reviews = reviewItems.length > 0 ? reviewItems : reviewsDefaults
 
   const ctaTitle  = content['cta.title'] || 'Ready to plan your Michigan escape?'
   const ctaButton = content['cta.button'] || 'Browse Properties'
@@ -328,6 +338,80 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Reviews */}
+      <section
+        id="reviews"
+        data-ngf-section="Reviews"
+        className="bg-[var(--surface)] px-4 py-20 sm:px-6 lg:px-8"
+      >
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center">
+            <p
+              className="font-body text-xs font-semibold uppercase tracking-widest"
+              style={{ color: accent }}
+              data-ngf-field="reviews.eyebrow"
+              data-ngf-label="Eyebrow Tag"
+              data-ngf-type="text"
+              data-ngf-section="Reviews"
+            >{reviewsEyebrow}</p>
+            <h2
+              className="mt-1 font-heading text-3xl font-bold text-[var(--text)] sm:text-4xl"
+              data-ngf-field="reviews.title"
+              data-ngf-label="Section Title"
+              data-ngf-type="text"
+              data-ngf-section="Reviews"
+            >{reviewsTitle}</h2>
+          </div>
+
+          <div
+            className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+            data-ngf-group="reviews.items"
+            data-ngf-item-label="Review"
+            data-ngf-min-items="0"
+            data-ngf-max-items="24"
+            data-ngf-item-fields='[{"key":"quote","label":"Review Text","type":"textarea"},{"key":"author","label":"Guest Name","type":"text"},{"key":"location","label":"Source (e.g. Airbnb)","type":"text"},{"key":"rating","label":"Stars (1-5)","type":"text"}]'
+          >
+            {reviews.map((r, i) => {
+              const stars = Math.max(1, Math.min(5, parseInt(r.rating || '5') || 5))
+              return (
+                <div key={i} className="flex flex-col rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm">
+                  <div className="flex gap-0.5" aria-label={`${stars} out of 5 stars`}>
+                    {Array.from({ length: 5 }).map((_, s) => (
+                      <svg key={s} className="h-4 w-4" viewBox="0 0 20 20" fill={s < stars ? '#f5a623' : '#e5e2da'}>
+                        <path d="M9.05 2.93c.3-.92 1.6-.92 1.9 0l1.37 4.2a1 1 0 0 0 .95.7h4.42c.97 0 1.37 1.24.59 1.81l-3.58 2.6a1 1 0 0 0-.36 1.12l1.37 4.2c.3.92-.76 1.69-1.54 1.12l-3.58-2.6a1 1 0 0 0-1.18 0l-3.58 2.6c-.78.57-1.84-.2-1.54-1.12l1.37-4.2a1 1 0 0 0-.36-1.12L2.4 9.64c-.78-.57-.38-1.81.59-1.81h4.42a1 1 0 0 0 .95-.7l1.37-4.2Z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <p
+                    className="mt-4 flex-1 font-body text-sm leading-relaxed text-[var(--muted)]"
+                    data-ngf-field={`reviews.items.${i}.quote`}
+                    data-ngf-label={`Review ${i + 1} Text`}
+                    data-ngf-type="textarea"
+                    data-ngf-section="Reviews"
+                  >{r.quote}</p>
+                  <div className="mt-5 flex items-center justify-between border-t border-[var(--border)] pt-4">
+                    <span
+                      className="font-heading text-sm font-semibold text-[var(--text)]"
+                      data-ngf-field={`reviews.items.${i}.author`}
+                      data-ngf-label={`Review ${i + 1} Guest`}
+                      data-ngf-type="text"
+                      data-ngf-section="Reviews"
+                    >{r.author}</span>
+                    <span
+                      className="font-body text-xs text-[var(--muted)]"
+                      data-ngf-field={`reviews.items.${i}.location`}
+                      data-ngf-label={`Review ${i + 1} Source`}
+                      data-ngf-type="text"
+                      data-ngf-section="Reviews"
+                    >{r.location}</span>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* Bottom CTA */}
       <section
         id="cta"
@@ -376,7 +460,7 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             <div>
               <div className="flex items-center">
-                <img src="/images/squarek-logo.png" alt="Square K Vacations" className="h-12 w-auto" />
+                <img src="/images/squarek-logo.png" alt="Square K Vacations" width={688} height={840} className="h-12 w-auto" />
               </div>
               <p
                 data-ngf-field="brand.tagline"

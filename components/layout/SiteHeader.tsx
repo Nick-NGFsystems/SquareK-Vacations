@@ -21,7 +21,10 @@ export default function SiteHeader({
       <span data-ngf-field="brand.accentColor" data-ngf-label="Accent Color" data-ngf-type="color" data-ngf-section="Brand" aria-hidden="true" className="sr-only" />
       <nav className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center" aria-label="Square K Vacations — Home">
-          <img src="/images/squarek-logo.png" alt="Square K Vacations" className="h-11 w-auto sm:h-12" />
+          {/* width/height are required so the browser reserves the correct
+              space before the image loads — without them the nav shifts
+              sideways on every page load. */}
+          <img src="/images/squarek-logo.png" alt="Square K Vacations" width={688} height={840} className="h-11 w-auto sm:h-12" />
         </Link>
         <div className="hidden items-center gap-8 lg:flex">
           {links.map(link => (
