@@ -32,13 +32,9 @@ export default async function HomePage() {
 
   const reviewsEyebrow = content['reviews.eyebrow'] || 'Guest Reviews'
   const reviewsTitle   = content['reviews.title'] || 'What Guests Are Saying'
-  const reviewsDefaults = [
-    { quote: 'Add your favorite guest review here — Tyler can edit these in the portal.', author: 'Guest Name', location: 'Airbnb', rating: '5' },
-    { quote: 'Replace this placeholder with a real review from your Airbnb listing.', author: 'Guest Name', location: 'Airbnb', rating: '5' },
-    { quote: 'Each card is editable: review text, guest name, source, and star rating.', author: 'Guest Name', location: 'Airbnb', rating: '5' },
-  ]
-  const reviewItems = getItems(content, 'reviews.items')
-  const reviews = reviewItems.length > 0 ? reviewItems : reviewsDefaults
+  // Only real reviews are ever rendered. If none are set in the NGF portal the
+  // whole section is omitted — never show placeholder copy on a live client site.
+  const reviews = getItems(content, 'reviews.items')
 
   const ctaTitle  = content['cta.title'] || 'Ready to plan your Michigan escape?'
   const ctaButton = content['cta.button'] || 'Browse Properties'
@@ -338,7 +334,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Reviews */}
+      {/* Reviews — rendered only when real reviews exist in the NGF portal */}
+      {reviews.length > 0 && (
       <section
         id="reviews"
         data-ngf-section="Reviews"
@@ -411,6 +408,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Bottom CTA */}
       <section
