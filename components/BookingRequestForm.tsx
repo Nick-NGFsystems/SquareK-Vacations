@@ -64,7 +64,7 @@ export default function BookingRequestForm({ propertyName, propertySlug: _, acce
   }
 
   return (
-    <form onSubmit={handleSubmit} className="overflow-hidden rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm sm:p-8">
+    <form onSubmit={handleSubmit} className="relative overflow-hidden rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm sm:p-8">
       <h3 className="font-heading text-xl font-semibold text-[var(--text)]">Request a Stay</h3>
       <p className="mt-1 font-body text-sm text-[var(--muted)]">
         Submit your details and our team will confirm availability.
@@ -131,6 +131,12 @@ export default function BookingRequestForm({ propertyName, propertySlug: _, acce
           <label className={labelCls}>Message / Special Requests</label>
           <textarea name="message" rows={3} placeholder="Tell us about your group, any special occasions, or questions you have..." className={`${inputCls} resize-none`} />
         </div>
+      </div>
+
+      {/* Honeypot (NGF standard): parked off-screen, skipped by keyboard and screen
+          readers, and flagged so password managers don't fill it. Bots fill it. */}
+      <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" defaultValue="" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" />
       </div>
 
       <button

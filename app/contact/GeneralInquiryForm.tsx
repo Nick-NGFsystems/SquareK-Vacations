@@ -55,7 +55,7 @@ export default function GeneralInquiryForm({ accentColor = '#9b8060', propertyOp
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-6 rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm">
+    <form onSubmit={handleSubmit} className="relative mt-6 rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label className="mb-1.5 block font-body text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">First Name *</label>
@@ -89,6 +89,13 @@ export default function GeneralInquiryForm({ accentColor = '#9b8060', propertyOp
           <textarea required name="message" rows={4} placeholder="Tell us what you're looking for..." className="w-full resize-none rounded-lg border border-[var(--border)] bg-[var(--bg)] px-4 py-2.5 font-body text-sm text-[var(--text)] placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:outline-none" />
         </div>
       </div>
+
+      {/* Honeypot (NGF standard): parked off-screen, skipped by keyboard and screen
+          readers, and flagged so password managers don't fill it. Bots fill it. */}
+      <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" defaultValue="" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" />
+      </div>
+
       <button
         type="submit"
         disabled={loading}
