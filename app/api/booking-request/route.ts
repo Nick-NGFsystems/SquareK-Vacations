@@ -18,6 +18,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
   }
 
+  // Honeypot (NGF standard: non-semantic `_gotcha`). Real visitors never see the
+  // field, so anything in it is a bot. Same success reply a person gets, so it
+  // can't tell it was caught; nothing is saved or sent.
+  const gotcha = data._gotcha
+  if (typeof gotcha === 'string' && gotcha.trim() !== '') {
+    console.warn('booking-request submission filtered: honeypot')
+    return NextResponse.json({ ok: true })
+  }
+
   const firstName = (data.firstName || '').trim()
   const lastName = (data.lastName || '').trim()
   const email = (data.email || '').trim()
@@ -52,7 +61,15 @@ export async function POST(req: NextRequest) {
   })
 
   // Persist FIRST to the central NGF lead store (system of record).
-  await relayLeadToNgf('booking-request', data)
+  const { spam } = await relayLeadToNgf('booking-request', data)
+
+  // The NGF store screened it as a sales pitch or a bot: it's saved there (Spam
+  // in the portal, one click back to New) and NGF sent no email, so neither do
+  // we. A failed relay is never spam, so the email still goes.
+  if (spam) {
+    console.info('booking-request screened as spam by NGF: saved, not emailed')
+    return NextResponse.json({ ok: true })
+  }
 
   const result = await sendNotificationEmail({
     to: getRecipients(process.env.BOOKING_NOTIFY_EMAILS),
